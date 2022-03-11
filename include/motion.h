@@ -15,7 +15,7 @@ extern "C" {
 // sequence car3 (ne pas oublier le '/' a la fin)
 
 //#define SEQUENCE_SRC_PATH "../../lsSequences/car3/"
-#define SEQUENCE_SRC_PATH "/Users/lacas/Sequences/car3/"
+#define SEQUENCE_SRC_PATH "/Users/Mlamise/Study/Projet_vision/Projet_vision/car3/"
 #define SEQUENCE_FILENAME "car_3"
 #define SEQUENCE_NDIGIT 3
 #define SEQUENCE_HEIGHT 240
@@ -24,7 +24,7 @@ extern "C" {
 #define SEQUENCE_TSTOP 199
 #define SEQUENCE_TSTEP 1
 
-#define SEQUENCE_DST_PATH "results/"
+#define SEQUENCE_DST_PATH "/Users/Mlamise/Study/Projet_vision/Projet_vision/results/"
 
 void motion_detection_morpho(void);
 

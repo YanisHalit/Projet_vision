@@ -17,19 +17,19 @@
 #include <string.h>
 #include <math.h>
 
-#include "nrtype.h"
-#include "nrdef.h"
-#include "nrutil.h"
+#include "../include/nrtype.h"
+#include "../include/nrdef.h"
+#include "../include/nrutil.h"
 
-#include "macro_bench.h"
+#include "../include/macro_bench.h"
 #include "x86intrin.h" // _rdtsc()
 
-#include "swp.h"
-#include "morpho_max.h"
-#include "morpho_min.h"
-#include "morpho_ouverture.h"
+#include "../include/swp.h"
+#include "../include/morpho_max.h"
+#include "../include/morpho_min.h"
+#include "../include/morpho_ouverture.h"
 
-#include "morpho_test.h"
+#include "../include/morpho_test.h"
 
 // -------------------------------------------------------------------------------
 void rand_ui8matrix(uint8 **X, int i0, int i1, int j0, int j1, uint8 x0, uint8 x1)
@@ -149,13 +149,13 @@ void test_morpho_max_routine(int h, int w0)
     puts("done\n");
     
 
-    // display_ui8matrix(X,         0, h-1, 0, w0-1, "%5d", "X bas        ");
+    display_ui8matrix(X,         0, h-1, 0, w0-1, "%5d", "X bas        ");
     // display_ui8matrix(Y_bas,         0, h-1, 0, w0-1, "%5d", "Y bas        ");
     // display_ui8matrix(Y_reg,         0, h-1, 0, w0-1, "%5d", "Y reg        ");
     // display_ui8matrix(Y_rot,         0, h-1, 0, w0-1, "%5d", "Y rot        ");
     // display_ui8matrix(Y_red,         0, h-1, 0, w0-1, "%5d", "Y red        ");
     // display_ui8matrix(Y_ilu3,        0, h-1, 0, w0-1, "%5d", "Y ilu3       ");
-    // display_ui8matrix(Y_ilu3r,       0, h-1, 0, w0-1, "%5d", "Y ilu3r      ");
+    display_ui8matrix(Y_ilu3r,       0, h-1, 0, w0-1, "%5d", "Y ilu3r      ");
     // display_ui8matrix(Y_elu2r,       0, h-1, 0, w0-1, "%5d", "Y elu2r      ");
     // display_ui8matrix(Y_elu2rf,      0, h-1, 0, w0-1, "%5d", "Y elu2rf     ");
     // display_ui8matrix(Y_ilu3_elu2rf, 0, h-1, 0, w0-1, "%5d", "Y ilu3 elu2rf");/**/
@@ -165,7 +165,7 @@ void test_morpho_max_routine(int h, int w0)
     c = compare_ui8matrix(Y_bas, 0, h-1, 0, w0-1, Y_rot        , "Y rot                       ");
     c = compare_ui8matrix(Y_bas, 0, h-1, 0, w0-1, Y_red        , "Y red                       ");
     c = compare_ui8matrix(Y_bas, 0, h-1, 0, w0-1, Y_ilu3       , "Y ilu3                      ");
-    // c = compare_ui8matrix(Y_bas, 0, h-1, 0, w0-1, Y_ilu3r      , "Y ilu3 + red                ");
+    c = compare_ui8matrix(Y_bas, 0, h-1, 0, w0-1, Y_ilu3r      , "Y ilu3 + red                ");
     // c = compare_ui8matrix(Y_bas, 0, h-1, 0, w0-1, Y_elu2r      , "Y elu2 + red                ");
     // c = compare_ui8matrix(Y_bas, 0, h-1, 0, w0-1, Y_elu2rf     , "Y ilu3 + red + factor       ");
     // c = compare_ui8matrix(Y_bas, 0, h-1, 0, w0-1, Y_ilu3_elu2rf, "Y ilu3 + elu2 + red + factor");
@@ -848,8 +848,8 @@ int test_morpho(int argc, char* argv[])
 {
     puts("=== test_morpho ===");
     
-    // test_morpho_max();
-    test_morpho_min();
+    test_morpho_max();
+    // test_morpho_min();
     //test_morpho_ouverture();
     
     // bench_morpho_ouverture(128, 512, 8);

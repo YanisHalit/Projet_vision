@@ -7,14 +7,14 @@
 #include <stddef.h>
 #include <string.h>
 
-#include "nrtype.h"
-#include "nrdef.h"
-#include "nrutil.h"
+#include "../include/nrtype.h"
+#include "../include/nrdef.h"
+#include "../include/nrutil.h"
 
-#include "sigmadelta.h"
-#include "morpho_min.h"
-#include "morpho_max.h"
-#include "motion.h"
+#include "../include/sigmadelta.h"
+#include "../include/morpho_min.h"
+#include "../include/morpho_max.h"
+#include "../include/motion.h"
 
 // -------------------------------------------------------
 void init_image(uint8 **X, int i0, int i1, int j0, int j1)
@@ -82,7 +82,7 @@ void test_PGM(void)
     
     i0 = 0; i1 = h-1; j0 = 0; j1 = w-1;
     
-    src_path = "/Users/lacas/Code/MotionACC/results/";
+    src_path = "/Users/Mlamise/Study/Projet_vision/Projet_vision/results/";
     
     generate_path_filename_k_ndigit_extension(dst_path, "I_", tstart, ndigit, "pgm", complete_filenameI);
     generate_path_filename_k_ndigit_extension(dst_path, "M_", tstart, ndigit, "pgm", complete_filenameM);
@@ -143,10 +143,10 @@ void motion_detection_morpho_v1(void)
     // -------
     // -- init
     // -------
-    puts("[motion_detection_morpho_v1]: les parametres de la sequence sont dans motion.h");
-    puts("[motion_detection_morpho_v1]: supprimer ce message une fois les parametres configures");
-    puts("[motion_detection_morpho_v1]: bye...");
-    return;
+    // puts("[motion_detection_morpho_v1]: les parametres de la sequence sont dans motion.h");
+    // puts("[motion_detection_morpho_v1]: supprimer ce message une fois les parametres configures");
+    // puts("[motion_detection_morpho_v1]: bye...");
+    // return;
     
     src_path = SEQUENCE_SRC_PATH;
     filename = SEQUENCE_FILENAME;
@@ -309,5 +309,5 @@ void motion_detection_morpho(void)
 // ===============================
 {
     motion_detection_morpho_v1(); // version basique sans optimisation
-    //test_PGM();
+    test_PGM();
 }
