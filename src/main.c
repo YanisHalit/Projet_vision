@@ -8,9 +8,9 @@
 #include <string.h>
 #include <math.h>
 
-#include "nrtype.h"
-#include "nrdef.h"
-#include "nrutil.h"
+#include "../include/nrtype.h"
+#include "../include/nrdef.h"
+#include "../include/nrutil.h"
 
 //#include "parser.h"
 //#include "sequence.h"
@@ -23,8 +23,8 @@
 //#include "nrutil_ext_test.h"
 //#include "swp_test.h"
 
-#include "morpho_test.h"
-#include "motion_test.h"
+#include "../include/morpho_test.h"
+#include "../include/motion_test.h"
 
 /* --------------- */
 int getIter(int size)
@@ -76,9 +76,9 @@ int main(int argc, char *argv[])
 // =============================
 {
     
-    //test_swp(argc, argv);
+    // test_swp(argc, argv);
     
-    // test_morpho(argc, argv);
-    test_motion(argc, argv);  // DECOM
+    test_morpho(argc, argv);
+    // test_motion(argc, argv);  // DECOM
     return 0;
 }

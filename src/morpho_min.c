@@ -1,4 +1,4 @@
-/* -------------------- */
+ /* -------------------- */
 /* --- morpho_min.c --- */
 /* -------------------- */
 
@@ -13,14 +13,14 @@
 #include <stddef.h>
 #include <string.h>
 
-#include "nrtype.h"
-#include "nrdef.h"
-#include "nrutil.h"
+#include "../include/nrtype.h"
+#include "../include/nrdef.h"
+#include "../include/nrutil.h"
 
 // ------------------------------------------------------------------------
 void line_min3_ui8matrix_basic(uint8 **X, int i, int j0, int j1, uint8 **Y)
 // ------------------------------------------------------------------------
-{ // Quelle ligne  jO colonne début j1 colonne fin 
+{ 
     for( int j = j0; j < j1; j++){
         store2(Y, i, j, min3( min3( (load2(X, i-1, j-1)) , load2(X, i-1, j), load2(X, i-1, j+1 ) ),
                               min3( (load2(X, i, j-1)) , load2(X, i, j), load2(X, i, j+1 ) ),
