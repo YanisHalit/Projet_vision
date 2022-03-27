@@ -22,6 +22,7 @@
 #include "../include/morpho_min.h"
 #include "../include/morpho_max.h"
 
+#define PRINT(s) printf("%s\n",s)
 
 
 
@@ -604,7 +605,6 @@ void line_ouverture3_ui8matrix_fusion_ilu5_elu2_red(uint8 **X, int i, int j0, in
     int r = (j1-j0-1) % 5;
     line_ouverture3_ui8matrix_fusion(X, i, (j1-j0-r-1), (j1-j0), Y);
     line_ouverture3_ui8matrix_fusion(X, i+1, (j1-j0-r-1), (j1-j0), Y);
-
 }
 // ----------------------------------------------------------------------------------------------------
 void line_ouverture3_ui8matrix_fusion_ilu5_elu2_red_factor(uint8 **X, int i, int j0, int j1, uint8 **Y)
@@ -621,91 +621,123 @@ void line_ouverture3_ui8matrix_fusion_ilu5_elu2_red_factor(uint8 **X, int i, int
             min_all3_0, min_all3_1, min_all3_2,
             max_all0, max_all1, max_all2, max_all3,
 
-            min0_0_opt, min0_1_opt,
-            min1_0_opt, min1_1_opt,
-            min2_0_opt, min2_1_opt,
-            min3_0_opt, min3_1_opt,
-            min4_0_opt, min4_1_opt,
+            min_00_10_opt, min0_1_opt,
+            min_01_11_opt, min_03_13_opt,
+            min_02_12_opt, min_10_20_opt,
+            min_11_21_opt, min_12_22_opt,
+            min_13_23_opt, min_20_30_opt,
+            min_21_31_opt, min_22_32_opt,
+            min_23_33_opt, min_04_14_opt,
+            min_14_24_opt, min_24_opt,
+            min_34_opt,
 
             min_all0_opt, min_all1_opt, min_all2_opt, min_all3_opt;
 
+            uint8 min_02_03, min_12_13, min_22_23, min_32_33,
+            max_all_00_01, max_all_10_11, max_all_20_21, max_all_30_31,
+            max_all12;
 
-// -------------
-    min0_0_opt = min2(load2(X, i-1, j0-2), load2(X, i, j0-2));
-    min0_1_opt = min2(load2(X, i+1, j0-2), load2(X, i+2, j0-2));
+    min_00_10_opt = min2(load2(X, i-1, j0-2), load2(X, i, j0-2));
+    min0_0 = min2( load2(X, i-2, j0-2), min_00_10_opt);
+    min1_0 = min2( min_00_10_opt, load2(X, i+1, j0-2));
 
-    min1_0_opt = min2(load2(X, i-1, j0-1), load2(X, i, j0-1));
-    min1_1_opt = min2(load2(X, i+1, j0-1), load2(X, i+2, j0-1));
 
-    min2_0_opt = min2(load2(X, i-1, j0), load2(X, i, j0));
-    min2_1_opt = min2(load2(X, i+1, j0), load2(X, i+2, j0));
+    min_01_11_opt = min2(load2(X, i-1, j0-1), load2(X, i, j0-1));
+    min0_1 = min2( load2(X, i-2, j0-1), min_01_11_opt);
+    min1_1 = min2( min_01_11_opt, load2(X, i+1, j0-1));
 
-    min3_0_opt = min2(load2(X, i-1, j0+1), load2(X, i, j0+1));
-    min3_1_opt = min2(load2(X, i+1, j0+1), load2(X, i+2, j0+1));
+    min_02_12_opt = min2(load2(X, i-1, j0), load2(X, i, j0));
+    min0_2 = min2( load2(X, i-2, j0), min_02_12_opt);
+    min1_2 = min2( min_02_12_opt, load2(X, i+1, j0));
 
-// --------------
-    min0_0 = min2( load2(X, i-2, j0-2), min0_0_opt);
-    min0_1 = min2( load2(X, i-2, j0-1), min1_0_opt);
-    min0_2 = min2( load2(X, i-2, j0), min2_0_opt);
-    min0_3 = min2( load2(X, i-2, j0+1), min3_0_opt);
+    min_03_13_opt = min2(load2(X, i-1, j0+1), load2(X, i, j0+1));
+    min0_3 = min2( load2(X, i-2, j0+1), min_03_13_opt);
+    min1_3 = min2( min_03_13_opt, load2(X, i+1, j0+1));
 
-    min1_0 = min2( min0_0_opt, load2(X, i+1, j0-2));
-    min1_1 = min2( min1_0_opt, load2(X, i+1, j0-1));
-    min1_2 = min2( min2_0_opt, load2(X, i+1, j0));
-    min1_3 = min2( min3_0_opt, load2(X, i+1, j0+1));
+    min_10_20_opt = min2(load2(X, i, j0-2), load2(X, i+1, j0-2));
+    min1_0 = min2(load2(X, i-1, j0-2) , min_10_20_opt);
+    min2_0 = min2(min_10_20_opt, load2(X, i+2, j0-2));
 
-    min2_0 = min2( load2(X, i, j0-2), min0_1_opt);
-    min2_1 = min2( load2(X, i, j0-1), min1_1_opt);
-    min2_2 = min2( load2(X, i, j0), min2_1_opt);
-    min2_3 = min2( load2(X, i, j0+1), min3_1_opt);
+    min_11_21_opt = min2(load2(X, i, j0-1), load2(X, i+1, j0-1));
+    min1_1 = min2(load2(X, i-1, j0-1) , min_11_21_opt);
+    min2_1 = min2(min_11_21_opt, load2(X, i+2, j0-1));
 
-    min3_0 = min2( min0_1_opt , load2(X, i+3, j0-2));
-    min3_1 = min2( min1_1_opt, load2(X, i+3, j0-1));
-    min3_2 = min2( min2_1_opt, load2(X, i+3, j0));
-    min3_3 = min2( min3_1_opt, load2(X, i+3, j0+1));
-// ----------
+    min_12_22_opt = min2(load2(X, i, j0), load2(X, i+1, j0));
+    min1_2 = min2(load2(X, i-1, j0), min_12_22_opt);
+    min2_2 = min2(min_12_22_opt, load2(X, i+2, j0));
 
-//_---------
+    min_13_23_opt = min2(load2(X, i, j0+1), load2(X, i+1, j0+1));
+    min1_3 = min2(load2(X, i-1, j0+1), min_13_23_opt);
+    min2_3 = min2(min_13_23_opt, load2(X, i+2, j0+1));
 
-    min_all0_opt = min2(min0_1, min0_2 );
-    min_all1_opt = min2(min1_1, min1_2 );
-    min_all2_opt = min2(min2_1, min2_2 );
-    min_all3_opt = min2(min3_1, min3_2);
+    min_20_30_opt = min2(load2(X, i+1, j0-2), load2(X, i+2, j0-2));
+    min2_0 = min2(load2(X, i, j0-2), min_20_30_opt);
+    min3_0 = min2(min_20_30_opt, load2(X, i+3, j0-2));
 
+    min_21_31_opt = min2(load2(X, i+1, j0-1), load2(X, i+2, j0-1));
+    min2_1 = min2(load2(X, i, j0-1), min_21_31_opt);
+    min3_1 = min2(min_21_31_opt, load2(X, i+3, j0-1));
+
+    min_22_32_opt = min2(load2(X, i+1, j0), load2(X, i+2, j0));
+    min2_2 = min2(load2(X, i, j0), min_22_32_opt);
+    min3_2 = min2(min_22_32_opt, load2(X, i+3, j0));
+
+    min_23_33_opt = min2(load2(X, i+1, j0+1), load2(X, i+2, j0+1));
+    min2_3 = min2(load2(X, i, j0+1), min_23_33_opt);
+    min3_3 = min2( min_23_33_opt, load2(X, i+3, j0+1));
+
+    min_all0_opt = min2(min0_1, min0_2);
     min_all0_0 = min2( min0_0, min_all0_opt);
     min_all0_1 = min2( min_all0_opt, min0_3);
 
+    min_all1_opt = min2(min1_1, min1_2);
     min_all1_0 = min2( min1_0, min_all1_opt);
     min_all1_1 = min2( min_all1_opt, min1_3);
 
+    min_all2_opt = min2(min2_1, min2_2);
     min_all2_0 = min2( min2_0, min_all2_opt );
     min_all2_1 = min2( min_all2_opt , min2_3);
 
+    min_all3_opt = min2(min3_1, min3_2);
     min_all3_0 = min2( min3_0, min_all3_opt);
     min_all3_1 = min2( min_all3_opt, min3_3);
 
-for(int j = j0; j< j1-5; j+=5){ //            min4_0_opt, min4_1_opt,
+    min_02_03 = min2(min0_2, min0_3);
+    min_12_13 = min2(min1_2, min1_3);
+    min_22_23 = min2(min2_2, min2_3);
+    min_32_33 = min2(min3_2, min3_3);
+
+    max_all_00_01 = max2(min_all0_0, min_all0_1);
+    max_all_10_11 = max2(min_all1_0, min_all1_1);
+    max_all_20_21 = max2(min_all2_0, min_all2_1);
+    max_all_30_31 = max2(min_all3_0, min_all3_1);
+
+    for(int j = j0; j< j1-5; j+=5){
             // ----- 1 ------
-            min4_0_opt = min2(load2(X, i-1, j+2), load2(X, i, j+2));
-            min4_1_opt = min2(load2(X, i+1, j+2), load2(X, i+2, j+2));
+            min_04_14_opt = min2(load2(X, i-1, j+2), load2(X, i, j+2));
+            min0_4 = min2(load2(X, i-2, j+2), min_04_14_opt);
+            min1_4 = min2( min_04_14_opt, load2(X, i+1, j+2));
 
-            min0_4 = min2( load2(X, i-2, j+2), min4_0_opt);
-            min1_4 = min2( min4_0_opt, load2(X, i+1, j+2));
-            min2_4 = min2( load2(X, i, j+2), min4_1_opt);
-            min3_4 = min2( min4_1_opt, load2(X, i+3, j+2));
+            min_24_opt = min2(load2(X, i, j+2), load2(X, i+1, j+2));
+            min2_4 = min2(min_24_opt, load2(X, i+2, j+2));
 
-            min_all0_2 = min3( min0_2, min0_3, min0_4);
-            min_all1_2 = min3( min1_2, min1_3, min1_4);
-            min_all2_2 = min3( min2_2, min2_3, min2_4);
-            min_all3_2 = min3( min3_2, min3_3, min3_4);
+            min_34_opt = min2(load2(X, i+1, j+2), load2(X, i+2, j+2));
+            min3_4 = min2(min_34_opt, load2(X, i+3, j+2));
 
-            max_all0 = max3( min_all0_0, min_all0_1, min_all0_2);
-            max_all1 = max3( min_all1_0, min_all1_1, min_all1_2);
-            max_all2 = max3( min_all2_0, min_all2_1, min_all2_2);
-            max_all3 = max3( min_all3_0, min_all3_1, min_all3_2);
+            min_all0_2 = min2( min_02_03, min0_4);
+            min_all1_2 = min2( min_12_13, min1_4);
+            min_all2_2 = min2( min_22_23, min2_4);
+            min_all3_2 = min2( min_32_33, min3_4);
 
-            store2( Y, i, j, max3( max_all0, max_all1, max_all2) );
-            store2( Y, i+1, j, max3( max_all1, max_all2, max_all3) );
+            max_all0 = max2( max_all_00_01, min_all0_2);
+            max_all1 = max2( max_all_10_11, min_all1_2);
+            max_all2 = max2( max_all_20_21, min_all2_2);
+            max_all3 = max2( max_all_30_31, min_all3_2);
+
+            max_all12 = max2(max_all1, max_all2);
+
+            store2( Y, i, j, max2( max_all0, max_all12) );
+            store2( Y, i+1, j, max2( max_all12, max_all3) );
 
             min0_0 = min0_1;
             min0_1 = min0_2;
@@ -727,16 +759,324 @@ for(int j = j0; j< j1-5; j+=5){ //            min4_0_opt, min4_1_opt,
             min3_2 = min3_3;
             min3_3 = min3_4;
 
-            min_all0_0 = min3( min0_0, min0_1, min0_2);
-            min_all0_1 = min3( min0_1, min0_2, min0_3);
-            min_all1_0 = min3( min1_0, min1_1, min1_2);
-            min_all1_1 = min3( min1_1, min1_2, min1_3);
-            min_all2_0 = min3( min2_0, min2_1, min2_2);
-            min_all2_1 = min3( min2_1, min2_2, min2_3);
-            min_all3_0 = min3( min3_0, min3_1, min3_2);
-            min_all3_1 = min3( min3_1, min3_2, min3_3);
-}
+            min_all0_opt = min2(min0_1, min0_2);
+            min_all0_0 = min2( min0_0, min_all0_opt);
+            min_all0_1 = min2( min_all0_opt, min0_3);
 
+            min_all1_opt = min2(min1_1, min1_2);
+            min_all1_0 = min2( min1_0, min_all1_opt);
+            min_all1_1 = min2( min_all1_opt, min1_3);
+
+            min_all2_opt = min2(min2_1, min2_2);
+            min_all2_0 = min2( min2_0, min_all2_opt);
+            min_all2_1 = min2( min_all2_opt, min2_3);
+
+            min_all3_opt = min2(min3_1, min3_2);
+            min_all3_0 = min2( min3_0, min_all3_opt);
+            min_all3_1 = min2( min_all3_opt, min3_3);
+
+            min_02_03 = min2(min0_2, min0_3);
+            min_12_13 = min2(min1_2, min1_3);
+            min_22_23 = min2(min2_2, min2_3);
+            min_32_33 = min2(min3_2, min3_3);
+
+            max_all_00_01 = max2(min_all0_0, min_all0_1);
+            max_all_10_11 = max2(min_all1_0, min_all1_1);
+            max_all_20_21 = max2(min_all2_0, min_all2_1);
+            max_all_30_31 = max2(min_all3_0, min_all3_1);
+
+            // ----- 2 ------
+            min_04_14_opt = min2(load2(X, i-1, j+3), load2(X, i, j+3));
+            min0_4 = min2(load2(X, i-2, j+3), min_04_14_opt);
+            min1_4 = min2( min_04_14_opt, load2(X, i+1, j+3));
+
+            min_24_opt = min2(load2(X, i, j+3), load2(X, i+1, j+3));
+            min2_4 = min2(min_24_opt, load2(X, i+2, j+3));
+
+            min_34_opt = min2(load2(X, i+1, j+3), load2(X, i+2, j+3));
+            min3_4 = min2(min_34_opt, load2(X, i+3, j+3));
+
+            min_all0_2 = min2( min_02_03, min0_4);
+            min_all1_2 = min2( min_12_13, min1_4);
+            min_all2_2 = min2( min_22_23, min2_4);
+            min_all3_2 = min2( min_32_33, min3_4);
+
+            max_all0 = max2( max_all_00_01, min_all0_2);
+            max_all1 = max2( max_all_10_11, min_all1_2);
+            max_all2 = max2( max_all_20_21, min_all2_2);
+            max_all3 = max2( max_all_30_31, min_all3_2);
+
+            max_all12 = max2(max_all1, max_all2);
+
+            store2( Y, i, j+1, max2( max_all0, max_all12) );
+            store2( Y, i+1, j+1, max2( max_all12, max_all3) );
+
+            min0_0 = min0_1;
+            min0_1 = min0_2;
+            min0_2 = min0_3;
+            min0_3 = min0_4;
+
+            min1_0 = min1_1;
+            min1_1 = min1_2;
+            min1_2 = min1_3;
+            min1_3 = min1_4;
+
+            min2_0 = min2_1;
+            min2_1 = min2_2;
+            min2_2 = min2_3;
+            min2_3 = min2_4;
+
+            min3_0 = min3_1;
+            min3_1 = min3_2;
+            min3_2 = min3_3;
+            min3_3 = min3_4;
+
+            min_all0_opt = min2(min0_1, min0_2);
+            min_all0_0 = min2( min0_0, min_all0_opt);
+            min_all0_1 = min2( min_all0_opt, min0_3);
+
+            min_all1_opt = min2(min1_1, min1_2);
+            min_all1_0 = min2( min1_0, min_all1_opt);
+            min_all1_1 = min2( min_all1_opt, min1_3);
+
+            min_all2_opt = min2(min2_1, min2_2);
+            min_all2_0 = min2( min2_0, min_all2_opt);
+            min_all2_1 = min2( min_all2_opt, min2_3);
+
+            min_all3_opt = min2(min3_1, min3_2);
+            min_all3_0 = min2( min3_0, min_all3_opt);
+            min_all3_1 = min2( min_all3_opt, min3_3);
+
+            min_02_03 = min2(min0_2, min0_3);
+            min_12_13 = min2(min1_2, min1_3);
+            min_22_23 = min2(min2_2, min2_3);
+            min_32_33 = min2(min3_2, min3_3);
+
+            max_all_00_01 = max2(min_all0_0, min_all0_1);
+            max_all_10_11 = max2(min_all1_0, min_all1_1);
+            max_all_20_21 = max2(min_all2_0, min_all2_1);
+            max_all_30_31 = max2(min_all3_0, min_all3_1);
+
+            // ----- 3 ------
+            min_04_14_opt = min2(load2(X, i-1, j+4), load2(X, i, j+4));
+            min0_4 = min2(load2(X, i-2, j+4), min_04_14_opt);
+            min1_4 = min2( min_04_14_opt, load2(X, i+1, j+4));
+
+            min_24_opt = min2(load2(X, i, j+4), load2(X, i+1, j+4));
+            min2_4 = min2(min_24_opt, load2(X, i+2, j+4));
+
+            min_34_opt = min2(load2(X, i+1, j+4), load2(X, i+2, j+4));
+            min3_4 = min2(min_34_opt, load2(X, i+3, j+4));
+
+            min_all0_2 = min2( min_02_03, min0_4);
+            min_all1_2 = min2( min_12_13, min1_4);
+            min_all2_2 = min2( min_22_23, min2_4);
+            min_all3_2 = min2( min_32_33, min3_4);
+
+            max_all0 = max2( max_all_00_01, min_all0_2);
+            max_all1 = max2( max_all_10_11, min_all1_2);
+            max_all2 = max2( max_all_20_21, min_all2_2);
+            max_all3 = max2( max_all_30_31, min_all3_2);
+
+            max_all12 = max2(max_all1, max_all2);
+
+            store2( Y, i, j+2, max2( max_all0, max_all12) );
+            store2( Y, i+1, j+2, max2( max_all12, max_all3) );
+
+            min0_0 = min0_1;
+            min0_1 = min0_2;
+            min0_2 = min0_3;
+            min0_3 = min0_4;
+
+            min1_0 = min1_1;
+            min1_1 = min1_2;
+            min1_2 = min1_3;
+            min1_3 = min1_4;
+
+            min2_0 = min2_1;
+            min2_1 = min2_2;
+            min2_2 = min2_3;
+            min2_3 = min2_4;
+
+            min3_0 = min3_1;
+            min3_1 = min3_2;
+            min3_2 = min3_3;
+            min3_3 = min3_4;
+
+            min_all0_opt = min2(min0_1, min0_2);
+            min_all0_0 = min2( min0_0, min_all0_opt);
+            min_all0_1 = min2( min_all0_opt, min0_3);
+
+            min_all1_opt = min2(min1_1, min1_2);
+            min_all1_0 = min2( min1_0, min_all1_opt);
+            min_all1_1 = min2( min_all1_opt, min1_3);
+
+            min_all2_opt = min2(min2_1, min2_2);
+            min_all2_0 = min2( min2_0, min_all2_opt);
+            min_all2_1 = min2( min_all2_opt, min2_3);
+
+            min_all3_opt = min2(min3_1, min3_2);
+            min_all3_0 = min2( min3_0, min_all3_opt);
+            min_all3_1 = min2( min_all3_opt, min3_3);
+
+            min_02_03 = min2(min0_2, min0_3);
+            min_12_13 = min2(min1_2, min1_3);
+            min_22_23 = min2(min2_2, min2_3);
+            min_32_33 = min2(min3_2, min3_3);
+
+            max_all_00_01 = max2(min_all0_0, min_all0_1);
+            max_all_10_11 = max2(min_all1_0, min_all1_1);
+            max_all_20_21 = max2(min_all2_0, min_all2_1);
+            max_all_30_31 = max2(min_all3_0, min_all3_1);
+
+           // ----- 4 ------
+            min_04_14_opt = min2(load2(X, i-1, j+5), load2(X, i, j+5));
+            min0_4 = min2(load2(X, i-2, j+5), min_04_14_opt);
+            min1_4 = min2( min_04_14_opt, load2(X, i+1, j+5));
+
+            min_24_opt = min2(load2(X, i, j+5), load2(X, i+1, j+5));
+            min2_4 = min2(min_24_opt, load2(X, i+2, j+5));
+
+            min_34_opt = min2(load2(X, i+1, j+5), load2(X, i+2, j+5));
+            min3_4 = min2(min_34_opt, load2(X, i+3, j+5));
+
+            min_all0_2 = min2( min_02_03, min0_4);
+            min_all1_2 = min2( min_12_13, min1_4);
+            min_all2_2 = min2( min_22_23, min2_4);
+            min_all3_2 = min2( min_32_33, min3_4);
+
+            max_all0 = max2( max_all_00_01, min_all0_2);
+            max_all1 = max2( max_all_10_11, min_all1_2);
+            max_all2 = max2( max_all_20_21, min_all2_2);
+            max_all3 = max2( max_all_30_31, min_all3_2);
+
+            max_all12 = max2(max_all1, max_all2);
+
+            store2( Y, i, j+3, max2( max_all0, max_all12) );
+            store2( Y, i+1, j+3, max2( max_all12, max_all3) );
+
+            min0_0 = min0_1;
+            min0_1 = min0_2;
+            min0_2 = min0_3;
+            min0_3 = min0_4;
+
+            min1_0 = min1_1;
+            min1_1 = min1_2;
+            min1_2 = min1_3;
+            min1_3 = min1_4;
+
+            min2_0 = min2_1;
+            min2_1 = min2_2;
+            min2_2 = min2_3;
+            min2_3 = min2_4;
+
+            min3_0 = min3_1;
+            min3_1 = min3_2;
+            min3_2 = min3_3;
+            min3_3 = min3_4;
+
+            min_all0_opt = min2(min0_1, min0_2);
+            min_all0_0 = min2( min0_0, min_all0_opt);
+            min_all0_1 = min2( min_all0_opt, min0_3);
+
+            min_all1_opt = min2(min1_1, min1_2);
+            min_all1_0 = min2( min1_0, min_all1_opt);
+            min_all1_1 = min2( min_all1_opt, min1_3);
+
+            min_all2_opt = min2(min2_1, min2_2);
+            min_all2_0 = min2( min2_0, min_all2_opt);
+            min_all2_1 = min2( min_all2_opt, min2_3);
+
+            min_all3_opt = min2(min3_1, min3_2);
+            min_all3_0 = min2( min3_0, min_all3_opt);
+            min_all3_1 = min2( min_all3_opt, min3_3);
+
+            min_02_03 = min2(min0_2, min0_3);
+            min_12_13 = min2(min1_2, min1_3);
+            min_22_23 = min2(min2_2, min2_3);
+            min_32_33 = min2(min3_2, min3_3);
+
+            max_all_00_01 = max2(min_all0_0, min_all0_1);
+            max_all_10_11 = max2(min_all1_0, min_all1_1);
+            max_all_20_21 = max2(min_all2_0, min_all2_1);
+            max_all_30_31 = max2(min_all3_0, min_all3_1);
+
+           // ----- 3 ------
+            min_04_14_opt = min2(load2(X, i-1, j+6), load2(X, i, j+6));
+            min0_4 = min2(load2(X, i-2, j+6), min_04_14_opt);
+            min1_4 = min2( min_04_14_opt, load2(X, i+1, j+6));
+
+            min_24_opt = min2(load2(X, i, j+6), load2(X, i+1, j+6));
+            min2_4 = min2(min_24_opt, load2(X, i+2, j+6));
+
+            min_34_opt = min2(load2(X, i+1, j+6), load2(X, i+2, j+6));
+            min3_4 = min2(min_34_opt, load2(X, i+3, j+6));
+
+            min_all0_2 = min2( min_02_03, min0_4);
+            min_all1_2 = min2( min_12_13, min1_4);
+            min_all2_2 = min2( min_22_23, min2_4);
+            min_all3_2 = min2( min_32_33, min3_4);
+
+            max_all0 = max2( max_all_00_01, min_all0_2);
+            max_all1 = max2( max_all_10_11, min_all1_2);
+            max_all2 = max2( max_all_20_21, min_all2_2);
+            max_all3 = max2( max_all_30_31, min_all3_2);
+
+            max_all12 = max2(max_all1, max_all2);
+
+            store2( Y, i, j+4, max2( max_all0, max_all12) );
+            store2( Y, i+1, j+4, max2( max_all12, max_all3) );
+
+            min0_0 = min0_1;
+            min0_1 = min0_2;
+            min0_2 = min0_3;
+            min0_3 = min0_4;
+
+            min1_0 = min1_1;
+            min1_1 = min1_2;
+            min1_2 = min1_3;
+            min1_3 = min1_4;
+
+            min2_0 = min2_1;
+            min2_1 = min2_2;
+            min2_2 = min2_3;
+            min2_3 = min2_4;
+
+            min3_0 = min3_1;
+            min3_1 = min3_2;
+            min3_2 = min3_3;
+            min3_3 = min3_4;
+
+            min_all0_opt = min2(min0_1, min0_2);
+            min_all0_0 = min2( min0_0, min_all0_opt);
+            min_all0_1 = min2( min_all0_opt, min0_3);
+
+            min_all1_opt = min2(min1_1, min1_2);
+            min_all1_0 = min2( min1_0, min_all1_opt);
+            min_all1_1 = min2( min_all1_opt, min1_3);
+
+            min_all2_opt = min2(min2_1, min2_2);
+            min_all2_0 = min2( min2_0, min_all2_opt);
+            min_all2_1 = min2( min_all2_opt, min2_3);
+
+            min_all3_opt = min2(min3_1, min3_2);
+            min_all3_0 = min2( min3_0, min_all3_opt);
+            min_all3_1 = min2( min_all3_opt, min3_3);
+
+            min_02_03 = min2(min0_2, min0_3);
+            min_12_13 = min2(min1_2, min1_3);
+            min_22_23 = min2(min2_2, min2_3);
+            min_32_33 = min2(min3_2, min3_3);
+
+            max_all_00_01 = max2(min_all0_0, min_all0_1);
+            max_all_10_11 = max2(min_all1_0, min_all1_1);
+            max_all_20_21 = max2(min_all2_0, min_all2_1);
+            max_all_30_31 = max2(min_all3_0, min_all3_1);
+
+    }
+    int r = (j1-j0-1) % 5;
+    line_ouverture3_ui8matrix_fusion(X, i, (j1-j0-r-1), (j1-j0), Y);
+    line_ouverture3_ui8matrix_fusion(X, i+1, (j1-j0-r-1), (j1-j0), Y);
 }
 // -----------------------------------------------------------------------------------------
 void line_ouverture3_ui8matrix_fusion_ilu15_red(uint8 **X, int i, int j0, int j1, uint8 **Y)
@@ -1350,7 +1690,7 @@ void ouverture3_ui8matrix_fusion_ilu5_red(uint8 **X, int i0, int i1, int j0, int
 void ouverture3_ui8matrix_fusion_ilu5_elu2_red(uint8 **X, int i0, int i1, int j0, int j1, uint8 **Y)
 // -------------------------------------------------------------------------------------------------
 {
-    for( int i = i0; i < i1-2; i+=2){
+    for( int i = i0; i < i1-2; i += 2){
         line_ouverture3_ui8matrix_fusion_ilu5_elu2_red(X, i, j0, j1, Y);
     }
     int r = (i1-i0-1) % 2;
@@ -1360,7 +1700,7 @@ void ouverture3_ui8matrix_fusion_ilu5_elu2_red(uint8 **X, int i0, int i1, int j0
 void ouverture3_ui8matrix_fusion_ilu5_elu2_red_factor(uint8 **X, int i0, int i1, int j0, int j1, uint8 **Y)
 // --------------------------------------------------------------------------------------------------------
 {
-    for( int i = i0; i < i1-2; i+=2){
+    for( int i = i0; i < i1-2; i += 2){
         line_ouverture3_ui8matrix_fusion_ilu5_elu2_red_factor(X, i, j0, j1, Y);
     }
     int r = (i1-i0-1) % 2;
@@ -1374,38 +1714,84 @@ void ouverture3_ui8matrix_fusion_ilu15_red(uint8 **X, int i0, int i1, int j0, in
         line_ouverture3_ui8matrix_fusion_ilu15_red(X, i, j0, j1, Y);
     }
 }
+
+
+
+
 // ------------------------------------------------------------------------------------------------------
 void ouverture3_ui8matrix_pipeline_basic(uint8 **X, int i0, int i1, int j0, int j1, uint8 **T, uint8 **Y)
 // ------------------------------------------------------------------------------------------------------
 {
+    line_min3_ui8matrix_basic(X, i0-1, j0, j1, T);
+    line_min3_ui8matrix_basic(X, i0, j0, j1, T);
+    for( int i = i0; i < i1; i ++){
+        line_min3_ui8matrix_basic(X, i+1, j0, j1, T);
+        line_max3_ui8matrix_basic(T, i, j0, j1, Y);
+    }
 }
 // ----------------------------------------------------------------------------------------------------
 void ouverture3_ui8matrix_pipeline_red(uint8 **X, int i0, int i1, int j0, int j1, uint8 **T, uint8 **Y)
 // ----------------------------------------------------------------------------------------------------
 {
+    line_min3_ui8matrix_red(X, i0-1, j0, j1, T);
+    line_min3_ui8matrix_red(X, i0, j0, j1, T);
+    for( int i = i0; i < i1; i ++){
+        line_min3_ui8matrix_red(X, i+1, j0, j1, T);
+        line_max3_ui8matrix_red(T, i, j0, j1, Y);
+    }
 }
 // ---------------------------------------------------------------------------------------------------------
 void ouverture3_ui8matrix_pipeline_ilu3_red(uint8 **X, int i0, int i1, int j0, int j1, uint8 **T, uint8 **Y)
 // ---------------------------------------------------------------------------------------------------------
 {
+    line_min3_ui8matrix_ilu3_red(X, i0-1, j0, j1, T);
+    line_min3_ui8matrix_ilu3_red(X, i0, j0, j1, T);
+    for( int i = i0; i < i1; i ++){
+        line_min3_ui8matrix_ilu3_red(X, i+1, j0, j1, T);
+        line_max3_ui8matrix_ilu3_red(T, i, j0, j1, Y);
+    }
 }
 // ---------------------------------------------------------------------------------------------------------
 void ouverture3_ui8matrix_pipeline_elu2_red(uint8 **X, int i0, int i1, int j0, int j1, uint8 **T, uint8 **Y)
 // ---------------------------------------------------------------------------------------------------------
 {
+    line_min3_ui8matrix_elu2_red(X, i0-1, j0, j1, T);
+    line_min3_ui8matrix_elu2_red(X, i0, j0, j1, T);
+    for( int i = i0; i < i1-1; i ++){
+        line_min3_ui8matrix_elu2_red(X, i+1, j0, j1, T);
+        line_max3_ui8matrix_elu2_red(T, i, j0, j1, Y);
+    }
 }
 // ----------------------------------------------------------------------------------------------------------------
 void ouverture3_ui8matrix_pipeline_elu2_red_factor(uint8 **X, int i0, int i1, int j0, int j1, uint8 **T, uint8 **Y)
 // ----------------------------------------------------------------------------------------------------------------
 {
+    line_min3_ui8matrix_elu2_red_factor(X, i0-1, j0, j1, T);
+    line_min3_ui8matrix_elu2_red_factor(X, i0, j0, j1, T);
+    for( int i = i0; i < i1-1; i ++){
+        line_min3_ui8matrix_elu2_red_factor(X, i+1, j0, j1, T);
+        line_max3_ui8matrix_elu2_red_factor(T, i, j0, j1, Y);
+    }
 }
 // --------------------------------------------------------------------------------------------------------------
 void ouverture3_ui8matrix_pipeline_ilu3_elu2_red(uint8 **X, int i0, int i1, int j0, int j1, uint8 **T, uint8 **Y)
 // --------------------------------------------------------------------------------------------------------------
 {
+    line_min3_ui8matrix_ilu3_elu2_red(X, i0-1, j0, j1, T);
+    line_min3_ui8matrix_ilu3_elu2_red(X, i0, j0, j1, T);
+    for( int i = i0; i < i1-1; i ++){
+        line_min3_ui8matrix_ilu3_elu2_red(X, i+1, j0, j1, T);
+        line_max3_ui8matrix_ilu3_elu2_red(T, i, j0, j1, Y);
+    }
 }
 // ---------------------------------------------------------------------------------------------------------------------
 void ouverture3_ui8matrix_pipeline_ilu3_elu2_red_factor(uint8 **X, int i0, int i1, int j0, int j1, uint8 **T, uint8 **Y)
 // ---------------------------------------------------------------------------------------------------------------------
 {
+    line_min3_ui8matrix_ilu3_elu2_red_factor(X, i0-1, j0, j1, T);
+    line_min3_ui8matrix_ilu3_elu2_red_factor(X, i0, j0, j1, T);
+    for( int i = i0; i < i1-1; i ++){
+        line_min3_ui8matrix_ilu3_elu2_red_factor(X, i+1, j0, j1, T);
+        line_max3_ui8matrix_ilu3_elu2_red_factor(T, i, j0, j1, Y);
+    }
 }
