@@ -147,27 +147,12 @@ void line_ouverture3_ui8matrix_fusion_ilu5_red(uint8 **X, int i, int j0, int j1,
 
             store2( Y, i, j, max3( max_all0, max_all1, max_all2) );
 
-            min0_0 = min0_1;
-            min0_1 = min0_2;
-            min0_2 = min0_3;
-            min0_3 = min0_4;
-
-            min1_0 = min1_1;
-            min1_1 = min1_2;
-            min1_2 = min1_3;
-            min1_3 = min1_4;
-
-            min2_0 = min2_1;
-            min2_1 = min2_2;
-            min2_2 = min2_3;
-            min2_3 = min2_4;
-
-            min_all0_0 = min3( min0_0, min0_1, min0_2);
-            min_all0_1 = min3( min0_1, min0_2, min0_3);
-            min_all1_0 = min3( min1_0, min1_1, min1_2);
-            min_all1_1 = min3( min1_1, min1_2, min1_3);
-            min_all2_0 = min3( min2_0, min2_1, min2_2);
-            min_all2_1 = min3( min2_1, min2_2, min2_3);
+            min_all0_0 = min3( min0_1, min0_2, min0_3);
+            min_all0_1 = min3( min0_2, min0_3, min0_4);
+            min_all1_0 = min3( min1_1, min1_2, min1_3);
+            min_all1_1 = min3( min1_2, min1_3, min1_4);
+            min_all2_0 = min3( min2_1, min2_2, min2_3);
+            min_all2_1 = min3( min2_2, min2_3, min2_4);
 
             // ------- 2 -------- 
             load_im1_jp2 = load2(X, i-1, j+3);
@@ -176,13 +161,13 @@ void line_ouverture3_ui8matrix_fusion_ilu5_red(uint8 **X, int i, int j0, int j1,
             load_ip1_jp2 = load2(X, i+1, j+3);
             load_ip2_jp2 = load2(X, i+2, j+3);
             
-            min0_4 = min3( load_im2_jp2, load_im1_jp2, load_i_jp2);
-            min1_4 = min3( load_im1_jp2, load_i_jp2, load_ip1_jp2);
-            min2_4 = min3( load_i_jp2, load_ip1_jp2, load_ip2_jp2);
+            min0_0 = min3( load_im2_jp2, load_im1_jp2, load_i_jp2);
+            min1_0 = min3( load_im1_jp2, load_i_jp2, load_ip1_jp2);
+            min2_0 = min3( load_i_jp2, load_ip1_jp2, load_ip2_jp2);
 
-            min_all0_2 = min3( min0_2, min0_3, min0_4);
-            min_all1_2 = min3( min1_2, min1_3, min1_4);
-            min_all2_2 = min3( min2_2, min2_3, min2_4);
+            min_all0_2 = min3( min0_3, min0_4, min0_0);
+            min_all1_2 = min3( min1_3, min1_4, min1_0);
+            min_all2_2 = min3( min2_3, min2_4, min2_0);
 
             max_all0 = max3( min_all0_0, min_all0_1, min_all0_2);
             max_all1 = max3( min_all1_0, min_all1_1, min_all1_2);
@@ -190,27 +175,13 @@ void line_ouverture3_ui8matrix_fusion_ilu5_red(uint8 **X, int i, int j0, int j1,
 
             store2( Y, i, j+1, max3( max_all0, max_all1, max_all2) );
 
-            min0_0 = min0_1;
-            min0_1 = min0_2;
-            min0_2 = min0_3;
-            min0_3 = min0_4;
+            min_all0_0 = min3( min0_2, min0_3, min0_4);
+            min_all0_1 = min3( min0_3, min0_4, min0_0);
+            min_all1_0 = min3( min1_2, min1_3, min1_4);
+            min_all1_1 = min3( min1_3, min1_4, min1_0);
+            min_all2_0 = min3( min2_2, min2_3, min2_4);
+            min_all2_1 = min3( min2_3, min2_4, min2_0);
 
-            min1_0 = min1_1;
-            min1_1 = min1_2;
-            min1_2 = min1_3;
-            min1_3 = min1_4;
-
-            min2_0 = min2_1;
-            min2_1 = min2_2;
-            min2_2 = min2_3;
-            min2_3 = min2_4;
-
-            min_all0_0 = min3( min0_0, min0_1, min0_2);
-            min_all0_1 = min3( min0_1, min0_2, min0_3);
-            min_all1_0 = min3( min1_0, min1_1, min1_2);
-            min_all1_1 = min3( min1_1, min1_2, min1_3);
-            min_all2_0 = min3( min2_0, min2_1, min2_2);
-            min_all2_1 = min3( min2_1, min2_2, min2_3);
             // ------- 3 --------
             load_im1_jp2 = load2(X, i-1, j+4);
             load_im2_jp2 = load2(X, i-2, j+4);
@@ -218,13 +189,13 @@ void line_ouverture3_ui8matrix_fusion_ilu5_red(uint8 **X, int i, int j0, int j1,
             load_ip1_jp2 = load2(X, i+1, j+4);
             load_ip2_jp2 = load2(X, i+2, j+4);
             
-            min0_4 = min3( load_im2_jp2, load_im1_jp2, load_i_jp2);
-            min1_4 = min3( load_im1_jp2, load_i_jp2, load_ip1_jp2);
-            min2_4 = min3( load_i_jp2, load_ip1_jp2, load_ip2_jp2);
+            min0_1 = min3( load_im2_jp2, load_im1_jp2, load_i_jp2);
+            min1_1 = min3( load_im1_jp2, load_i_jp2, load_ip1_jp2);
+            min2_1 = min3( load_i_jp2, load_ip1_jp2, load_ip2_jp2);
 
-            min_all0_2 = min3( min0_2, min0_3, min0_4);
-            min_all1_2 = min3( min1_2, min1_3, min1_4);
-            min_all2_2 = min3( min2_2, min2_3, min2_4);
+            min_all0_2 = min3( min0_4, min0_0, min0_1);
+            min_all1_2 = min3( min1_4, min1_0, min1_1);
+            min_all2_2 = min3( min2_4, min2_0, min2_1);
 
             max_all0 = max3( min_all0_0, min_all0_1, min_all0_2);
             max_all1 = max3( min_all1_0, min_all1_1, min_all1_2);
@@ -232,27 +203,13 @@ void line_ouverture3_ui8matrix_fusion_ilu5_red(uint8 **X, int i, int j0, int j1,
 
             store2( Y, i, j+2, max3( max_all0, max_all1, max_all2) );
 
-            min0_0 = min0_1;
-            min0_1 = min0_2;
-            min0_2 = min0_3;
-            min0_3 = min0_4;
+            min_all0_0 = min3( min0_3, min0_4, min0_0);
+            min_all0_1 = min3( min0_4, min0_0, min0_1);
+            min_all1_0 = min3( min1_3, min1_4, min1_0);
+            min_all1_1 = min3( min1_4, min1_0, min1_1);
+            min_all2_0 = min3( min2_3, min2_4, min2_0);
+            min_all2_1 = min3( min2_4, min2_0, min2_1);
 
-            min1_0 = min1_1;
-            min1_1 = min1_2;
-            min1_2 = min1_3;
-            min1_3 = min1_4;
-
-            min2_0 = min2_1;
-            min2_1 = min2_2;
-            min2_2 = min2_3;
-            min2_3 = min2_4;
-
-            min_all0_0 = min3( min0_0, min0_1, min0_2);
-            min_all0_1 = min3( min0_1, min0_2, min0_3);
-            min_all1_0 = min3( min1_0, min1_1, min1_2);
-            min_all1_1 = min3( min1_1, min1_2, min1_3);
-            min_all2_0 = min3( min2_0, min2_1, min2_2);
-            min_all2_1 = min3( min2_1, min2_2, min2_3);
             // ------- 4 --------
             load_im1_jp2 = load2(X, i-1, j+5);
             load_im2_jp2 = load2(X, i-2, j+5);
@@ -260,13 +217,13 @@ void line_ouverture3_ui8matrix_fusion_ilu5_red(uint8 **X, int i, int j0, int j1,
             load_ip1_jp2 = load2(X, i+1, j+5);
             load_ip2_jp2 = load2(X, i+2, j+5);
             
-            min0_4 = min3( load_im2_jp2, load_im1_jp2, load_i_jp2);
-            min1_4 = min3( load_im1_jp2, load_i_jp2, load_ip1_jp2);
-            min2_4 = min3( load_i_jp2, load_ip1_jp2, load_ip2_jp2);
+            min0_2 = min3( load_im2_jp2, load_im1_jp2, load_i_jp2);
+            min1_2 = min3( load_im1_jp2, load_i_jp2, load_ip1_jp2);
+            min2_2 = min3( load_i_jp2, load_ip1_jp2, load_ip2_jp2);
 
-            min_all0_2 = min3( min0_2, min0_3, min0_4);
-            min_all1_2 = min3( min1_2, min1_3, min1_4);
-            min_all2_2 = min3( min2_2, min2_3, min2_4);
+            min_all0_2 = min3( min0_0, min0_1, min0_2);
+            min_all1_2 = min3( min1_0, min1_1, min1_2);
+            min_all2_2 = min3( min2_0, min2_1, min2_2);
 
             max_all0 = max3( min_all0_0, min_all0_1, min_all0_2);
             max_all1 = max3( min_all1_0, min_all1_1, min_all1_2);
@@ -274,27 +231,12 @@ void line_ouverture3_ui8matrix_fusion_ilu5_red(uint8 **X, int i, int j0, int j1,
 
             store2( Y, i, j+3, max3( max_all0, max_all1, max_all2) );
 
-            min0_0 = min0_1;
-            min0_1 = min0_2;
-            min0_2 = min0_3;
-            min0_3 = min0_4;
-
-            min1_0 = min1_1;
-            min1_1 = min1_2;
-            min1_2 = min1_3;
-            min1_3 = min1_4;
-
-            min2_0 = min2_1;
-            min2_1 = min2_2;
-            min2_2 = min2_3;
-            min2_3 = min2_4;
-
-            min_all0_0 = min3( min0_0, min0_1, min0_2);
-            min_all0_1 = min3( min0_1, min0_2, min0_3);
-            min_all1_0 = min3( min1_0, min1_1, min1_2);
-            min_all1_1 = min3( min1_1, min1_2, min1_3);
-            min_all2_0 = min3( min2_0, min2_1, min2_2);
-            min_all2_1 = min3( min2_1, min2_2, min2_3);
+            min_all0_0 = min3( min0_4, min0_0, min0_1);
+            min_all0_1 = min3( min0_0, min0_1, min0_2);
+            min_all1_0 = min3( min1_4, min1_0, min1_1);
+            min_all1_1 = min3( min1_0, min1_1, min1_2);
+            min_all2_0 = min3( min2_4, min2_0, min2_1);
+            min_all2_1 = min3( min2_0, min2_1, min2_2);
             // ------- 5 --------
             load_im1_jp2 = load2(X, i-1, j+6);
             load_im2_jp2 = load2(X, i-2, j+6);
@@ -302,34 +244,19 @@ void line_ouverture3_ui8matrix_fusion_ilu5_red(uint8 **X, int i, int j0, int j1,
             load_ip1_jp2 = load2(X, i+1, j+6);
             load_ip2_jp2 = load2(X, i+2, j+6);
             
-            min0_4 = min3( load_im2_jp2, load_im1_jp2, load_i_jp2);
-            min1_4 = min3( load_im1_jp2, load_i_jp2, load_ip1_jp2);
-            min2_4 = min3( load_i_jp2, load_ip1_jp2, load_ip2_jp2);
+            min0_3 = min3( load_im2_jp2, load_im1_jp2, load_i_jp2);
+            min1_3 = min3( load_im1_jp2, load_i_jp2, load_ip1_jp2);
+            min2_3 = min3( load_i_jp2, load_ip1_jp2, load_ip2_jp2);
 
-            min_all0_2 = min3( min0_2, min0_3, min0_4);
-            min_all1_2 = min3( min1_2, min1_3, min1_4);
-            min_all2_2 = min3( min2_2, min2_3, min2_4);
+            min_all0_2 = min3( min0_1, min0_2, min0_3);
+            min_all1_2 = min3( min1_1, min1_2, min1_3);
+            min_all2_2 = min3( min2_1, min2_2, min2_3);
 
             max_all0 = max3( min_all0_0, min_all0_1, min_all0_2);
             max_all1 = max3( min_all1_0, min_all1_1, min_all1_2);
             max_all2 = max3( min_all2_0, min_all2_1, min_all2_2);
 
             store2( Y, i, j+4, max3( max_all0, max_all1, max_all2) );
-
-            min0_0 = min0_1;
-            min0_1 = min0_2;
-            min0_2 = min0_3;
-            min0_3 = min0_4;
-
-            min1_0 = min1_1;
-            min1_1 = min1_2;
-            min1_2 = min1_3;
-            min1_3 = min1_4;
-
-            min2_0 = min2_1;
-            min2_1 = min2_2;
-            min2_2 = min2_3;
-            min2_3 = min2_4;
 
             min_all0_0 = min3( min0_0, min0_1, min0_2);
             min_all0_1 = min3( min0_1, min0_2, min0_3);
@@ -389,12 +316,21 @@ void line_ouverture3_ui8matrix_fusion_ilu5_elu2_red(uint8 **X, int i, int j0, in
     min_all3_0 = min3( min3_0, min3_1, min3_2);
     min_all3_1 = min3( min3_1, min3_2, min3_3);
 
+    uint8 load_im2_jp2,load_im1_jp2, load_i_jp2, load_ip1_jp2, load_ip2_jp2, load_ip3_jp2;
+
     for(int j = j0; j< j1-5; j+=5){
             // ----- 1 ------
-            min0_4 = min3( load2(X, i-2, j+2), load2(X, i-1, j+2), load2(X, i, j+2));
-            min1_4 = min3( load2(X, i-1, j+2), load2(X, i, j+2), load2(X, i+1, j+2));
-            min2_4 = min3( load2(X, i, j+2), load2(X, i+1, j+2), load2(X, i+2, j+2));
-            min3_4 = min3( load2(X, i+1, j+2), load2(X, i+2, j+2), load2(X, i+3, j+2));
+            load_im1_jp2 = load2(X, i-1, j+2);
+            load_im2_jp2 = load2(X, i-2, j+2);
+            load_i_jp2 = load2(X, i, j+2);
+            load_ip1_jp2 = load2(X, i+1, j+2);
+            load_ip2_jp2 = load2(X, i+2, j+2);
+            load_ip3_jp2 = load2(X, i+3, j+2);
+
+            min0_4 = min3( load_im2_jp2, load_im1_jp2, load_i_jp2);
+            min1_4 = min3( load_im1_jp2, load_i_jp2, load_ip1_jp2);
+            min2_4 = min3( load_i_jp2, load_ip1_jp2, load_ip2_jp2);
+            min3_4 = min3( load_ip1_jp2, load_ip2_jp2, load_ip3_jp2);
 
             min_all0_2 = min3( min0_2, min0_3, min0_4);
             min_all1_2 = min3( min1_2, min1_3, min1_4);
@@ -409,45 +345,32 @@ void line_ouverture3_ui8matrix_fusion_ilu5_elu2_red(uint8 **X, int i, int j0, in
             store2( Y, i, j, max3( max_all0, max_all1, max_all2) );
             store2( Y, i+1, j, max3( max_all1, max_all2, max_all3) );
 
-            min0_0 = min0_1;
-            min0_1 = min0_2;
-            min0_2 = min0_3;
-            min0_3 = min0_4;
-
-            min1_0 = min1_1;
-            min1_1 = min1_2;
-            min1_2 = min1_3;
-            min1_3 = min1_4;
-
-            min2_0 = min2_1;
-            min2_1 = min2_2;
-            min2_2 = min2_3;
-            min2_3 = min2_4;
-
-            min3_0 = min3_1;
-            min3_1 = min3_2;
-            min3_2 = min3_3;
-            min3_3 = min3_4;
-
-            min_all0_0 = min3( min0_0, min0_1, min0_2);
-            min_all0_1 = min3( min0_1, min0_2, min0_3);
-            min_all1_0 = min3( min1_0, min1_1, min1_2);
-            min_all1_1 = min3( min1_1, min1_2, min1_3);
-            min_all2_0 = min3( min2_0, min2_1, min2_2);
-            min_all2_1 = min3( min2_1, min2_2, min2_3);
-            min_all3_0 = min3( min3_0, min3_1, min3_2);
-            min_all3_1 = min3( min3_1, min3_2, min3_3);
+            min_all0_0 = min3( min0_1, min0_2, min0_3);
+            min_all0_1 = min3( min0_2, min0_3, min0_4);
+            min_all1_0 = min3( min1_1, min1_2, min1_3);
+            min_all1_1 = min3( min1_2, min1_3, min1_4);
+            min_all2_0 = min3( min2_1, min2_2, min2_3);
+            min_all2_1 = min3( min2_2, min2_3, min2_4);
+            min_all3_0 = min3( min3_1, min3_2, min3_3);
+            min_all3_1 = min3( min3_2, min3_3, min3_4);
 
             // ----- 2 ------
-            min0_4 = min3( load2(X, i-2, j+3), load2(X, i-1, j+3), load2(X, i, j+3));
-            min1_4 = min3( load2(X, i-1, j+3), load2(X, i, j+3), load2(X, i+1, j+3));
-            min2_4 = min3( load2(X, i, j+3), load2(X, i+1, j+3), load2(X, i+2, j+3));
-            min3_4 = min3( load2(X, i+1, j+3), load2(X, i+2, j+3), load2(X, i+3, j+3));
+            load_im1_jp2 = load2(X, i-1, j+3);
+            load_im2_jp2 = load2(X, i-2, j+3);
+            load_i_jp2 = load2(X, i, j+3);
+            load_ip1_jp2 = load2(X, i+1, j+3);
+            load_ip2_jp2 = load2(X, i+2, j+3);
+            load_ip3_jp2 = load2(X, i+3, j+3);
 
-            min_all0_2 = min3( min0_2, min0_3, min0_4);
-            min_all1_2 = min3( min1_2, min1_3, min1_4);
-            min_all2_2 = min3( min2_2, min2_3, min2_4);
-            min_all3_2 = min3( min3_2, min3_3, min3_4);
+            min0_0 = min3( load_im2_jp2, load_im1_jp2, load_i_jp2);
+            min1_0 = min3( load_im1_jp2, load_i_jp2, load_ip1_jp2);
+            min2_0 = min3( load_i_jp2, load_ip1_jp2, load_ip2_jp2);
+            min3_0 = min3( load_ip1_jp2, load_ip2_jp2, load_ip3_jp2);
+
+            min_all0_2 = min3( min0_3, min0_4, min0_0);
+            min_all1_2 = min3( min1_3, min1_4, min1_0);
+            min_all2_2 = min3( min2_3, min2_4, min2_0);
+            min_all3_2 = min3( min3_3, min3_4, min3_0);
 
             max_all0 = max3( min_all0_0, min_all0_1, min_all0_2);
             max_all1 = max3( min_all1_0, min_all1_1, min_all1_2);
@@ -457,45 +380,32 @@ void line_ouverture3_ui8matrix_fusion_ilu5_elu2_red(uint8 **X, int i, int j0, in
             store2( Y, i, j+1, max3( max_all0, max_all1, max_all2) );
             store2( Y, i+1, j+1, max3( max_all1, max_all2, max_all3) );
 
-            min0_0 = min0_1;
-            min0_1 = min0_2;
-            min0_2 = min0_3;
-            min0_3 = min0_4;
-
-            min1_0 = min1_1;
-            min1_1 = min1_2;
-            min1_2 = min1_3;
-            min1_3 = min1_4;
-
-            min2_0 = min2_1;
-            min2_1 = min2_2;
-            min2_2 = min2_3;
-            min2_3 = min2_4;
-
-            min3_0 = min3_1;
-            min3_1 = min3_2;
-            min3_2 = min3_3;
-            min3_3 = min3_4;
-
-            min_all0_0 = min3( min0_0, min0_1, min0_2);
-            min_all0_1 = min3( min0_1, min0_2, min0_3);
-            min_all1_0 = min3( min1_0, min1_1, min1_2);
-            min_all1_1 = min3( min1_1, min1_2, min1_3);
-            min_all2_0 = min3( min2_0, min2_1, min2_2);
-            min_all2_1 = min3( min2_1, min2_2, min2_3);
-            min_all3_0 = min3( min3_0, min3_1, min3_2);
-            min_all3_1 = min3( min3_1, min3_2, min3_3);
+            min_all0_0 = min3( min0_2, min0_3, min0_4);
+            min_all0_1 = min3( min0_3, min0_4, min0_0);
+            min_all1_0 = min3( min1_2, min1_3, min1_4);
+            min_all1_1 = min3( min1_3, min1_4, min1_0);
+            min_all2_0 = min3( min2_2, min2_3, min2_4);
+            min_all2_1 = min3( min2_3, min2_4, min2_0);
+            min_all3_0 = min3( min3_2, min3_3, min3_4);
+            min_all3_1 = min3( min3_3, min3_4, min3_0);
 
             // ----- 3 ------
-            min0_4 = min3( load2(X, i-2, j+4), load2(X, i-1, j+4), load2(X, i, j+4));
-            min1_4 = min3( load2(X, i-1, j+4), load2(X, i, j+4), load2(X, i+1, j+4));
-            min2_4 = min3( load2(X, i, j+4), load2(X, i+1, j+4), load2(X, i+2, j+4));
-            min3_4 = min3( load2(X, i+1, j+4), load2(X, i+2, j+4), load2(X, i+3, j+4));
+            load_im1_jp2 = load2(X, i-1, j+4);
+            load_im2_jp2 = load2(X, i-2, j+4);
+            load_i_jp2 = load2(X, i, j+4);
+            load_ip1_jp2 = load2(X, i+1, j+4);
+            load_ip2_jp2 = load2(X, i+2, j+4);
+            load_ip3_jp2 = load2(X, i+3, j+4);
 
-            min_all0_2 = min3( min0_2, min0_3, min0_4);
-            min_all1_2 = min3( min1_2, min1_3, min1_4);
-            min_all2_2 = min3( min2_2, min2_3, min2_4);
-            min_all3_2 = min3( min3_2, min3_3, min3_4);
+            min0_1 = min3( load_im2_jp2, load_im1_jp2, load_i_jp2);
+            min1_1 = min3( load_im1_jp2, load_i_jp2, load_ip1_jp2);
+            min2_1 = min3( load_i_jp2, load_ip1_jp2, load_ip2_jp2);
+            min3_1 = min3( load_ip1_jp2, load_ip2_jp2, load_ip3_jp2);
+
+            min_all0_2 = min3( min0_4, min0_0, min0_1);
+            min_all1_2 = min3( min1_4, min1_0, min1_1);
+            min_all2_2 = min3( min2_4, min2_0, min2_1);
+            min_all3_2 = min3( min3_4, min3_0, min3_1);
 
             max_all0 = max3( min_all0_0, min_all0_1, min_all0_2);
             max_all1 = max3( min_all1_0, min_all1_1, min_all1_2);
@@ -505,45 +415,32 @@ void line_ouverture3_ui8matrix_fusion_ilu5_elu2_red(uint8 **X, int i, int j0, in
             store2( Y, i, j+2, max3( max_all0, max_all1, max_all2) );
             store2( Y, i+1, j+2, max3( max_all1, max_all2, max_all3) );
 
-            min0_0 = min0_1;
-            min0_1 = min0_2;
-            min0_2 = min0_3;
-            min0_3 = min0_4;
-
-            min1_0 = min1_1;
-            min1_1 = min1_2;
-            min1_2 = min1_3;
-            min1_3 = min1_4;
-
-            min2_0 = min2_1;
-            min2_1 = min2_2;
-            min2_2 = min2_3;
-            min2_3 = min2_4;
-
-            min3_0 = min3_1;
-            min3_1 = min3_2;
-            min3_2 = min3_3;
-            min3_3 = min3_4;
-
-            min_all0_0 = min3( min0_0, min0_1, min0_2);
-            min_all0_1 = min3( min0_1, min0_2, min0_3);
-            min_all1_0 = min3( min1_0, min1_1, min1_2);
-            min_all1_1 = min3( min1_1, min1_2, min1_3);
-            min_all2_0 = min3( min2_0, min2_1, min2_2);
-            min_all2_1 = min3( min2_1, min2_2, min2_3);
-            min_all3_0 = min3( min3_0, min3_1, min3_2);
-            min_all3_1 = min3( min3_1, min3_2, min3_3);
+            min_all0_0 = min3( min0_3, min0_4, min0_0);
+            min_all0_1 = min3( min0_4, min0_0, min0_1);
+            min_all1_0 = min3( min1_3, min1_4, min1_0);
+            min_all1_1 = min3( min1_4, min1_0, min1_1);
+            min_all2_0 = min3( min2_3, min2_4, min2_0);
+            min_all2_1 = min3( min2_4, min2_0, min2_1);
+            min_all3_0 = min3( min3_3, min3_4, min3_0);
+            min_all3_1 = min3( min3_4, min3_0, min3_1);
 
             // ----- 4 ------
-            min0_4 = min3( load2(X, i-2, j+5), load2(X, i-1, j+5), load2(X, i, j+5));
-            min1_4 = min3( load2(X, i-1, j+5), load2(X, i, j+5), load2(X, i+1, j+5));
-            min2_4 = min3( load2(X, i, j+5), load2(X, i+1, j+5), load2(X, i+2, j+5));
-            min3_4 = min3( load2(X, i+1, j+5), load2(X, i+2, j+5), load2(X, i+3, j+5));
+            load_im1_jp2 = load2(X, i-1, j+5);
+            load_im2_jp2 = load2(X, i-2, j+5);
+            load_i_jp2 = load2(X, i, j+5);
+            load_ip1_jp2 = load2(X, i+1, j+5);
+            load_ip2_jp2 = load2(X, i+2, j+5);
+            load_ip3_jp2 = load2(X, i+3, j+5);
 
-            min_all0_2 = min3( min0_2, min0_3, min0_4);
-            min_all1_2 = min3( min1_2, min1_3, min1_4);
-            min_all2_2 = min3( min2_2, min2_3, min2_4);
-            min_all3_2 = min3( min3_2, min3_3, min3_4);
+            min0_2 = min3( load_im2_jp2, load_im1_jp2, load_i_jp2);
+            min1_2 = min3( load_im1_jp2, load_i_jp2, load_ip1_jp2);
+            min2_2 = min3( load_i_jp2, load_ip1_jp2, load_ip2_jp2);
+            min3_2 = min3( load_ip1_jp2, load_ip2_jp2, load_ip3_jp2);
+
+            min_all0_2 = min3( min0_0, min0_1, min0_2);
+            min_all1_2 = min3( min1_0, min1_1, min1_2);
+            min_all2_2 = min3( min2_0, min2_1, min2_2);
+            min_all3_2 = min3( min3_0, min3_1, min3_2);
 
             max_all0 = max3( min_all0_0, min_all0_1, min_all0_2);
             max_all1 = max3( min_all1_0, min_all1_1, min_all1_2);
@@ -553,45 +450,32 @@ void line_ouverture3_ui8matrix_fusion_ilu5_elu2_red(uint8 **X, int i, int j0, in
             store2( Y, i, j+3, max3( max_all0, max_all1, max_all2) );
             store2( Y, i+1, j+3, max3( max_all1, max_all2, max_all3) );
 
-            min0_0 = min0_1;
-            min0_1 = min0_2;
-            min0_2 = min0_3;
-            min0_3 = min0_4;
-
-            min1_0 = min1_1;
-            min1_1 = min1_2;
-            min1_2 = min1_3;
-            min1_3 = min1_4;
-
-            min2_0 = min2_1;
-            min2_1 = min2_2;
-            min2_2 = min2_3;
-            min2_3 = min2_4;
-
-            min3_0 = min3_1;
-            min3_1 = min3_2;
-            min3_2 = min3_3;
-            min3_3 = min3_4;
-
-            min_all0_0 = min3( min0_0, min0_1, min0_2);
-            min_all0_1 = min3( min0_1, min0_2, min0_3);
-            min_all1_0 = min3( min1_0, min1_1, min1_2);
-            min_all1_1 = min3( min1_1, min1_2, min1_3);
-            min_all2_0 = min3( min2_0, min2_1, min2_2);
-            min_all2_1 = min3( min2_1, min2_2, min2_3);
-            min_all3_0 = min3( min3_0, min3_1, min3_2);
-            min_all3_1 = min3( min3_1, min3_2, min3_3);
+            min_all0_0 = min3( min0_4, min0_0, min0_1);
+            min_all0_1 = min3( min0_0, min0_1, min0_2);
+            min_all1_0 = min3( min1_4, min1_0, min1_1);
+            min_all1_1 = min3( min1_0, min1_1, min1_2);
+            min_all2_0 = min3( min2_4, min2_0, min2_1);
+            min_all2_1 = min3( min2_0, min2_1, min2_2);
+            min_all3_0 = min3( min3_4, min3_0, min3_1);
+            min_all3_1 = min3( min3_0, min3_1, min3_2);
 
             // ----- 5 ------
-            min0_4 = min3( load2(X, i-2, j+6), load2(X, i-1, j+6), load2(X, i, j+6));
-            min1_4 = min3( load2(X, i-1, j+6), load2(X, i, j+6), load2(X, i+1, j+6));
-            min2_4 = min3( load2(X, i, j+6), load2(X, i+1, j+6), load2(X, i+2, j+6));
-            min3_4 = min3( load2(X, i+1, j+6), load2(X, i+2, j+6), load2(X, i+3, j+6));
+            load_im1_jp2 = load2(X, i-1, j+6);
+            load_im2_jp2 = load2(X, i-2, j+6);
+            load_i_jp2 = load2(X, i, j+6);
+            load_ip1_jp2 = load2(X, i+1, j+6);
+            load_ip2_jp2 = load2(X, i+2, j+6);
+            load_ip3_jp2 = load2(X, i+3, j+6);
 
-            min_all0_2 = min3( min0_2, min0_3, min0_4);
-            min_all1_2 = min3( min1_2, min1_3, min1_4);
-            min_all2_2 = min3( min2_2, min2_3, min2_4);
-            min_all3_2 = min3( min3_2, min3_3, min3_4);
+            min0_3 = min3( load_im2_jp2, load_im1_jp2, load_i_jp2);
+            min1_3 = min3( load_im1_jp2, load_i_jp2, load_ip1_jp2);
+            min2_3 = min3( load_i_jp2, load_ip1_jp2, load_ip2_jp2);
+            min3_3 = min3( load_ip1_jp2, load_ip2_jp2, load_ip3_jp2);
+
+            min_all0_2 = min3( min0_1, min0_2, min0_3);
+            min_all1_2 = min3( min1_1, min1_2, min1_3);
+            min_all2_2 = min3( min2_1, min2_2, min2_3);
+            min_all3_2 = min3( min3_1, min3_2, min3_3);
 
             max_all0 = max3( min_all0_0, min_all0_1, min_all0_2);
             max_all1 = max3( min_all1_0, min_all1_1, min_all1_2);
@@ -600,26 +484,6 @@ void line_ouverture3_ui8matrix_fusion_ilu5_elu2_red(uint8 **X, int i, int j0, in
 
             store2( Y, i, j+4, max3( max_all0, max_all1, max_all2) );
             store2( Y, i+1, j+4, max3( max_all1, max_all2, max_all3) );
-
-            min0_0 = min0_1;
-            min0_1 = min0_2;
-            min0_2 = min0_3;
-            min0_3 = min0_4;
-
-            min1_0 = min1_1;
-            min1_1 = min1_2;
-            min1_2 = min1_3;
-            min1_3 = min1_4;
-
-            min2_0 = min2_1;
-            min2_1 = min2_2;
-            min2_2 = min2_3;
-            min2_3 = min2_4;
-
-            min3_0 = min3_1;
-            min3_1 = min3_2;
-            min3_2 = min3_3;
-            min3_3 = min3_4;
 
             min_all0_0 = min3( min0_0, min0_1, min0_2);
             min_all0_1 = min3( min0_1, min0_2, min0_3);
@@ -741,18 +605,26 @@ void line_ouverture3_ui8matrix_fusion_ilu5_elu2_red_factor(uint8 **X, int i, int
     max_all_20_21 = max2(min_all2_0, min_all2_1);
     max_all_30_31 = max2(min_all3_0, min_all3_1);
 
+    uint8 load_im2_jp2,load_im1_jp2, load_i_jp2, load_ip1_jp2, load_ip2_jp2, load_ip3_jp2;
 
     for(int j = j0; j< j1-5; j+=5){
             // ----- 1 ------
-            min_04_14_opt = min2(load2(X, i-1, j+2), load2(X, i, j+2));
-            min0_4 = min2(load2(X, i-2, j+2), min_04_14_opt);
-            min1_4 = min2( min_04_14_opt, load2(X, i+1, j+2));
+            load_im1_jp2 = load2(X, i-1, j+2);
+            load_im2_jp2 = load2(X, i-2, j+2);
+            load_i_jp2 = load2(X, i, j+2);
+            load_ip1_jp2 = load2(X, i+1, j+2);
+            load_ip2_jp2 = load2(X, i+2, j+2);
+            load_ip3_jp2 = load2(X, i+3, j+2);
 
-            min_24_opt = min2(load2(X, i, j+2), load2(X, i+1, j+2));
-            min2_4 = min2(min_24_opt, load2(X, i+2, j+2));
+            min_04_14_opt = min2(load_im1_jp2, load_i_jp2);
+            min0_4 = min2(load_im2_jp2, min_04_14_opt);
+            min1_4 = min2( min_04_14_opt, load_ip1_jp2);
 
-            min_34_opt = min2(load2(X, i+1, j+2), load2(X, i+2, j+2));
-            min3_4 = min2(min_34_opt, load2(X, i+3, j+2));
+            min_24_opt = min2(load_i_jp2, load_ip1_jp2);
+            min2_4 = min2(min_24_opt, load_ip2_jp2);
+
+            min_34_opt = min2(load_ip1_jp2, load_ip2_jp2);
+            min3_4 = min2(min_34_opt, load_ip3_jp2);
 
             min_all0_2 = min2( min_02_03, min0_4);
             min_all1_2 = min2( min_12_13, min1_4);
@@ -769,46 +641,26 @@ void line_ouverture3_ui8matrix_fusion_ilu5_elu2_red_factor(uint8 **X, int i, int
             store2( Y, i, j, max2( max_all0, max_all12) );
             store2( Y, i+1, j, max2( max_all12, max_all3) );
 
-            min0_0 = min0_1;
-            min0_1 = min0_2;
-            min0_2 = min0_3;
-            min0_3 = min0_4;
+            min_all0_opt = min2(min0_2, min0_3);
+            min_all0_0 = min2( min0_1, min_all0_opt);
+            min_all0_1 = min2( min_all0_opt, min0_4);
 
-            min1_0 = min1_1;
-            min1_1 = min1_2;
-            min1_2 = min1_3;
-            min1_3 = min1_4;
+            min_all1_opt = min2(min1_2, min1_3);
+            min_all1_0 = min2( min1_1, min_all1_opt);
+            min_all1_1 = min2( min_all1_opt, min1_4);
 
-            min2_0 = min2_1;
-            min2_1 = min2_2;
-            min2_2 = min2_3;
-            min2_3 = min2_4;
+            min_all2_opt = min2(min2_2, min2_3);
+            min_all2_0 = min2( min2_1, min_all2_opt);
+            min_all2_1 = min2( min_all2_opt, min2_4);
 
-            min3_0 = min3_1;
-            min3_1 = min3_2;
-            min3_2 = min3_3;
-            min3_3 = min3_4;
+            min_all3_opt = min2(min3_2, min3_3);
+            min_all3_0 = min2( min3_1, min_all3_opt);
+            min_all3_1 = min2( min_all3_opt, min3_4);
 
-            min_all0_opt = min2(min0_1, min0_2);
-            min_all0_0 = min2( min0_0, min_all0_opt);
-            min_all0_1 = min2( min_all0_opt, min0_3);
-
-            min_all1_opt = min2(min1_1, min1_2);
-            min_all1_0 = min2( min1_0, min_all1_opt);
-            min_all1_1 = min2( min_all1_opt, min1_3);
-
-            min_all2_opt = min2(min2_1, min2_2);
-            min_all2_0 = min2( min2_0, min_all2_opt);
-            min_all2_1 = min2( min_all2_opt, min2_3);
-
-            min_all3_opt = min2(min3_1, min3_2);
-            min_all3_0 = min2( min3_0, min_all3_opt);
-            min_all3_1 = min2( min_all3_opt, min3_3);
-
-            min_02_03 = min2(min0_2, min0_3);
-            min_12_13 = min2(min1_2, min1_3);
-            min_22_23 = min2(min2_2, min2_3);
-            min_32_33 = min2(min3_2, min3_3);
+            min_02_03 = min2(min0_3, min0_4);
+            min_12_13 = min2(min1_3, min1_4);
+            min_22_23 = min2(min2_3, min2_4);
+            min_32_33 = min2(min3_3, min3_4);
 
             max_all_00_01 = max2(min_all0_0, min_all0_1);
             max_all_10_11 = max2(min_all1_0, min_all1_1);
@@ -816,20 +668,27 @@ void line_ouverture3_ui8matrix_fusion_ilu5_elu2_red_factor(uint8 **X, int i, int
             max_all_30_31 = max2(min_all3_0, min_all3_1);
 
             // ----- 2 ------
-            min_04_14_opt = min2(load2(X, i-1, j+3), load2(X, i, j+3));
-            min0_4 = min2(load2(X, i-2, j+3), min_04_14_opt);
-            min1_4 = min2( min_04_14_opt, load2(X, i+1, j+3));
+            load_im1_jp2 = load2(X, i-1, j+3);
+            load_im2_jp2 = load2(X, i-2, j+3);
+            load_i_jp2 = load2(X, i, j+3);
+            load_ip1_jp2 = load2(X, i+1, j+3);
+            load_ip2_jp2 = load2(X, i+2, j+3);
+            load_ip3_jp2 = load2(X, i+3, j+3);
 
-            min_24_opt = min2(load2(X, i, j+3), load2(X, i+1, j+3));
-            min2_4 = min2(min_24_opt, load2(X, i+2, j+3));
+            min_04_14_opt = min2(load_im1_jp2, load_i_jp2);
+            min0_0 = min2(load_im2_jp2, min_04_14_opt);
+            min1_0 = min2( min_04_14_opt, load_ip1_jp2);
 
-            min_34_opt = min2(load2(X, i+1, j+3), load2(X, i+2, j+3));
-            min3_4 = min2(min_34_opt, load2(X, i+3, j+3));
+            min_24_opt = min2(load_i_jp2, load_ip1_jp2);
+            min2_0 = min2(min_24_opt, load_ip2_jp2);
 
-            min_all0_2 = min2( min_02_03, min0_4);
-            min_all1_2 = min2( min_12_13, min1_4);
-            min_all2_2 = min2( min_22_23, min2_4);
-            min_all3_2 = min2( min_32_33, min3_4);
+            min_34_opt = min2(load_ip1_jp2, load_ip2_jp2);
+            min3_0 = min2(min_34_opt, load_ip3_jp2);
+
+            min_all0_2 = min2( min_02_03, min0_0);
+            min_all1_2 = min2( min_12_13, min1_0);
+            min_all2_2 = min2( min_22_23, min2_0);
+            min_all3_2 = min2( min_32_33, min3_0);
 
             max_all0 = max2( max_all_00_01, min_all0_2);
             max_all1 = max2( max_all_10_11, min_all1_2);
@@ -841,46 +700,26 @@ void line_ouverture3_ui8matrix_fusion_ilu5_elu2_red_factor(uint8 **X, int i, int
             store2( Y, i, j+1, max2( max_all0, max_all12) );
             store2( Y, i+1, j+1, max2( max_all12, max_all3) );
 
-            min0_0 = min0_1;
-            min0_1 = min0_2;
-            min0_2 = min0_3;
-            min0_3 = min0_4;
+            min_all0_opt = min2(min0_3, min0_4);
+            min_all0_0 = min2( min0_2, min_all0_opt);
+            min_all0_1 = min2( min_all0_opt, min0_0);
 
-            min1_0 = min1_1;
-            min1_1 = min1_2;
-            min1_2 = min1_3;
-            min1_3 = min1_4;
+            min_all1_opt = min2(min1_3, min1_4);
+            min_all1_0 = min2( min1_2, min_all1_opt);
+            min_all1_1 = min2( min_all1_opt, min1_0);
 
-            min2_0 = min2_1;
-            min2_1 = min2_2;
-            min2_2 = min2_3;
-            min2_3 = min2_4;
+            min_all2_opt = min2(min2_3, min2_4);
+            min_all2_0 = min2( min2_2, min_all2_opt);
+            min_all2_1 = min2( min_all2_opt, min2_0);
 
-            min3_0 = min3_1;
-            min3_1 = min3_2;
-            min3_2 = min3_3;
-            min3_3 = min3_4;
+            min_all3_opt = min2(min3_3, min3_4);
+            min_all3_0 = min2( min3_2, min_all3_opt);
+            min_all3_1 = min2( min_all3_opt, min3_0);
 
-            min_all0_opt = min2(min0_1, min0_2);
-            min_all0_0 = min2( min0_0, min_all0_opt);
-            min_all0_1 = min2( min_all0_opt, min0_3);
-
-            min_all1_opt = min2(min1_1, min1_2);
-            min_all1_0 = min2( min1_0, min_all1_opt);
-            min_all1_1 = min2( min_all1_opt, min1_3);
-
-            min_all2_opt = min2(min2_1, min2_2);
-            min_all2_0 = min2( min2_0, min_all2_opt);
-            min_all2_1 = min2( min_all2_opt, min2_3);
-
-            min_all3_opt = min2(min3_1, min3_2);
-            min_all3_0 = min2( min3_0, min_all3_opt);
-            min_all3_1 = min2( min_all3_opt, min3_3);
-
-            min_02_03 = min2(min0_2, min0_3);
-            min_12_13 = min2(min1_2, min1_3);
-            min_22_23 = min2(min2_2, min2_3);
-            min_32_33 = min2(min3_2, min3_3);
+            min_02_03 = min2(min0_4, min0_0);
+            min_12_13 = min2(min1_4, min1_0);
+            min_22_23 = min2(min2_4, min2_0);
+            min_32_33 = min2(min3_4, min3_0);
 
             max_all_00_01 = max2(min_all0_0, min_all0_1);
             max_all_10_11 = max2(min_all1_0, min_all1_1);
@@ -888,20 +727,27 @@ void line_ouverture3_ui8matrix_fusion_ilu5_elu2_red_factor(uint8 **X, int i, int
             max_all_30_31 = max2(min_all3_0, min_all3_1);
 
             // ----- 3 ------
-            min_04_14_opt = min2(load2(X, i-1, j+4), load2(X, i, j+4));
-            min0_4 = min2(load2(X, i-2, j+4), min_04_14_opt);
-            min1_4 = min2( min_04_14_opt, load2(X, i+1, j+4));
+            load_im1_jp2 = load2(X, i-1, j+4);
+            load_im2_jp2 = load2(X, i-2, j+4);
+            load_i_jp2 = load2(X, i, j+4);
+            load_ip1_jp2 = load2(X, i+1, j+4);
+            load_ip2_jp2 = load2(X, i+2, j+4);
+            load_ip3_jp2 = load2(X, i+3, j+4);
 
-            min_24_opt = min2(load2(X, i, j+4), load2(X, i+1, j+4));
-            min2_4 = min2(min_24_opt, load2(X, i+2, j+4));
+            min_04_14_opt = min2(load_im1_jp2, load_i_jp2);
+            min0_1 = min2(load_im2_jp2, min_04_14_opt);
+            min1_1 = min2( min_04_14_opt, load_ip1_jp2);
 
-            min_34_opt = min2(load2(X, i+1, j+4), load2(X, i+2, j+4));
-            min3_4 = min2(min_34_opt, load2(X, i+3, j+4));
+            min_24_opt = min2(load_i_jp2, load_ip1_jp2);
+            min2_1 = min2(min_24_opt, load_ip2_jp2);
 
-            min_all0_2 = min2( min_02_03, min0_4);
-            min_all1_2 = min2( min_12_13, min1_4);
-            min_all2_2 = min2( min_22_23, min2_4);
-            min_all3_2 = min2( min_32_33, min3_4);
+            min_34_opt = min2(load_ip1_jp2, load_ip2_jp2);
+            min3_1 = min2(min_34_opt, load_ip3_jp2);
+
+            min_all0_2 = min2( min_02_03, min0_1);
+            min_all1_2 = min2( min_12_13, min1_1);
+            min_all2_2 = min2( min_22_23, min2_1);
+            min_all3_2 = min2( min_32_33, min3_1);
 
             max_all0 = max2( max_all_00_01, min_all0_2);
             max_all1 = max2( max_all_10_11, min_all1_2);
@@ -913,46 +759,26 @@ void line_ouverture3_ui8matrix_fusion_ilu5_elu2_red_factor(uint8 **X, int i, int
             store2( Y, i, j+2, max2( max_all0, max_all12) );
             store2( Y, i+1, j+2, max2( max_all12, max_all3) );
 
-            min0_0 = min0_1;
-            min0_1 = min0_2;
-            min0_2 = min0_3;
-            min0_3 = min0_4;
+            min_all0_opt = min2(min0_4, min0_0);
+            min_all0_0 = min2( min0_3, min_all0_opt);
+            min_all0_1 = min2( min_all0_opt, min0_1);
 
-            min1_0 = min1_1;
-            min1_1 = min1_2;
-            min1_2 = min1_3;
-            min1_3 = min1_4;
+            min_all1_opt = min2(min1_4, min1_0);
+            min_all1_0 = min2( min1_3, min_all1_opt);
+            min_all1_1 = min2( min_all1_opt, min1_1);
 
-            min2_0 = min2_1;
-            min2_1 = min2_2;
-            min2_2 = min2_3;
-            min2_3 = min2_4;
+            min_all2_opt = min2(min2_4, min2_0);
+            min_all2_0 = min2( min2_3, min_all2_opt);
+            min_all2_1 = min2( min_all2_opt, min2_1);
 
-            min3_0 = min3_1;
-            min3_1 = min3_2;
-            min3_2 = min3_3;
-            min3_3 = min3_4;
+            min_all3_opt = min2(min3_4, min3_0);
+            min_all3_0 = min2( min3_3, min_all3_opt);
+            min_all3_1 = min2( min_all3_opt, min3_1);
 
-            min_all0_opt = min2(min0_1, min0_2);
-            min_all0_0 = min2( min0_0, min_all0_opt);
-            min_all0_1 = min2( min_all0_opt, min0_3);
-
-            min_all1_opt = min2(min1_1, min1_2);
-            min_all1_0 = min2( min1_0, min_all1_opt);
-            min_all1_1 = min2( min_all1_opt, min1_3);
-
-            min_all2_opt = min2(min2_1, min2_2);
-            min_all2_0 = min2( min2_0, min_all2_opt);
-            min_all2_1 = min2( min_all2_opt, min2_3);
-
-            min_all3_opt = min2(min3_1, min3_2);
-            min_all3_0 = min2( min3_0, min_all3_opt);
-            min_all3_1 = min2( min_all3_opt, min3_3);
-
-            min_02_03 = min2(min0_2, min0_3);
-            min_12_13 = min2(min1_2, min1_3);
-            min_22_23 = min2(min2_2, min2_3);
-            min_32_33 = min2(min3_2, min3_3);
+            min_02_03 = min2(min0_0, min0_1);
+            min_12_13 = min2(min1_0, min1_1);
+            min_22_23 = min2(min2_0, min2_1);
+            min_32_33 = min2(min3_0, min3_1);
 
             max_all_00_01 = max2(min_all0_0, min_all0_1);
             max_all_10_11 = max2(min_all1_0, min_all1_1);
@@ -960,20 +786,27 @@ void line_ouverture3_ui8matrix_fusion_ilu5_elu2_red_factor(uint8 **X, int i, int
             max_all_30_31 = max2(min_all3_0, min_all3_1);
 
            // ----- 4 ------
-            min_04_14_opt = min2(load2(X, i-1, j+5), load2(X, i, j+5));
-            min0_4 = min2(load2(X, i-2, j+5), min_04_14_opt);
-            min1_4 = min2( min_04_14_opt, load2(X, i+1, j+5));
+            load_im1_jp2 = load2(X, i-1, j+5);
+            load_im2_jp2 = load2(X, i-2, j+5);
+            load_i_jp2 = load2(X, i, j+5);
+            load_ip1_jp2 = load2(X, i+1, j+5);
+            load_ip2_jp2 = load2(X, i+2, j+5);
+            load_ip3_jp2 = load2(X, i+3, j+5);
 
-            min_24_opt = min2(load2(X, i, j+5), load2(X, i+1, j+5));
-            min2_4 = min2(min_24_opt, load2(X, i+2, j+5));
+            min_04_14_opt = min2(load_im1_jp2, load_i_jp2);
+            min0_2 = min2(load_im2_jp2, min_04_14_opt);
+            min1_2 = min2( min_04_14_opt, load_ip1_jp2);
 
-            min_34_opt = min2(load2(X, i+1, j+5), load2(X, i+2, j+5));
-            min3_4 = min2(min_34_opt, load2(X, i+3, j+5));
+            min_24_opt = min2(load_i_jp2, load_ip1_jp2);
+            min2_2 = min2(min_24_opt, load_ip2_jp2);
 
-            min_all0_2 = min2( min_02_03, min0_4);
-            min_all1_2 = min2( min_12_13, min1_4);
-            min_all2_2 = min2( min_22_23, min2_4);
-            min_all3_2 = min2( min_32_33, min3_4);
+            min_34_opt = min2(load_ip1_jp2, load_ip2_jp2);
+            min3_2 = min2(min_34_opt, load_ip3_jp2);
+
+            min_all0_2 = min2( min_02_03, min0_2);
+            min_all1_2 = min2( min_12_13, min1_2);
+            min_all2_2 = min2( min_22_23, min2_2);
+            min_all3_2 = min2( min_32_33, min3_2);
 
             max_all0 = max2( max_all_00_01, min_all0_2);
             max_all1 = max2( max_all_10_11, min_all1_2);
@@ -985,67 +818,54 @@ void line_ouverture3_ui8matrix_fusion_ilu5_elu2_red_factor(uint8 **X, int i, int
             store2( Y, i, j+3, max2( max_all0, max_all12) );
             store2( Y, i+1, j+3, max2( max_all12, max_all3) );
 
-            min0_0 = min0_1;
-            min0_1 = min0_2;
-            min0_2 = min0_3;
-            min0_3 = min0_4;
+            min_all0_opt = min2(min0_0, min0_1);
+            min_all0_0 = min2( min0_4, min_all0_opt);
+            min_all0_1 = min2( min_all0_opt, min0_2);
 
-            min1_0 = min1_1;
-            min1_1 = min1_2;
-            min1_2 = min1_3;
-            min1_3 = min1_4;
+            min_all1_opt = min2(min1_0, min1_1);
+            min_all1_0 = min2( min1_4, min_all1_opt);
+            min_all1_1 = min2( min_all1_opt, min1_2);
 
-            min2_0 = min2_1;
-            min2_1 = min2_2;
-            min2_2 = min2_3;
-            min2_3 = min2_4;
+            min_all2_opt = min2(min2_0, min2_1);
+            min_all2_0 = min2( min2_4, min_all2_opt);
+            min_all2_1 = min2( min_all2_opt, min2_2);
 
-            min3_0 = min3_1;
-            min3_1 = min3_2;
-            min3_2 = min3_3;
-            min3_3 = min3_4;
+            min_all3_opt = min2(min3_0, min3_1);
+            min_all3_0 = min2( min3_4, min_all3_opt);
+            min_all3_1 = min2( min_all3_opt, min3_2);
 
-            min_all0_opt = min2(min0_1, min0_2);
-            min_all0_0 = min2( min0_0, min_all0_opt);
-            min_all0_1 = min2( min_all0_opt, min0_3);
-
-            min_all1_opt = min2(min1_1, min1_2);
-            min_all1_0 = min2( min1_0, min_all1_opt);
-            min_all1_1 = min2( min_all1_opt, min1_3);
-
-            min_all2_opt = min2(min2_1, min2_2);
-            min_all2_0 = min2( min2_0, min_all2_opt);
-            min_all2_1 = min2( min_all2_opt, min2_3);
-
-            min_all3_opt = min2(min3_1, min3_2);
-            min_all3_0 = min2( min3_0, min_all3_opt);
-            min_all3_1 = min2( min_all3_opt, min3_3);
-
-            min_02_03 = min2(min0_2, min0_3);
-            min_12_13 = min2(min1_2, min1_3);
-            min_22_23 = min2(min2_2, min2_3);
-            min_32_33 = min2(min3_2, min3_3);
+            min_02_03 = min2(min0_1, min0_2);
+            min_12_13 = min2(min1_1, min1_2);
+            min_22_23 = min2(min2_1, min2_2);
+            min_32_33 = min2(min3_1, min3_2);
 
             max_all_00_01 = max2(min_all0_0, min_all0_1);
             max_all_10_11 = max2(min_all1_0, min_all1_1);
             max_all_20_21 = max2(min_all2_0, min_all2_1);
             max_all_30_31 = max2(min_all3_0, min_all3_1);
 
-           // ----- 3 ------
-            min_04_14_opt = min2(load2(X, i-1, j+6), load2(X, i, j+6));
-            min0_4 = min2(load2(X, i-2, j+6), min_04_14_opt);
-            min1_4 = min2( min_04_14_opt, load2(X, i+1, j+6));
+           // ----- 5 ------
+            load_im1_jp2 = load2(X, i-1, j+6);
+            load_im2_jp2 = load2(X, i-2, j+6);
+            load_i_jp2 = load2(X, i, j+6);
+            load_ip1_jp2 = load2(X, i+1, j+6);
+            load_ip2_jp2 = load2(X, i+2, j+6);
+            load_ip3_jp2 = load2(X, i+3, j+6);
 
-            min_24_opt = min2(load2(X, i, j+6), load2(X, i+1, j+6));
-            min2_4 = min2(min_24_opt, load2(X, i+2, j+6));
+            min_04_14_opt = min2(load_im1_jp2, load_i_jp2);
+            min0_3 = min2(load_im2_jp2, min_04_14_opt);
+            min1_3 = min2( min_04_14_opt, load_ip1_jp2);
 
-            min_34_opt = min2(load2(X, i+1, j+6), load2(X, i+2, j+6));
-            min3_4 = min2(min_34_opt, load2(X, i+3, j+6));
+            min_24_opt = min2(load_i_jp2, load_ip1_jp2);
+            min2_3 = min2(min_24_opt, load_ip2_jp2);
 
-            min_all0_2 = min2( min_02_03, min0_4);
-            min_all1_2 = min2( min_12_13, min1_4);
-            min_all2_2 = min2( min_22_23, min2_4);
-            min_all3_2 = min2( min_32_33, min3_4);
+            min_34_opt = min2(load_ip1_jp2, load_ip2_jp2);
+            min3_3 = min2(min_34_opt, load_ip3_jp2);
+
+            min_all0_2 = min2( min_02_03, min0_3);
+            min_all1_2 = min2( min_12_13, min1_3);
+            min_all2_2 = min2( min_22_23, min2_3);
+            min_all3_2 = min2( min_32_33, min3_3);
 
             max_all0 = max2( max_all_00_01, min_all0_2);
             max_all1 = max2( max_all_10_11, min_all1_2);
@@ -1057,26 +877,6 @@ void line_ouverture3_ui8matrix_fusion_ilu5_elu2_red_factor(uint8 **X, int i, int
             store2( Y, i, j+4, max2( max_all0, max_all12) );
             store2( Y, i+1, j+4, max2( max_all12, max_all3) );
 
-            min0_0 = min0_1;
-            min0_1 = min0_2;
-            min0_2 = min0_3;
-            min0_3 = min0_4;
-
-            min1_0 = min1_1;
-            min1_1 = min1_2;
-            min1_2 = min1_3;
-            min1_3 = min1_4;
-
-            min2_0 = min2_1;
-            min2_1 = min2_2;
-            min2_2 = min2_3;
-            min2_3 = min2_4;
-
-            min3_0 = min3_1;
-            min3_1 = min3_2;
-            min3_2 = min3_3;
-            min3_3 = min3_4;
-
             min_all0_opt = min2(min0_1, min0_2);
             min_all0_0 = min2( min0_0, min_all0_opt);
             min_all0_1 = min2( min_all0_opt, min0_3);
@@ -1102,7 +902,6 @@ void line_ouverture3_ui8matrix_fusion_ilu5_elu2_red_factor(uint8 **X, int i, int
             max_all_10_11 = max2(min_all1_0, min_all1_1);
             max_all_20_21 = max2(min_all2_0, min_all2_1);
             max_all_30_31 = max2(min_all3_0, min_all3_1);
-
     }
     int r = (j1-j0-1) % 5;
     line_ouverture3_ui8matrix_fusion(X, i, (j1-j0-r-1), (j1-j0), Y);

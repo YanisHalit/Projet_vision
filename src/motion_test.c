@@ -8,7 +8,7 @@
 #include <string.h>
 #include <math.h>
 
-#include "motion.h"
+#include "../include/motion.h"
 
 // ====================================
 int test_motion(int argc, char* argv[])
