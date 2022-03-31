@@ -21,7 +21,7 @@ INC_PATH = include
 CC = gcc
 
 # -- Flags ----------
-C_OPTIMISATION_FLAGS = -std=c99 -O3 -fstrict-aliasing -Wno-comment
+#C_OPTIMISATION_FLAGS = -std=c99 -O3 -fstrict-aliasing -Wno-comment
 C_OPTIMISATION_FLAGS = -std=c99 -O0 -fstrict-aliasing -Wno-comment
 C_ARCH_FLAGS = -mtune=native -march=native
 C_ARCH_FLAGS =

@@ -16,6 +16,6 @@ int test_motion(int argc, char* argv[])
 {
     puts("=== test_motion ===");
     motion_detection_morpho();
-    
+
   return 0;
 }
