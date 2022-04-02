@@ -8,7 +8,7 @@ FILE_NRC    = nrutil.c
 FILE_MOTION = sigmadelta.c motion.c motion_test.c
 FILE_MORPHO = morpho_max.c morpho_min.c morpho_ouverture.c morpho_test.c
 FILE_MAIN   = main.c
-FILE_SWP    = swp.c
+FILE_SWP    = swp.c swp_test.c
 FILE = $(FILE_MAIN) $(FILE_NRC) $(FILE_SWP) $(FILE_MORPHO) $(FILE_MOTION)
 
 # -- paths ----------

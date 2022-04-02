@@ -25,6 +25,7 @@
 
 #include "../include/morpho_test.h"
 #include "../include/motion_test.h"
+#include "../include/swp_test.h"
 
 /* --------------- */
 int getIter(int size)
@@ -77,8 +78,7 @@ int main(int argc, char *argv[])
 {
     
     // test_swp(argc, argv);
-    
-    // test_morpho(argc, argv);
+    test_morpho(argc, argv);
     // test_motion(argc, argv);  // DECOM
     return 0;
 }

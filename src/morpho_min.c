@@ -16,8 +16,6 @@
 #include "../include/nrdef.h"
 #include "../include/nrutil.h"
 
-#define PRINT(s) printf("%d\n",s)
-
 // ------------------------------------------------------------------------
 void line_min3_ui8matrix_basic(uint8 **X, int i, int j0, int j1, uint8 **Y)
 // ------------------------------------------------------------------------

@@ -849,8 +849,8 @@ int test_morpho(int argc, char* argv[])
     puts("=== test_morpho ===");
     
     // test_morpho_max();
-    // test_morpho_min();
-    test_morpho_ouverture();
+    test_morpho_min();
+    // test_morpho_ouverture();
     
     // bench_morpho_ouverture(128, 512, 8);
     // bench_morpho_ouverture(128, 1024, 8);

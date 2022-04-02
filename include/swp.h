@@ -11,11 +11,21 @@
 #define __SWP_TEST_H__
 
 #ifdef __cplusplus
+#ifdef PRAGMA_VERBOSE
 #pragma message ("C++")
+#endif
 extern "C" {
 #endif
 
 // mettre les macro left/right ici
+// -----------------------------------
+#define i8left(a, b) (a >> (8-1)) | (b << 1)
+#define i16left(a, b) (a >> (16-1)) | (b << 1)
+#define i32left(a, b) (a >> (32-1)) | (b << 1)
+#define i8right(b, c) (b >> 1) | (c << (8-1))
+#define i16right(b, c) (b >> 1) | (c << (16-1))
+#define i32right(b, c) (b >> 1) | (c << (32-1))
+
 
 uint8   ui8left( uint8 a,  uint8 b, int k);
 uint16 ui16left(uint16 a, uint16 b, int k);

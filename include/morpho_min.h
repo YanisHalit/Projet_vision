@@ -14,7 +14,7 @@
 #ifdef PRAGMA_VERBOSE
 #pragma message ("C++")
 #endif
-extern "C" {
+{
 #endif
 
 // line functions

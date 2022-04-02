@@ -14,11 +14,11 @@
 #include <math.h>
 #include <ctype.h> // isdigit
 
-#include "nrtype.h"
-#include "nrdef.h"
-#include "nrutil.h"
+#include "../include/nrtype.h"
+#include "../include/nrdef.h"
+#include "../include/nrutil.h"
 
-#include "swp.h"
+#include "../include/swp.h"
 
 
 // fonctions left/right = versions lentes
@@ -328,7 +328,7 @@ void pack_ui16vector(uint8* X1, int src_width, uint16* Y16)
     
     for(int i=0; i<dst_width; i++) {
         
-        uint8 x = 0;
+        uint16 x = 0;
         
         for(int k=0; k<16; k++) {
             
@@ -346,7 +346,7 @@ void pack_ui32vector(uint8* X1, int src_width, uint32* Y32)
     
     for(int i=0; i<dst_width; i++) {
         
-        uint8 x = 0;
+        uint32 x = 0;
         
         for(int k=0; k<32; k++) {
             
