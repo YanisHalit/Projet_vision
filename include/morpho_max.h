@@ -28,6 +28,7 @@ void line_max3_ui8matrix_elu2_red            (uint8 **X, int i, int j0, int j1, 
 void line_max3_ui8matrix_elu2_red_factor     (uint8 **X, int i, int j0, int j1, uint8 **Y);
 void line_max3_ui8matrix_ilu3_elu2_red       (uint8 **X, int i, int j0, int j1, uint8 **Y);
 void line_max3_ui8matrix_ilu3_elu2_red_factor(uint8 **X, int i, int j0, int j1, uint8 **Y);
+void line_swp_max3_ui8matrix_basic(uint8 **X, int i, int j0, int j1, uint8 **Y);
     
 // full-matrix functions
 void max3_ui8matrix_basic               (uint8 **X, int i0, int i1, int j0, int j1, uint8 **Y);
@@ -40,6 +41,7 @@ void max3_ui8matrix_elu2_red            (uint8 **X, int i0, int i1, int j0, int 
 void max3_ui8matrix_elu2_red_factor     (uint8 **X, int i0, int i1, int j0, int j1, uint8 **Y);
 void max3_ui8matrix_ilu3_elu2_red       (uint8 **X, int i0, int i1, int j0, int j1, uint8 **Y);
 void max3_ui8matrix_ilu3_elu2_red_factor(uint8 **X, int i0, int i1, int j0, int j1, uint8 **Y);
+void max3_swp_ui8matrix_basic(uint8 **X, int i0, int i1, int j0, int j1, uint8 **Y);
     
 #ifdef __cplusplus
 }
