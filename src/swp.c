@@ -306,7 +306,8 @@ void pack_ui4vector(uint8* X1, int src_width, uint8* Y4)
 void pack_ui8vector(uint8* X1, int src_width, uint8* Y8)
 // -----------------------------------------------------
 {
-    int dst_width = src_width/8;
+    //partie entiere
+    int dst_width = (src_width/8)+1;
     
     for(int i=0; i<dst_width; i++) {
         
@@ -324,7 +325,7 @@ void pack_ui8vector(uint8* X1, int src_width, uint8* Y8)
 void pack_ui16vector(uint8* X1, int src_width, uint16* Y16)
 // --------------------------------------------------------
 {
-    int dst_width = src_width/16;
+    int dst_width = (src_width/16)+1;
     
     for(int i=0; i<dst_width; i++) {
         
@@ -342,7 +343,7 @@ void pack_ui16vector(uint8* X1, int src_width, uint16* Y16)
 void pack_ui32vector(uint8* X1, int src_width, uint32* Y32)
 // --------------------------------------------------------
 {
-    int dst_width = src_width/32;
+    int dst_width = (src_width/32)+1;
     
     for(int i=0; i<dst_width; i++) {
         
