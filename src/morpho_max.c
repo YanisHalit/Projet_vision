@@ -726,6 +726,13 @@ void line_swp_max3_ui8matrix_basic(uint8 **T, int i, int j0, int j1, uint8 **Y){
             // printf("max a droite --> ");
             // printfM(b0_d, 8, NULL); puts("\n---------------\n");
 
+            // printf("l --> ");
+            // printfM(l, 8, NULL); puts("\n---------------\n");
+
+            // printf("r --> ");
+            // printfM(r, 8, NULL); puts("\n---------------\n");
+
+
             // printf("max tot --> ");
             // printfM(or_milieu | l | r, 8, NULL); puts("\n---------------\n");
 
@@ -740,12 +747,11 @@ void line_swp_max3_ui8matrix_basic(uint8 **T, int i, int j0, int j1, uint8 **Y){
 void max3_swp_ui8matrix_basic(uint8 **X, int i0, int i1, int j0, int j1, uint8 **T, uint8 **Y_P, uint8 **Y_UP){
     pack_ui8matrix(X, i1, j1, T);
     // display_ui8matrix(X,  i0, i1-1, j0, j1-1, "%5d", "X        ");
-    displayM_ui8matrix(T, i0, i1-1, j0, (j1-1)/8, "X pack");
-    for( int i = i0; i < i1-1; i++){
-        line_swp_max3_ui8matrix_basic(T, i, j0, j1/8, Y_P);
+    // displayM_ui8matrix(T, i0, i1-1, j0, (j1-1)/8, "X pack");
+    for( int i = i0; i < i1; i++){
+        line_swp_max3_ui8matrix_basic(T, i, j0, (j1)/8, Y_P);
     }
-    puts("\n\n");
-    displayM_ui8matrix(Y_P, i0, i1-1, j0, (j1-1)/8, "RESULT packé");
+    // displayM_ui8matrix(Y_P, i0, i1-1, j0, (j1-1)/8, "RESULT packé");
     unpack_ui8matrix(Y_P, i1, j1-1, Y_UP);
     // display_ui8matrix(Y_UP,     i0, i1-1, j0, j1-1, "%5d", "RESULT UNPACK        ");
 }

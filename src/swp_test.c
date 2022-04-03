@@ -139,10 +139,13 @@ void test_swp_morpho_max_routine(int h, int w0){
     
 
     // puts("\n-- max3 swp --");
-    max3_ui8matrix_basic               (X, 0, h-1, 0, w0-1, Y_bas_originale);
+    max3_ui8matrix_basic               (X, 0, h, 0, w0, Y_bas_originale);
 
     pack_ui8matrix(Y_bas_originale, h, w0, Y_bas_or_packed);
-    displayM_ui8matrix(Y_bas_or_packed, 0, h-1, 0, (w0-1)/8, "Y bas or pack");
+
+    // displayM_ui8matrix(Y_bas_or_packed, 0, h-1, 0, (w0-1)/8, "Y bas or pack");
+
+
     max3_swp_ui8matrix_basic           (X, 0, h, 0, w0, T, Y_P, Y_bas);
 
     // puts("display");
