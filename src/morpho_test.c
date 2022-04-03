@@ -149,7 +149,7 @@ void test_morpho_max_routine(int h, int w0)
     // puts("done\n");
 
     // display_ui8matrix(X,         0, h-1, 0, w0-1, "%5d", "X bas        ");
-    // display_ui8matrix(Y_bas,         0, h-1, 0, w0-1, "%5d", "Y bas        ");
+    // display_ui8matrix(Y_bas,         0, h-1, 0, w0-1, "%5d", "Y bas        ");exit(100);
     // display_ui8matrix(Y_reg,         0, h-1, 0, w0-1, "%5d", "Y reg        ");
     // display_ui8matrix(Y_rot,         0, h-1, 0, w0-1, "%5d", "Y rot        ");
     // display_ui8matrix(Y_red,         0, h-1, 0, w0-1, "%5d", "Y red        ");

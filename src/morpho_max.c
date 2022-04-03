@@ -15,8 +15,7 @@
 #include "../include/nrtype.h"
 #include "../include/nrdef.h"
 #include "../include/nrutil.h"
-
-#define PRINT(s) printf("%d\n",s)
+#include "../include/swp.h"
 
 // ------------------------------------------------------------------------
 void line_max3_ui8matrix_basic(uint8 **X, int i, int j0, int j1, uint8 **Y)
@@ -657,10 +656,96 @@ void max3_ui8matrix_ilu3_elu2_red_factor(uint8 **X, int i0, int i1, int j0, int 
 
 // ---------------- SWP ----------------
 
-void line_swp_max3_ui8matrix_basic(uint8 **X, int i, int j0, int j1, uint8 **Y){
-    return;
+void line_swp_max3_ui8matrix_basic(uint8 **T, int i, int j0, int j1, uint8 **Y){
+    uint8 haut_gauche, haut_milieu, haut_droit,
+        milieu_gauche , milieu_milieu, milieu_droit,
+        bas_gauche, bas_milieu, bas_droit,
+
+
+        b0_g, b0_d, or_milieu,
+
+        l, r, y;
+
+
+        for(int j = j0; j < j1;   j++){
+            // appliquer le masque ici
+            haut_gauche = load2(T, i-1, j-1);
+            milieu_gauche = (load2(T, i, j-1));
+            bas_gauche = load2(T, i+1, j-1);
+
+
+
+            b0_g = haut_gauche | milieu_gauche | bas_gauche;
+
+
+
+            haut_milieu = load2(T, i-1, j);
+            milieu_milieu = load2(T, i, j);
+            bas_milieu = load2(T, i+1, j);
+
+
+
+
+            or_milieu = bas_milieu | milieu_milieu | haut_milieu;
+
+
+            // appliquer le second masque ici
+            haut_droit = load2(T, i-1, j+1);
+            milieu_droit = load2(T, i, j+1 );
+            bas_droit = load2(T, i+1, j+1);
+
+
+
+            b0_d = haut_droit | milieu_droit | bas_droit;
+
+            // traitement debut avec la bordure
+
+            l = i8left(b0_g, or_milieu);
+            r = i8right(or_milieu, b0_d);
+            store2(Y, i, j, or_milieu | l | r);
+
+
+            // if( j == 1 ){
+            // printfM(haut_gauche, 8, NULL); puts("");
+            // printfM(milieu_gauche, 8, NULL); puts("");
+            // printfM(bas_gauche, 8, NULL); puts("");
+
+            // printf("max a gauche --> ");
+            // printfM(b0_g, 8, NULL); puts("\n---------------\n");
+            // // -----------
+            // printfM(haut_milieu, 8, NULL); puts("");
+            // printfM(milieu_milieu, 8, NULL); puts("");
+            // printfM(bas_milieu, 8, NULL); puts("");
+            // printf("max au milieu --> ");
+            // printfM(or_milieu, 8, NULL); puts("\n---------------\n");
+
+            // printfM(haut_droit, 8, NULL); puts("");
+            // printfM(milieu_droit, 8, NULL); puts("");
+            // printfM(bas_droit, 8, NULL); puts("");
+
+            // printf("max a droite --> ");
+            // printfM(b0_d, 8, NULL); puts("\n---------------\n");
+
+            // printf("max tot --> ");
+            // printfM(or_milieu | l | r, 8, NULL); puts("\n---------------\n");
+
+            // exit(200);
+            // }
+        }
+
+        
+
 }
 
-void max3_swp_ui8matrix_basic(uint8 **X, int i0, int i1, int j0, int j1, uint8 **Y){
-    return;
+void max3_swp_ui8matrix_basic(uint8 **X, int i0, int i1, int j0, int j1, uint8 **T, uint8 **Y_P, uint8 **Y_UP){
+    pack_ui8matrix(X, i1, j1, T);
+    // display_ui8matrix(X,  i0, i1-1, j0, j1-1, "%5d", "X        ");
+    displayM_ui8matrix(T, i0, i1-1, j0, (j1-1)/8, "X pack");
+    for( int i = i0; i < i1-1; i++){
+        line_swp_max3_ui8matrix_basic(T, i, j0, j1/8, Y_P);
+    }
+    puts("\n\n");
+    displayM_ui8matrix(Y_P, i0, i1-1, j0, (j1-1)/8, "RESULT packé");
+    unpack_ui8matrix(Y_P, i1, j1-1, Y_UP);
+    // display_ui8matrix(Y_UP,     i0, i1-1, j0, j1-1, "%5d", "RESULT UNPACK        ");
 }
