@@ -656,7 +656,10 @@ void max3_ui8matrix_ilu3_elu2_red_factor(uint8 **X, int i0, int i1, int j0, int 
 
 // ---------------- SWP ----------------
 
-void line_swp_max3_ui8matrix_basic(uint8 **T, int i, int j0, int j1, uint8 **Y){
+// -------------------------------------------------------------------------------------------
+void line_swp_max3_ui8matrix_basic(uint8 **T, int i, int j0, int j1, uint8 **Y)
+// -------------------------------------------------------------------------------------------
+{
     uint8 haut_gauche, haut_milieu, haut_droit,
         milieu_gauche , milieu_milieu, milieu_droit,
         bas_gauche, bas_milieu, bas_droit,
@@ -707,8 +710,67 @@ void line_swp_max3_ui8matrix_basic(uint8 **T, int i, int j0, int j1, uint8 **Y){
         }
 
 }
+// -------------------------------------------------------------------------------------------
+void line_swp_max3_ui16matrix_basic(uint16 **T, int i, int j0, int j1, uint16 **Y)
+// -------------------------------------------------------------------------------------------
+{
+    uint16 haut_gauche, haut_milieu, haut_droit,
+        milieu_gauche , milieu_milieu, milieu_droit,
+        bas_gauche, bas_milieu, bas_droit,
 
-void max3_swp_ui8matrix_basic(uint8 **X, int i0, int i1, int j0, int j1, uint8 **T, uint8 **Y_P, uint8 **Y_UP){
+
+        b0_g, b0_d, or_milieu,
+
+        l, r, y;
+
+
+        for(int j = j0; j <= j1;   j++){
+
+            // appliquer le masque ici
+            haut_gauche = load2(T, i-1, j-1);
+            milieu_gauche = (load2(T, i, j-1));
+            bas_gauche = load2(T, i+1, j-1);
+
+
+
+            b0_g = haut_gauche | milieu_gauche | bas_gauche;
+
+
+
+            haut_milieu = load2(T, i-1, j);
+            milieu_milieu = load2(T, i, j);
+            bas_milieu = load2(T, i+1, j);
+
+
+
+
+            or_milieu = bas_milieu | milieu_milieu | haut_milieu;
+
+
+            // appliquer le second masque ici
+            haut_droit = load2(T, i-1, j+1);
+            milieu_droit = load2(T, i, j+1 );
+            bas_droit = load2(T, i+1, j+1);
+
+
+
+            b0_d = haut_droit | milieu_droit | bas_droit;
+
+            // traitement debut avec la bordure
+
+            l = i16left(b0_g, or_milieu);
+            r = i16right(or_milieu, b0_d);
+            store2(Y, i, j, or_milieu | l | r);
+        }
+
+}
+
+
+
+
+void max3_swp_ui8matrix_basic(uint8 **X, int i0, int i1, int j0, int j1, uint8 **T, uint8 **Y_P, uint8 **Y_UP)
+// -------------------------------------------------------------------------------------------
+{
     pack_ui8matrix(X, i1, j1, T); // package X dans T
             // display_ui8matrix(X,  i0, i1-1, j0, j1-1, "%5d", "X        "); // affichage de X normal
             // displayM_ui8matrix(T, i0, i1-1, j0, (j1)/8, "X pack");         // affichage de X packé
@@ -719,3 +781,20 @@ void max3_swp_ui8matrix_basic(uint8 **X, int i0, int i1, int j0, int j1, uint8 *
     unpack_ui8matrix(Y_P, i1, j1-1, Y_UP); // unpack de result packé dans Y_UP
     // display_ui8matrix(Y_UP,     i0, i1-1, j0, j1-1, "%5d", "RESULT UNPACK        "); // affichage résultat unpacké
 }
+// -------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------
+void max3_swp_ui16matrix_basic          (uint8 **X, int i0, int i1, int j0, int j1, uint16 **T16, uint16 **Y_P16, uint8 **Y_UP)
+// -------------------------------------------------------------------------------------------
+{
+    pack_ui16matrix(X, i1, j1, T16); // package X dans T
+            display_ui8matrix(X,  i0, i1-1, j0, j1-1, "%5d", "X        "); // affichage de X normal
+            displayM_ui16matrix(T16, i0, i1-1, j0, (j1-1)/16, "X16 pack");         // affichage de X packé
+    for( int i = i0; i < i1; i++){
+        line_swp_max3_ui16matrix_basic(T16, i, j0, (j1-1)/16, Y_P16);
+    }
+            displayM_ui16matrix(Y_P16, i0, i1-1, j0, (j1-1)/16, "RESULT packé"); // résultat packé
+    unpack_ui16matrix(Y_P16, i1, j1, Y_UP); // unpack de result packé dans Y_UP
+        printf("ici\n");exit(1000);
+    // display_ui16matrix(Y_UP,     i0, i1-1, j0, j1-1, "%5d", "RESULT UNPACK        "); // affichage résultat unpacké
+}
+// -------------------------------------------------------------------------------------------

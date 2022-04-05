@@ -89,9 +89,12 @@ void test_swp_morpho_max_routine(int h, int w0){
     puts("--------------------------------------------------");
     printf("test_swp_morpho_max_routine h = %d w0 = %d w8 = %d, w1 = %d\n", h, w0, w8, w1);
     if(w1 > w0) puts("w1 > w0");
-    uint8 **X, **Y_bas_originale, **T, **Y_P;
-    uint8 **Y_bas_SWP, **Y_reg, **Y_rot, **Y_red, **Y_ilu3, **Y_ilu3r, **Y_elu2r, **Y_elu2rf, **Y_ilu3_elu2rf,
-    ** Y_bas_or_packed;
+    uint8 **X;
+    uint8 **Y_reg, **Y_rot, **Y_red, **Y_ilu3, **Y_ilu3r, **Y_elu2r, **Y_elu2rf, **Y_ilu3_elu2rf,
+    ** Y_bas_or_packed, **Y_bas_SWP8, **Y_bas_SWP16;
+
+    uint8  **T, **Y_P, **Y_bas_originale;
+    uint16 **T16, **Y_P16, ** Y_bas_or_packed16;
 
     int c; // error
 
@@ -99,32 +102,44 @@ void test_swp_morpho_max_routine(int h, int w0){
     //puts("malloc");
     X  = ui8matrix(0-b, h-1+b, 0-b, w1-1+b);  // départ
     Y_bas_originale         = ui8matrix(0, h-1, 0, w1-1); // comparer avec celle-ci
-    T             = ui8matrix(0-b, h-1+b, 0-b, w1-1+b);   // X packé
-    Y_bas_or_packed = ui8matrix(0-b, h-1+b, 0-b, w1-1+b);
-    Y_P           = ui8matrix(0, h-1, 0, w1-1);   // résultat mais en packé
 
 
-    Y_bas_SWP         = ui8matrix(0, h-1, 0, w1-1);
-    Y_reg         = ui8matrix(0, h-1, 0, w1-1);
-    Y_rot         = ui8matrix(0, h-1, 0, w1-1);
-    Y_red         = ui8matrix(0, h-1, 0, w1-1);
-    Y_ilu3        = ui8matrix(0, h-1, 0, w1-1);
-    Y_ilu3r       = ui8matrix(0, h-1, 0, w1-1);
-    Y_elu2r       = ui8matrix(0, h-1, 0, w1-1);
-    Y_elu2rf      = ui8matrix(0, h-1, 0, w1-1);
-    Y_ilu3_elu2rf = ui8matrix(0, h-1, 0, w1-1);/**/
+    T                   = ui8matrix(0-b, h-1+b, 0-b, w1-1+b);   // X packé
+    Y_bas_or_packed     = ui8matrix(0-b, h-1+b, 0-b, w1-1+b);
+    Y_P                 = ui8matrix(0, h-1, 0, w1-1);   // résultat mais en packé
+
+    T16                 = ui16matrix(0-b, h-1+b, 0-b, w1-1+b);   // X packé
+    Y_bas_or_packed16   = ui16matrix(0-b, h-1+b, 0-b, w1-1+b);
+    Y_P16               = ui16matrix(0, h-1, 0, w1-1);   // résultat mais en packé
+
+
+    Y_bas_SWP8          = ui8matrix(0, h-1, 0, w1-1);
+    Y_bas_SWP16         = ui8matrix(0, h-1, 0, w1-1);
+    Y_reg               = ui8matrix(0, h-1, 0, w1-1);
+    Y_rot               = ui8matrix(0, h-1, 0, w1-1);
+    Y_red               = ui8matrix(0, h-1, 0, w1-1);
+    Y_ilu3              = ui8matrix(0, h-1, 0, w1-1);
+    Y_ilu3r             = ui8matrix(0, h-1, 0, w1-1);
+    Y_elu2r             = ui8matrix(0, h-1, 0, w1-1);
+    Y_elu2rf            = ui8matrix(0, h-1, 0, w1-1);
+    Y_ilu3_elu2rf       = ui8matrix(0, h-1, 0, w1-1);/**/
 
 
     //--------------------- INIT ---------------------
     //puts("zero");
     zero_ui8matrix(X,  0-b, h-1+b, 0-b, w1-1+b);
-    zero_ui8matrix(T,  0-b, h-1+b, 0-b, w1-1+b);              // temporaire packée
     zero_ui8matrix(Y_bas_originale,         0, h-1, 0, w1-1); // basique 100% correct
 
+    zero_ui8matrix(T,  0-b, h-1+b, 0-b, w1-1+b);              // temporaire packée
     zero_ui8matrix(Y_bas_or_packed,  0-b, h-1+b, 0-b, w1-1+b); // basique 100% correct packée
     zero_ui8matrix(Y_P,         0, h-1, 0, w1-1);              // Y packé
 
-    zero_ui8matrix(Y_bas_SWP,         0, h-1, 0, w1-1);       // basique swp
+    zero_ui16matrix(T16,  0-b, h-1+b, 0-b, w1-1+b);              // temporaire packée
+    zero_ui16matrix(Y_bas_or_packed16,  0-b, h-1+b, 0-b, w1-1+b); // basique 100% correct packée
+    zero_ui16matrix(Y_P16,         0, h-1, 0, w1-1);              // Y packé
+
+    zero_ui8matrix(Y_bas_SWP8,         0, h-1, 0, w1-1);       // basique swp
+    zero_ui8matrix(Y_bas_SWP16,         0, h-1, 0, w1-1);       // basique swp
     zero_ui8matrix(Y_reg,         0, h-1, 0, w1-1);
     zero_ui8matrix(Y_rot,         0, h-1, 0, w1-1);
     zero_ui8matrix(Y_red,         0, h-1, 0, w1-1);
@@ -143,16 +158,18 @@ void test_swp_morpho_max_routine(int h, int w0){
     //--------------------- APPEL FONCTIONS SWP ---------------------
     // puts("\n-- max3 swp --");
     max3_ui8matrix_basic               (X, 0, h, 0, w0, Y_bas_originale);
-    max3_swp_ui8matrix_basic           (X, 0, h, 0, w0, T, Y_P, Y_bas_SWP);
+    max3_swp_ui8matrix_basic           (X, 0, h, 0, w0, T, Y_P, Y_bas_SWP8);
+    // max3_swp_ui16matrix_basic          (X, 0, h, 0, w0, T16, Y_P16, Y_bas_SWP16);
 
-                    // pack_ui8matrix(Y_bas_originale, h, w0, Y_bas_or_packed);  // PACKAGE 100% true
-                    // displayM_ui8matrix(Y_bas_or_packed, 0, h-1, 0, (w0-1)/8, "Y bas or pack");  // display 100% true packé
+
+                    // pack_ui16matrix(Y_bas_originale, h, w0, Y_bas_or_packed16);  // PACKAGE 100% true
+                    // displayM_ui16matrix(Y_bas_or_packed16, 0, h-1, 0, (w0-1)/16, "Y bas or pack16");  // display 100% true packé
 
     //--------------------- AFFICHAGE ---------------------
     // puts("display");
     // display_ui8matrix(X,         0, h-1, 0, w0-1, "%5d", "X bas        ");
     // display_ui8matrix(Y_bas_originale,         0, h-1, 0, w0-1, "%5d", "Y bas originale        "); // Basique 100% correct
-    // display_ui8matrix(Y_bas_SWP,         0, h-1, 0, w0-1, "%5d", "Y bas_swp        ");
+    // display_ui8matrix(Y_bas_SWP8,         0, h-1, 0, w0-1, "%5d", "Y bas_swp        ");
     // display_ui8matrix(Y_reg,         0, h-1, 0, w0-1, "%5d", "Y reg        ");
     // display_ui8matrix(Y_rot,         0, h-1, 0, w0-1, "%5d", "Y rot        ");
     // display_ui8matrix(Y_red,         0, h-1, 0, w0-1, "%5d", "Y red        ");
@@ -165,7 +182,7 @@ void test_swp_morpho_max_routine(int h, int w0){
 
     //--------------------- COMPARE ---------------------
     puts("-- compare max swp --");
-    c = compare_swp_ui8matrix(Y_bas_originale, 0, h-1, 0, w0-1, Y_bas_SWP        , "Y bas_swp                       ");
+    c = compare_swp_ui8matrix(Y_bas_originale, 0, h-1, 0, w0-1, Y_bas_SWP8        , "Y bas_swp8                       ");
     
     //--------------------- DESALLOC---------------------
     // puts("-- free --");
@@ -176,7 +193,7 @@ void test_swp_morpho_max_routine(int h, int w0){
     // free_ui8matrix(Y_P,                0, h-1, 0, w1-1);
 
 
-    // free_ui8matrix(Y_bas_SWP        , 0, h-1, 0, w1-1);
+    // free_ui8matrix(Y_bas_SWP8        , 0, h-1, 0, w1-1);
     // free_ui8matrix(Y_reg        , 0,   h-1,   0,   w1-1);
     // free_ui8matrix(Y_rot        , 0,   h-1,   0,   w1-1);
     // free_ui8matrix(Y_red        , 0,   h-1,   0,   w1-1);
