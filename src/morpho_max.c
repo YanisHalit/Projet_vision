@@ -664,45 +664,32 @@ void line_swp_max3_ui8matrix_basic(uint8 **T, int i, int j0, int j1, uint8 **Y)
         milieu_gauche , milieu_milieu, milieu_droit,
         bas_gauche, bas_milieu, bas_droit,
 
-
         b0_g, b0_d, or_milieu,
 
         l, r, y;
 
-
         for(int j = j0; j <= j1;   j++){
 
-            // appliquer le masque ici
             haut_gauche = load2(T, i-1, j-1);
             milieu_gauche = (load2(T, i, j-1));
             bas_gauche = load2(T, i+1, j-1);
 
-
-
             b0_g = haut_gauche | milieu_gauche | bas_gauche;
-
 
 
             haut_milieu = load2(T, i-1, j);
             milieu_milieu = load2(T, i, j);
             bas_milieu = load2(T, i+1, j);
 
-
-
-
             or_milieu = bas_milieu | milieu_milieu | haut_milieu;
 
 
-            // appliquer le second masque ici
             haut_droit = load2(T, i-1, j+1);
             milieu_droit = load2(T, i, j+1 );
             bas_droit = load2(T, i+1, j+1);
 
-
-
             b0_d = haut_droit | milieu_droit | bas_droit;
 
-            // traitement debut avec la bordure
 
             l = i8left(b0_g, or_milieu);
             r = i8right(or_milieu, b0_d);
@@ -718,45 +705,32 @@ void line_swp_max3_ui16matrix_basic(uint16 **T, int i, int j0, int j1, uint16 **
         milieu_gauche , milieu_milieu, milieu_droit,
         bas_gauche, bas_milieu, bas_droit,
 
-
         b0_g, b0_d, or_milieu,
 
         l, r, y;
 
-
         for(int j = j0; j <= j1;   j++){
 
-            // appliquer le masque ici
             haut_gauche = load2(T, i-1, j-1);
             milieu_gauche = (load2(T, i, j-1));
             bas_gauche = load2(T, i+1, j-1);
 
-
-
             b0_g = haut_gauche | milieu_gauche | bas_gauche;
-
 
 
             haut_milieu = load2(T, i-1, j);
             milieu_milieu = load2(T, i, j);
             bas_milieu = load2(T, i+1, j);
 
-
-
-
             or_milieu = bas_milieu | milieu_milieu | haut_milieu;
 
 
-            // appliquer le second masque ici
             haut_droit = load2(T, i-1, j+1);
             milieu_droit = load2(T, i, j+1 );
             bas_droit = load2(T, i+1, j+1);
 
-
-
             b0_d = haut_droit | milieu_droit | bas_droit;
 
-            // traitement debut avec la bordure
 
             l = i16left(b0_g, or_milieu);
             r = i16right(or_milieu, b0_d);
@@ -772,45 +746,32 @@ void line_swp_max3_ui32matrix_basic(uint32 **T, int i, int j0, int j1, uint32 **
         milieu_gauche , milieu_milieu, milieu_droit,
         bas_gauche, bas_milieu, bas_droit,
 
-
         b0_g, b0_d, or_milieu,
 
         l, r, y;
 
-
         for(int j = j0; j <= j1;   j++){
 
-            // appliquer le masque ici
             haut_gauche = load2(T, i-1, j-1);
             milieu_gauche = (load2(T, i, j-1));
             bas_gauche = load2(T, i+1, j-1);
 
-
-
             b0_g = haut_gauche | milieu_gauche | bas_gauche;
-
 
 
             haut_milieu = load2(T, i-1, j);
             milieu_milieu = load2(T, i, j);
             bas_milieu = load2(T, i+1, j);
 
-
-
-
             or_milieu = bas_milieu | milieu_milieu | haut_milieu;
 
 
-            // appliquer le second masque ici
             haut_droit = load2(T, i-1, j+1);
             milieu_droit = load2(T, i, j+1 );
             bas_droit = load2(T, i+1, j+1);
 
-
-
             b0_d = haut_droit | milieu_droit | bas_droit;
 
-            // traitement debut avec la bordure
 
             l = i32left(b0_g, or_milieu);
             r = i32right(or_milieu, b0_d);
