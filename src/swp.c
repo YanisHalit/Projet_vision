@@ -260,10 +260,10 @@ void unpack_ui8vector(uint8* X8, int src_width, uint8* Y1)
 void unpack_ui16vector(uint16* X16, int src_width, uint8* Y1)
 // ----------------------------------------------------------
 {
+
     for(int i=0; i<src_width; i++) {
-        
-        uint8 x = X16[i];
-        
+
+        uint16 x = X16[i];
         for(int k=0; k<16; k++) {
             Y1[16*i + k] = x & 1;
             x = x >> 1;
@@ -276,7 +276,7 @@ void unpack_ui32vector(uint32* X32, int src_width, uint8* Y1)
 {
     for(int i=0; i<src_width; i++) {
         
-        uint8 x = X32[i];
+        uint32 x = X32[i];
         
         for(int k=0; k<32; k++) {
             Y1[32*i + k] = x & 1;
