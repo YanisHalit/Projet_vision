@@ -745,7 +745,7 @@ void test_swp_morpho_min(void)
 // ------------------------------ Test SWP --------------------------------------------
 int test_swp(int argc, char* argv[]){
     puts("=== test_swap ===");
-    test_swp_morpho_max();
+    // test_swp_morpho_max();
     test_swp_morpho_min();
     return 0;
 }

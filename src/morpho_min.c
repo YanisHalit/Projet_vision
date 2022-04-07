@@ -667,7 +667,7 @@ void line_swp_min3_ui8matrix_basic(uint8 **T, int i, int j0, int j1, uint8 **Y)
 
         b0_g, b0_d, or_milieu,
 
-        l, r, y;
+        l, r, y, res;
 
 
         for(int j = j0; j <= j1;   j++){
@@ -675,23 +675,24 @@ void line_swp_min3_ui8matrix_basic(uint8 **T, int i, int j0, int j1, uint8 **Y)
             milieu_gauche = (load2(T, i, j-1));
             bas_gauche = load2(T, i+1, j-1);
 
-            b0_g = haut_gauche & milieu_gauche & bas_gauche;
+            b0_g = min3(haut_gauche, milieu_gauche, bas_gauche);
 
             haut_milieu = load2(T, i-1, j);
             milieu_milieu = load2(T, i, j);
             bas_milieu = load2(T, i+1, j);
 
-            or_milieu = bas_milieu & milieu_milieu & haut_milieu;
+            or_milieu = min3(bas_milieu, milieu_milieu, haut_milieu);
 
             haut_droit = load2(T, i-1, j+1);
             milieu_droit = load2(T, i, j+1 );
             bas_droit = load2(T, i+1, j+1);
 
-            b0_d = haut_droit & milieu_droit & bas_droit;
+            b0_d = min3(haut_droit, milieu_droit, bas_droit);
 
             l = i8left(b0_g, or_milieu);
             r = i8right(or_milieu, b0_d);
-            store2(Y, i, j, or_milieu & l & r);
+            res = min3(or_milieu, l, r);
+            store2(Y, i, j, res);
         }
 }
 // -------------------------------------------------------------------------------------------
@@ -704,31 +705,32 @@ void line_swp_min3_ui16matrix_basic(uint16 **T, int i, int j0, int j1, uint16 **
 
         b0_g, b0_d, or_milieu,
 
-        l, r, y;
+        l, r, y, res;
+
 
         for(int j = j0; j <= j1;   j++){
-
             haut_gauche = load2(T, i-1, j-1);
             milieu_gauche = (load2(T, i, j-1));
             bas_gauche = load2(T, i+1, j-1);
 
-            b0_g = haut_gauche & milieu_gauche & bas_gauche;
+            b0_g = min3(haut_gauche, milieu_gauche, bas_gauche);
 
             haut_milieu = load2(T, i-1, j);
             milieu_milieu = load2(T, i, j);
             bas_milieu = load2(T, i+1, j);
 
-            or_milieu = bas_milieu & milieu_milieu & haut_milieu;
+            or_milieu = min3(bas_milieu, milieu_milieu, haut_milieu);
 
             haut_droit = load2(T, i-1, j+1);
             milieu_droit = load2(T, i, j+1 );
             bas_droit = load2(T, i+1, j+1);
 
-            b0_d = haut_droit & milieu_droit & bas_droit;
+            b0_d = min3(haut_droit, milieu_droit, bas_droit);
 
-            l = i16left(b0_g, or_milieu);
-            r = i16right(or_milieu, b0_d);
-            store2(Y, i, j, or_milieu & l & r);
+            l = i8left(b0_g, or_milieu);
+            r = i8right(or_milieu, b0_d);
+            res = min3(or_milieu, l, r);
+            store2(Y, i, j, res);
         }
 }
 // -------------------------------------------------------------------------------------------
@@ -741,30 +743,32 @@ void line_swp_min3_ui32matrix_basic(uint32 **T, int i, int j0, int j1, uint32 **
 
         b0_g, b0_d, or_milieu,
 
-        l, r, y;
+        l, r, y, res;
+
 
         for(int j = j0; j <= j1;   j++){
             haut_gauche = load2(T, i-1, j-1);
             milieu_gauche = (load2(T, i, j-1));
             bas_gauche = load2(T, i+1, j-1);
 
-            b0_g = haut_gauche & milieu_gauche & bas_gauche;
+            b0_g = min3(haut_gauche, milieu_gauche, bas_gauche);
 
             haut_milieu = load2(T, i-1, j);
             milieu_milieu = load2(T, i, j);
             bas_milieu = load2(T, i+1, j);
 
-            or_milieu = bas_milieu & milieu_milieu & haut_milieu;
+            or_milieu = min3(bas_milieu, milieu_milieu, haut_milieu);
 
             haut_droit = load2(T, i-1, j+1);
             milieu_droit = load2(T, i, j+1 );
             bas_droit = load2(T, i+1, j+1);
 
-            b0_d = haut_droit & milieu_droit & bas_droit;
+            b0_d = min3(haut_droit, milieu_droit, bas_droit);
 
-            l = i32left(b0_g, or_milieu);
-            r = i32right(or_milieu, b0_d);
-            store2(Y, i, j, or_milieu & l & r);
+            l = i8left(b0_g, or_milieu);
+            r = i8right(or_milieu, b0_d);
+            res = min3(or_milieu, l, r);
+            store2(Y, i, j, res);
         }
 }
 // -------------------------------------------------------------------------------------------

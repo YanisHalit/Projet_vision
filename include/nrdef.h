@@ -14,10 +14,10 @@
 #define load2(X, i, j) X[i][j]
 #define store1(X, i, x) X[i] = x
 #define store2(X, i, j, x) X[i][j] = x
-#define min3(x,y,z) x&&y&&z
-#define min2(x,y) x&&y
-#define max3(x,y,z) x||y||z
-#define max2(x,y) x||y
+#define min3(x,y,z) x&y&z
+#define min2(x,y) x&y
+#define max3(x,y,z) x|y|z
+#define max2(x,y) x|y
 
 #define TRUE 1
 #define FALSE 0
