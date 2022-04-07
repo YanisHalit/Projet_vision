@@ -143,7 +143,7 @@ void test_swp8_morpho_max_routine(int h, int w0)
     //--------------------- APPEL FONCTIONS SWP ---------------------
     // puts("\n-- max3 swp --");
     max3_swp_ui8matrix_basic           (X, 0, h, 0, w0, T, Y_P, Y_bas_SWP8);
-
+    max3_swp_ui8matrix_red           (X, 0, h, 0, w0, T, Y_P, Y_red);
     //--------------------- AFFICHAGE ---------------------
     // puts("display");
     // display_ui8matrix(X,         0, h-1, 0, w0-1, "%5d", "X bas        ");
@@ -163,6 +163,8 @@ void test_swp8_morpho_max_routine(int h, int w0)
     //--------------------- COMPARE ---------------------
     puts("-- compare max swp 8 --");
     c = compare_swp_ui8matrix(Y_bas_SWP8, 0, h-1, 0, w0-1,  Y_bas_originale, "Y bas_swp8                       ");
+    c = compare_swp_ui8matrix(Y_red, 0, h-1, 0, w0-1,  Y_bas_originale, "Y red_swp8                       ");
+
     //--------------------- DESALLOC---------------------
     // puts("-- free --");
     // free_ui8matrix(X,                  0-b, h-1+b, 0-b, w1-1+b);
@@ -717,8 +719,8 @@ void test_swp_morpho_max(void)
     for(int h = h0; h <= h0+dh; h++) { // pour tester elu2
         for(int w = w0; w <= w0+dw; w++) { // pour tester ilu3
             test_swp8_morpho_max_routine(h, w);
-            test_swp16_morpho_max_routine(h, w);
-            test_swp32_morpho_max_routine(h, w);
+            // test_swp16_morpho_max_routine(h, w);
+            // test_swp32_morpho_max_routine(h, w);
         }
     }
 }
@@ -745,8 +747,8 @@ void test_swp_morpho_min(void)
 // ------------------------------ Test SWP --------------------------------------------
 int test_swp(int argc, char* argv[]){
     puts("=== test_swap ===");
-    // test_swp_morpho_max();
-    test_swp_morpho_min();
+    test_swp_morpho_max();
+    // test_swp_morpho_min();
     return 0;
 }
 // ------------------------------------------------------------------------------------
