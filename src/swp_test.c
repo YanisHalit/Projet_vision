@@ -182,24 +182,25 @@ void test_swp8_morpho_max_routine(int h, int w0)
     // display_ui8matrix(Y_bas_originale,         0, h-1, 0, w0-1, "%5d", "Y bas originale        "); // Basique 100% correct
     //--------------------- APPEL FONCTIONS SWP ---------------------
     // puts("\n-- max3 swp --");
-    // max3_swp_ui8matrix_basic                       (X, 0, h, 0, w0, T_bas, Y_P_bas, Y_bas);
-    // max3_swp_ui8matrix_rot                         (X, 0, h, 0, w0, T_rot, Y_P_rot, Y_rot);
-    // max3_swp_ui8matrix_red                         (X, 0, h, 0, w0, T_red, Y_P_red, Y_red);
+    max3_swp_ui8matrix_basic                       (X, 0, h, 0, w0, T_bas, Y_P_bas, Y_bas);
+    max3_swp_ui8matrix_rot                         (X, 0, h, 0, w0, T_rot, Y_P_rot, Y_rot);
+    max3_swp_ui8matrix_red                         (X, 0, h, 0, w0, T_red, Y_P_red, Y_red);
     max3_swp_ui8matrix_ilu3                        (X, 0, h, 0, w0, T_ilu3, Y_P_ilu3, Y_ilu3);
-    // max3_swp_ui8matrix_ilu3_red                    (X, 0, h, 0, w0, T_ilu3r, Y_P_ilu3r, Y_ilu3r);
-    // max3_swp_ui8matrix_elu2_red                    (X, 0, h, 0, w0, T_elu2r, Y_P_elu2r, Y_elu2r); // fait une segmentation fault si max3_swp_ui8matrix_ilu3_red est decommentée
-    // max3_swp_ui8matrix_elu2_red_factor             (X, 0, h, 0, w0, T_elu2rf, Y_P_elu2rf, Y_elu2rf);
-    // max3_swp_ui8matrix_ilu3_elu2_red               (X, 0, h, 0, w0, T_ilu3_elu2r, Y_P_ilu3_elu2r, Y_ilu3_elu2r);
+    max3_swp_ui8matrix_ilu3_red                    (X, 0, h, 0, w0, T_ilu3r, Y_P_ilu3r, Y_ilu3r);
+    max3_swp_ui8matrix_elu2_red                    (X, 0, h, 0, w0, T_elu2r, Y_P_elu2r, Y_elu2r); // fait une segmentation fault si max3_swp_ui8matrix_ilu3_red est decommentée
+    max3_swp_ui8matrix_elu2_red_factor             (X, 0, h, 0, w0, T_elu2rf, Y_P_elu2rf, Y_elu2rf);
+    max3_swp_ui8matrix_ilu3_elu2_red               (X, 0, h, 0, w0, T_ilu3_elu2r, Y_P_ilu3_elu2r, Y_ilu3_elu2r);
+    max3_swp_ui8matrix_ilu3_elu2_red_factor        (X, 0, h, 0, w0, T_ilu3_elu2r, Y_P_ilu3_elu2r, Y_ilu3_elu2rf);
 
     //--------------------- AFFICHAGE ---------------------
     // puts("display");
     // display_ui8matrix(X,         0, h-1, 0, w0-1, "%5d", "X bas        ");
-    display_ui8matrix(Y_bas_originale,         0, h-1, 0, w0-1, "%5d", "Y bas originale        "); // Basique 100% correct
+    // display_ui8matrix(Y_bas_originale,         0, h-1, 0, w0-1, "%5d", "Y bas originale        "); // Basique 100% correct
     // display_ui8matrix(Y_bas,         0, h-1, 0, w0-1, "%5d", "Y bas_SWP8        ");
     // display_ui8matrix(Y_reg,         0, h-1, 0, w0-1, "%5d", "Y reg        ");
     // display_ui8matrix(Y_rot,         0, h-1, 0, w0-1, "%5d", "Y rot        ");
     // display_ui8matrix(Y_red,         0, h-1, 0, w0-1, "%5d", "Y red        ");
-    display_ui8matrix(Y_ilu3,        0, h-1, 0, w0-1, "%5d", "Y ilu3       ");
+    // display_ui8matrix(Y_ilu3,        0, h-1, 0, w0-1, "%5d", "Y ilu3       ");
     // display_ui8matrix(Y_ilu3r,       0, h-1, 0, w0-1, "%5d", "Y ilu3r      ");
     // display_ui8matrix(Y_elu2r,       0, h-1, 0, w0-1, "%5d", "Y elu2r      ");
     // display_ui8matrix(Y_elu2rf,      0, h-1, 0, w0-1, "%5d", "Y elu2rf     ");
@@ -208,17 +209,15 @@ void test_swp8_morpho_max_routine(int h, int w0)
 
     //--------------------- COMPARE ---------------------
     // puts("-- compare max swp 8 --");
-    // c = compare_swp_ui8matrix(Y_bas, 0, h-1, 0, w0-1,  Y_bas_originale, "Y bas_swp8                     ");
-    // c = compare_swp_ui8matrix(Y_rot, 0, h-1, 0, w0-1,  Y_bas_originale, "Y rot_swp8                     ");
-    // c = compare_swp_ui8matrix(Y_red, 0, h-1, 0, w0-1,  Y_bas_originale, "Y red_swp8                     ");
+    c = compare_swp_ui8matrix(Y_bas, 0, h-1, 0, w0-1,  Y_bas_originale, "Y bas_swp8                     ");
+    c = compare_swp_ui8matrix(Y_rot, 0, h-1, 0, w0-1,  Y_bas_originale, "Y rot_swp8                     ");
+    c = compare_swp_ui8matrix(Y_red, 0, h-1, 0, w0-1,  Y_bas_originale, "Y red_swp8                     ");
     c = compare_swp_ui8matrix(Y_ilu3, 0, h-1, 0, w0-1,  Y_bas_originale, "Y ilu3_swp8                    ");
-    // c = compare_swp_ui8matrix(Y_ilu3r, 0, h-1, 0, w0-1,  Y_bas, "Y ilu3r_swp8                   ");
-    // c = compare_swp_ui8matrix(Y_elu2r, 0, h-1, 0, w0-1,  Y_bas, "Y elu2r_swp8                   ");
-    // c = compare_swp_ui8matrix(Y_elu2rf, 0, h-1, 0, w0-1,  Y_bas, "Y elu2rf_swp8                  ");
-    // c = compare_swp_ui8matrix(Y_ilu3_elu2r, 0, h-1, 0, w0-1,  Y_bas_originale, "Y ilu3_elu2r_swp8                  ");
-
-
-
+    c = compare_swp_ui8matrix(Y_ilu3r, 0, h-1, 0, w0-1,  Y_bas_originale, "Y ilu3r_swp8                   ");
+    c = compare_swp_ui8matrix(Y_elu2r, 0, h-1, 0, w0-1,  Y_bas_originale, "Y elu2r_swp8                   ");
+    c = compare_swp_ui8matrix(Y_elu2rf, 0, h-1, 0, w0-1,  Y_bas_originale, "Y elu2rf_swp8                  ");
+    c = compare_swp_ui8matrix(Y_ilu3_elu2r, 0, h-1, 0, w0-1,  Y_bas_originale, "Y ilu3_elu2r_swp8              ");
+    c = compare_swp_ui8matrix(Y_ilu3_elu2rf, 0, h-1, 0, w0-1,  Y_bas_originale, "Y ilu3_elu2rf_swp8             ");
 
     //--------------------- DESALLOC---------------------
     // puts("-- free --");

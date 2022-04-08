@@ -773,13 +773,13 @@ void line_swp_max3_ui8matrix_ilu3                (uint8 **T, int i, int j0, int 
         l, r, y, res;
         for( int j = j0; j < j1-3; j+=3){
             // -------- 1 --------
-            haut_gauche = load2(T, i-1, j0-1);
-            milieu_gauche = (load2(T, i, j0-1));
-            bas_gauche = load2(T, i+1, j0-1);
+            haut_gauche = load2(T, i-1, j-1);
+            milieu_gauche = (load2(T, i, j-1));
+            bas_gauche = load2(T, i+1, j-1);
 
-            haut_milieu = load2(T, i-1, j0);
-            milieu_milieu = load2(T, i, j0);
-            bas_milieu = load2(T, i+1, j0);
+            haut_milieu = load2(T, i-1, j);
+            milieu_milieu = load2(T, i, j);
+            bas_milieu = load2(T, i+1, j);
 
             haut_droit = load2(T, i-1, j+1);
             milieu_droit = load2(T, i, j+1 );
@@ -846,7 +846,7 @@ void line_swp_max3_ui8matrix_ilu3_red            (uint8 **T, int i, int j0, int 
 
 
         b0_g = max3(haut_gauche, milieu_gauche, bas_gauche);
-        or_milieu = max3(bas_milieu, milieu_milieu, haut_milieu);
+        or_milieu = max3(haut_milieu, milieu_milieu, bas_milieu);
 
         for( int j = j0; j < j1-3; j+=3){
             // -------- 1 --------
@@ -863,11 +863,11 @@ void line_swp_max3_ui8matrix_ilu3_red            (uint8 **T, int i, int j0, int 
             store2(Y, i, j, res);
 
             // -------- 2 --------
-            haut_droit = load2(T, i-1, j+2);
-            milieu_droit = load2(T, i, j+2 );
-            bas_droit = load2(T, i+1, j+2);
+            haut_gauche = load2(T, i-1, j+2);
+            milieu_gauche = load2(T, i, j+2 );
+            bas_gauche = load2(T, i+1, j+2);
 
-            b0_g = max3(haut_droit, milieu_droit, bas_droit);
+            b0_g = max3(haut_gauche, milieu_gauche, bas_gauche);
 
             l = i8left(or_milieu, b0_d);
             r = i8right(b0_d, b0_g);
@@ -876,17 +876,17 @@ void line_swp_max3_ui8matrix_ilu3_red            (uint8 **T, int i, int j0, int 
             store2(Y, i, j+1, res);
 
             // -------- 3 --------
-            haut_droit = load2(T, i-1, j+3);
-            milieu_droit = load2(T, i, j+3 );
-            bas_droit = load2(T, i+1, j+3);
+            haut_milieu = load2(T, i-1, j+3);
+            milieu_milieu = load2(T, i, j+3 );
+            bas_milieu = load2(T, i+1, j+3);
 
-            or_milieu = max3(haut_droit, milieu_droit, bas_droit);
+            or_milieu = max3(haut_milieu, milieu_milieu, bas_milieu);
 
             l = i8left(b0_d, b0_g);
             r = i8right(b0_g, or_milieu);
 
             res =  max3(l, b0_g, r);
-            store2(Y, i, j+1, res);
+            store2(Y, i, j+2, res);
         }
         int reste = (j1-j0-1) % 3;
         line_swp_max3_ui8matrix_basic(T, i, (j1-j0-reste-1), (j1-j0), Y);
@@ -1079,13 +1079,13 @@ void line_swp_max3_ui8matrix_ilu3_elu2_red(uint8 **T, int i, int j0, int j1, uin
             store2(Y, i+1, j, res);
 
             // -------- 2 --------
-            haut_droit = load2(T, i-1, j+2);
-            milieu_droit = load2(T, i, j+2 );
-            bas_droit = load2(T, i+1, j+2);
+            haut_gauche = load2(T, i-1, j+2);
+            milieu_gauche = load2(T, i, j+2 );
+            bas_gauche = load2(T, i+1, j+2);
 
-            droite_elu = load2(T, i+2, j+2);
+            gauche_elu = load2(T, i+2, j+2);
 
-            b0_g = max3(haut_droit, milieu_droit, bas_droit);
+            b0_g = max3(haut_gauche, milieu_gauche, bas_gauche);
 
             l = i8left(or_milieu, b0_d);
             r = i8right(b0_d, b0_g);
@@ -1093,7 +1093,7 @@ void line_swp_max3_ui8matrix_ilu3_elu2_red(uint8 **T, int i, int j0, int j1, uin
             res =  max3(l, b0_d, r);
             store2(Y, i, j+1, res);
             //--
-            max_gauche_elu = max3(milieu_droit, bas_droit, droite_elu);
+            max_gauche_elu = max3(milieu_gauche, bas_gauche, gauche_elu);
 
             l = i8left(max_milieu_elu, max_droite_elu);
             r = i8right(max_droite_elu, max_gauche_elu);
@@ -1101,13 +1101,13 @@ void line_swp_max3_ui8matrix_ilu3_elu2_red(uint8 **T, int i, int j0, int j1, uin
             store2(Y, i+1, j+1, res);
 
             // -------- 3 --------
-            haut_droit = load2(T, i-1, j+3);
-            milieu_droit = load2(T, i, j+3 );
-            bas_droit = load2(T, i+1, j+3);
+            haut_milieu = load2(T, i-1, j+3);
+            milieu_milieu = load2(T, i, j+3 );
+            bas_milieu = load2(T, i+1, j+3);
 
-            droite_elu = load2(T, i+2, j+3);
+            milieu_elu = load2(T, i+2, j+3);
 
-            or_milieu = max3(haut_droit, milieu_droit, bas_droit);
+            or_milieu = max3(haut_milieu, milieu_milieu, bas_milieu);
 
             l = i8left(b0_d, b0_g);
             r = i8right(b0_g, or_milieu);
@@ -1115,7 +1115,7 @@ void line_swp_max3_ui8matrix_ilu3_elu2_red(uint8 **T, int i, int j0, int j1, uin
             res =  max3(l, b0_g, r);
             store2(Y, i, j+2, res);
             //--
-            max_milieu_elu = max3(milieu_droit, bas_droit, droite_elu);
+            max_milieu_elu = max3(milieu_milieu, bas_milieu, milieu_elu);
 
             l = i8left(max_droite_elu, max_gauche_elu);
             r = i8right(max_gauche_elu, max_milieu_elu);
@@ -1124,8 +1124,133 @@ void line_swp_max3_ui8matrix_ilu3_elu2_red(uint8 **T, int i, int j0, int j1, uin
         }
         int reste = (j1-j0-1) % 3;
         line_swp_max3_ui8matrix_basic(T, i, (j1-j0-reste-1), (j1-j0), Y);
+        line_swp_max3_ui8matrix_basic(T, i+1, (j1-j0-reste-1), (j1-j0), Y);
 }
 // -------------------------------------------------------------------------------------------
+void line_swp_max3_ui8matrix_ilu3_elu2_red_factor(uint8 **T, int i, int j0, int j1, uint8 **Y)
+{   
+    uint8 haut_gauche, haut_milieu, haut_droit,
+          milieu_gauche, milieu_milieu, milieu_droit,
+          bas_gauche, bas_milieu, bas_droit,
+          max_all, max_gauche, max_milieu, max_actu,
+
+          gauche_elu , milieu_elu, droite_elu,
+          max_gauche_elu, max_milieu_elu, max_droite_elu, max_all_elu, max_l_elu,
+
+          max_mg_bg, max_mm_bm, max_md_bd, max_g_m, max_g_m_elu,
+
+          b0_g, b0_d, or_milieu,
+
+          l, r, y, res;
+
+        haut_gauche = load2(T, i-1, j0-1);
+        milieu_gauche = (load2(T, i, j0-1));
+        bas_gauche = load2(T, i+1, j0-1);
+        gauche_elu = load2(T, i+2, j0-1);
+
+        haut_milieu = load2(T, i-1, j0);
+        milieu_milieu = load2(T, i, j0);
+        bas_milieu = load2(T, i+1, j0);
+        milieu_elu = load2(T, i+2, j0);
+
+        max_mg_bg = max2(milieu_gauche, bas_gauche);
+        b0_g = max2(haut_gauche, max_mg_bg);
+        max_gauche_elu = max2(max_mg_bg, gauche_elu);
+
+        max_mm_bm = max2(milieu_milieu, bas_milieu);
+        or_milieu = max2(haut_milieu, max_mm_bm);
+        max_milieu_elu = max2(max_mm_bm, milieu_elu);
+
+    for( int j = j0; j < j1-3; j+=3){
+        // ------ 1 ------
+        haut_droit = load2(T, i-1, j+1);
+        milieu_droit = load2(T, i, j+1);
+        bas_droit = load2(T, i+1, j+1);
+
+        droite_elu = load2(T, i+2, j+1);
+
+        max_md_bd = max2(milieu_droit, bas_droit);
+
+        b0_d = max2(haut_droit, max_md_bd);
+
+        l = i8left(b0_g, or_milieu);
+        r = i8right(or_milieu, b0_d);
+
+        max_l_elu = max2(l, or_milieu);
+        res =  max2(max_l_elu, r);
+        store2(Y, i, j, res);
+        // --
+        max_droite_elu = max2(max_md_bd, droite_elu);
+
+        l = i8left(max_gauche_elu, max_milieu_elu);
+        r = i8right(max_milieu_elu, max_droite_elu);
+
+        max_l_elu = max2(l, max_milieu_elu);
+        res =  max2(max_l_elu, r);
+        store2(Y, i+1, j, res);
+
+        // ------ 2 ------
+        haut_gauche = load2(T, i-1, j+2);
+        milieu_gauche = load2(T, i, j+2 );
+        bas_gauche = load2(T, i+1, j+2);
+
+        gauche_elu = load2(T, i+2, j+2);
+
+        max_mg_bg = max2(milieu_gauche, bas_gauche);
+
+        b0_g  = max2(haut_gauche, max_mg_bg);
+
+        l = i8left(or_milieu, b0_d);
+        r = i8right(b0_d, b0_g);
+
+        max_l_elu = max2(l, b0_d);
+        res =  max2(max_l_elu, r);
+        store2(Y, i, j+1, res);
+        // --
+        max_gauche_elu = max2(max_mg_bg, gauche_elu);
+
+        l = i8left(max_milieu_elu, max_droite_elu);
+        r = i8right(max_droite_elu, max_gauche_elu);
+
+        max_l_elu = max2(l, max_droite_elu);
+        res =  max2(max_l_elu, r);
+        store2(Y, i+1, j+1, res);
+
+        // ------ 3 ------
+        haut_milieu = load2(T, i-1, j+3);
+        milieu_milieu = load2(T, i, j+3 );
+        bas_milieu = load2(T, i+1, j+3);
+
+        milieu_elu = load2(T, i+2, j+3);
+
+        max_mm_bm = max2(milieu_milieu, bas_milieu);
+
+        or_milieu = max2(haut_milieu, max_mm_bm);
+
+        l = i8left(b0_d, b0_g);
+        r = i8right(b0_g, or_milieu);
+
+        max_l_elu = max2(l, b0_g);
+        res =  max2(max_l_elu, r);
+        store2(Y, i, j+2, res);
+
+        // --
+        max_milieu_elu = max2(max_mm_bm, milieu_elu);
+
+        l = i8left(max_droite_elu, max_gauche_elu);
+        r = i8right(max_gauche_elu, max_milieu_elu);
+
+        max_l_elu = max2(l, max_gauche_elu);
+        res =  max2(max_l_elu, r);
+        store2(Y, i+1, j+2, res);
+    }
+    
+    int reste = (j1-j0-1) % 3;
+    line_swp_max3_ui8matrix_basic(T, i, (j1-j0-reste-1), (j1-j0), Y);
+    line_swp_max3_ui8matrix_basic(T, i+1, (j1-j0-reste-1), (j1-j0), Y);
+}
+// -------------------------------------------------------------------------------------------
+
 
 // -------------------------------------------------------------------------------------------
 void max3_swp_ui8matrix_basic(uint8 **X, int i0, int i1, int j0, int j1, uint8 **T, uint8 **Y_P, uint8 **Y_UP)
@@ -1137,7 +1262,7 @@ void max3_swp_ui8matrix_basic(uint8 **X, int i0, int i1, int j0, int j1, uint8 *
         line_swp_max3_ui8matrix_basic(T, i, j0, (j1)/8, Y_P);
     }
             // displayM_ui8matrix(Y_P, i0, i1-1, j0, (j1-1)/8, "RESULT packé"); // résultat packé
-    unpack_ui8matrix(Y_P, i1, j1-1, Y_UP); // unpack de result packé dans Y_UP
+    unpack_ui8matrix(Y_P, i1, (j1/8)+1, Y_UP); // unpack de result packé dans Y_UP
     // display_ui8matrix(Y_UP,     i0, i1-1, j0, j1-1, "%5d", "RESULT UNPACK        "); // affichage résultat unpacké
 }
 // -------------------------------------------------------------------------------------------
@@ -1147,7 +1272,7 @@ void max3_swp_ui8matrix_rot(uint8 **X, int i0, int i1, int j0, int j1, uint8 **T
     for( int i = i0; i < i1; i++){
         line_swp_max3_ui8matrix_rot(T, i, j0, (j1)/8, Y_P);
     }
-    unpack_ui8matrix(Y_P, i1, j1-1, Y_UP); // unpack de result packé dans Y_UP
+    unpack_ui8matrix(Y_P, i1, (j1/8)+1, Y_UP); // unpack de result packé dans Y_UP
 }
 // -------------------------------------------------------------------------------------------
 void max3_swp_ui8matrix_red                 (uint8 **X, int i0, int i1, int j0, int j1, uint8 **T, uint8 **Y_P, uint8 **Y_UP)
@@ -1156,7 +1281,7 @@ void max3_swp_ui8matrix_red                 (uint8 **X, int i0, int i1, int j0, 
     for( int i = i0; i < i1; i++){
         line_swp_max3_ui8matrix_red(T, i, j0, (j1)/8, Y_P);
     }
-    unpack_ui8matrix(Y_P, i1, j1-1, Y_UP); // unpack de result packé dans Y_UP
+    unpack_ui8matrix(Y_P, i1, (j1/8)+1, Y_UP); // unpack de result packé dans Y_UP
 }
 // -------------------------------------------------------------------------------------------
 void max3_swp_ui8matrix_ilu3                (uint8 **X, int i0, int i1, int j0, int j1, uint8 **T, uint8 **Y_P, uint8 **Y_UP)
@@ -1165,7 +1290,7 @@ void max3_swp_ui8matrix_ilu3                (uint8 **X, int i0, int i1, int j0, 
     for( int i = i0; i < i1; i++){
         line_swp_max3_ui8matrix_ilu3(T, i, j0, (j1)/8, Y_P);
     }
-    unpack_ui8matrix(Y_P, i1, j1-1, Y_UP); // unpack de result packé dans Y_UP
+    unpack_ui8matrix(Y_P, i1, (j1/8)+1, Y_UP); // unpack de result packé dans Y_UP
 }
 // -------------------------------------------------------------------------------------------
 void max3_swp_ui8matrix_ilu3_red            (uint8 **X, int i0, int i1, int j0, int j1, uint8 **T, uint8 **Y_P, uint8 **Y_UP)
@@ -1174,7 +1299,7 @@ void max3_swp_ui8matrix_ilu3_red            (uint8 **X, int i0, int i1, int j0, 
     for( int i = i0; i < i1; i++){
         line_swp_max3_ui8matrix_ilu3_red(T, i, j0, (j1)/8, Y_P);
     }
-    unpack_ui8matrix(Y_P, i1, j1-1, Y_UP); // unpack de result packé dans Y_UP
+    unpack_ui8matrix(Y_P, i1, (j1/8)+1, Y_UP); // unpack de result packé dans Y_UP
 }
 // -------------------------------------------------------------------------------------------
 void max3_swp_ui8matrix_elu2_red            (uint8 **X, int i0, int i1, int j0, int j1, uint8 **T, uint8 **Y_P, uint8 **Y_UP)
@@ -1188,7 +1313,7 @@ void max3_swp_ui8matrix_elu2_red            (uint8 **X, int i0, int i1, int j0, 
     for(int i = (i1-i0-r-1); i < (i1-i0); i++){
         line_swp_max3_ui8matrix_basic(T, i, j0, (j1)/8, Y_P);
     }
-    unpack_ui8matrix(Y_P, i1, j1-1, Y_UP); // unpack de result packé dans Y_UP
+    unpack_ui8matrix(Y_P, i1, (j1/8)+1, Y_UP); // unpack de result packé dans Y_UP
 }
 // -------------------------------------------------------------------------------------------
 void max3_swp_ui8matrix_elu2_red_factor     (uint8 **X, int i0, int i1, int j0, int j1, uint8 **T, uint8 **Y_P, uint8 **Y_UP)
@@ -1202,7 +1327,7 @@ void max3_swp_ui8matrix_elu2_red_factor     (uint8 **X, int i0, int i1, int j0, 
     for(int i = (i1-i0-r-1); i < (i1-i0); i++){
         line_swp_max3_ui8matrix_basic(T, i, j0, (j1)/8, Y_P);
     }
-    unpack_ui8matrix(Y_P, i1, j1-1, Y_UP); // unpack de result packé dans Y_UP
+    unpack_ui8matrix(Y_P, i1, (j1/8)+1, Y_UP); // unpack de result packé dans Y_UP
 }
 // -------------------------------------------------------------------------------------------
 void max3_swp_ui8matrix_ilu3_elu2_red(uint8 **X, int i0, int i1, int j0, int j1, uint8 **T, uint8 **Y_P, uint8 **Y_UP)
@@ -1216,7 +1341,21 @@ void max3_swp_ui8matrix_ilu3_elu2_red(uint8 **X, int i0, int i1, int j0, int j1,
     for(int i = (i1-i0-r-1); i < (i1-i0); i++){
         line_swp_max3_ui8matrix_basic(T, i, j0, (j1)/8, Y_P);
     }
-    unpack_ui8matrix(Y_P, i1, j1-1, Y_UP); // unpack de result packé dans Y_UP
+    unpack_ui8matrix(Y_P, i1, (j1/8)+1, Y_UP); // unpack de result packé dans Y_UP
+}
+// -------------------------------------------------------------------------------------------
+void max3_swp_ui8matrix_ilu3_elu2_red_factor(uint8 **X, int i0, int i1, int j0, int j1, uint8 **T, uint8 **Y_P, uint8 **Y_UP)
+{
+    pack_ui8matrix(X, i1, j1, T); // package X dans T
+    for( int i = i0; i < i1-2; i += 2){
+        line_swp_max3_ui8matrix_ilu3_elu2_red_factor(T, i, j0, (j1)/8, Y_P);
+    }
+
+    int r = (i1-i0-1) % 2;
+    for(int i = (i1-i0-r-1); i < (i1-i0); i++){
+        line_swp_max3_ui8matrix_basic(T, i, j0, (j1)/8, Y_P);
+    }
+    unpack_ui8matrix(Y_P, i1, (j1/8)+1, Y_UP); // unpack de result packé dans Y_UP
 }
 // -------------------------------------------------------------------------------------------
 

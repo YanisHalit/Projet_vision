@@ -24,7 +24,7 @@ CC = gcc
 #C_OPTIMISATION_FLAGS = -std=c99 -O3 -fstrict-aliasing -Wno-comment
 C_OPTIMISATION_FLAGS = -std=c99 -O0 -fstrict-aliasing -Wno-comment
 C_ARCH_FLAGS = -mtune=native -march=native
-C_ARCH_FLAGS =
+C_ARCH_FLAGS = -g
 C_INC_FLAGS = -I$(INC_PATH)
 
 CFLAGS  = $(C_OPTIMISATION_FLAGS) $(C_ARCH_FLAGS) $(C_INC_FLAGS) $(LIB_INC_PATH)
