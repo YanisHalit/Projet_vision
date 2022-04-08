@@ -1128,7 +1128,7 @@ void line_swp_max3_ui8matrix_ilu3_elu2_red(uint8 **T, int i, int j0, int j1, uin
 }
 // -------------------------------------------------------------------------------------------
 void line_swp_max3_ui8matrix_ilu3_elu2_red_factor(uint8 **T, int i, int j0, int j1, uint8 **Y)
-{   
+{
     uint8 haut_gauche, haut_milieu, haut_droit,
           milieu_gauche, milieu_milieu, milieu_droit,
           bas_gauche, bas_milieu, bas_droit,
