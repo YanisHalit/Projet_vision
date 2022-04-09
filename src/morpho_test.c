@@ -346,7 +346,6 @@ void test_morpho_ouverture_routine(int h, int w0)
     Y_fusion_ilu5_red             = ui8matrix(0, h-1, 0, w1-1);
     Y_fusion_ilu5_elu2_red        = ui8matrix(0, h-1, 0, w1-1);
     Y_fusion_ilu5_elu2_red_factor = ui8matrix(0, h-1, 0, w1-1);
-    Y_fusion_ilu15_red            = ui8matrix(0, h-1, 0, w1-1);
     
     Y_pipeline                      = ui8matrix(0, h-1, 0, w1-1);
     Y_pipeline_red                  = ui8matrix(0, h-1, 0, w1-1);
