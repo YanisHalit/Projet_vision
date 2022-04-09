@@ -325,6 +325,7 @@ void test_morpho_ouverture_routine(int h, int w0)
     //format1 = "%1d";
     
     puts("malloc");
+
     // X 2r-border
     X      = ui8matrix(0-2*r, h-1+2*r, 0-2*r, w1-1+2*r);
     X8     = ui8matrix(0-2*r, h-1+2*r, 0-1*r, w8-1+1*r);
@@ -355,10 +356,10 @@ void test_morpho_ouverture_routine(int h, int w0)
     Y_pipeline_ilu3_elu2_red        = ui8matrix(0, h-1, 0, w1-1);
     Y_pipeline_ilu3_elu2_red_factor = ui8matrix(0, h-1, 0, w1-1);
         
-    //PUTS("zero X");
+    // puts("zero X");
     zero_ui8matrix(X , 0-2*r, h-1+2*r, 0-2*r, w1-1+2*r);
     
-    //PUTS("zero T");
+    // puts("zero T");
     zero_ui8matrix(T_basic                        , 0-1*r, h-1+1*r, 0-1*r, w1-1+1*r);
     zero_ui8matrix(T_pipeline                     , 0-1*r, h-1+1*r, 0-1*r, w1-1+1*r);
     zero_ui8matrix(T_pipeline_red                 , 0-1*r, h-1+1*r, 0-1*r, w1-1+1*r);
@@ -368,14 +369,13 @@ void test_morpho_ouverture_routine(int h, int w0)
     zero_ui8matrix(T_pipeline_ilu3_elu2_red       , 0-1*r, h-1+1*r, 0-1*r, w1-1+1*r);
     zero_ui8matrix(T_pipeline_ilu3_elu2_red_factor, 0-1*r, h-1+1*r, 0-1*r, w1-1+1*r);
     
-    //PUTS("zero Y");
+    // puts("zero Y");
     zero_ui8matrix(Y_basic                      , 0-0*r, h-1+0*r, 0-0*r, w1-1+0*r);
     zero_ui8matrix(Y_fusion                     , 0-0*r, h-1+0*r, 0-0*r, w1-1+0*r);
     zero_ui8matrix(Y_fusion_ilu5_red            , 0-0*r, h-1+0*r, 0-0*r, w1-1+0*r);
     zero_ui8matrix(Y_fusion_ilu5_elu2_red       , 0-0*r, h-1+0*r, 0-0*r, w1-1+0*r);
     zero_ui8matrix(Y_fusion_ilu5_elu2_red_factor, 0-0*r, h-1+0*r, 0-0*r, w1-1+0*r);
-    zero_ui8matrix(Y_fusion_ilu15_red           , 0-0*r, h-1+0*r, 0-0*r, w1-1+0*r);
-    
+
     zero_ui8matrix(Y_pipeline                     , 0-0*r, h-1+0*r, 0-0*r, w1-1+0*r);
     zero_ui8matrix(Y_pipeline_red                 , 0-0*r, h-1+0*r, 0-0*r, w1-1+0*r);
     zero_ui8matrix(Y_pipeline_ilu3_red            , 0-0*r, h-1+0*r, 0-0*r, w1-1+0*r);
@@ -383,7 +383,7 @@ void test_morpho_ouverture_routine(int h, int w0)
     zero_ui8matrix(Y_pipeline_elu2_red_factor     , 0-0*r, h-1+0*r, 0-0*r, w1-1+0*r);
     zero_ui8matrix(Y_pipeline_ilu3_elu2_red       , 0-0*r, h-1+0*r, 0-0*r, w1-1+0*r);
     zero_ui8matrix(Y_pipeline_ilu3_elu2_red_factor, 0-0*r, h-1+0*r, 0-0*r, w1-1+0*r);
-    
+
     rand1_ui8matrix(X, 0, h-1, 0, w0-1, 80);
     rand1_ui8matrix(X, 0, h-1, 0, w0-1, 90); // binaire [0,1] (afin d'avoir des '1' apres traitement et pas que des '0');
 
