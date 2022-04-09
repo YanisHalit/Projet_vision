@@ -1546,16 +1546,14 @@ void line_swp_ouverture3_ui8matrix_fusion                     (uint8 **X, int i,
 {
     uint8   min_haut, min_milieu, min_bas,
             min_gauche, min_droit,
-            min_all1, min_all2, min_all3,
+            min_all1_1, min_all2_1, min_all3_1,
+            min_all1_2, min_all2_2, min_all3_2,
+            min_all1_3, min_all2_3, min_all3_3,
             max_all1, max_all2, max_all3,
 
             l,  r, res;
 
-    for(int j = j0; j< j1; j++){
-
-        // min_haut = min3( load2(X, i-2, j-2), load2(X, i-2, j-1), load2(X, i-2, j));
-        // min_milieu = min3( load2(X, i-1, j-2), load2(X, i-1, j-1), load2(X, i-1, j));
-        // min_bas = min3( load2(X, i, j-2), load2(X, i, j-1), load2(X, i, j));
+    for(int j = j0; j < j1; j++){
 
         min_gauche = min3( load2(X, i-2, j-2), load2(X, i-1, j-2), load2(X, i, j-2));
         min_milieu = min3(load2(X, i-2, j-1),load2(X, i-1, j-1),load2(X, i, j-1));
@@ -1564,12 +1562,9 @@ void line_swp_ouverture3_ui8matrix_fusion                     (uint8 **X, int i,
 
         l = i8left(min_gauche, min_milieu);
         r = i8right(min_milieu, min_droit);
-        min_all1 = min3( min_milieu, l, r);
+        min_all1_1 = min3(l, min_milieu, r);
 
-        // -----
-        // min_haut = min3( load2(X, i-2, j-1), load2(X, i-2, j), load2(X, i-2, j+1));
-        // min_milieu = min3( load2(X, i-1, j-1), load2(X, i-1, j), load2(X, i-1, j+1));
-        // min_bas = min3( load2(X, i, j-1), load2(X, i, j), load2(X, i, j+1));
+        // ---------------------------------------------------------------------------------------------
 
         min_gauche = min3( load2(X, i-2, j-1), load2(X, i-1, j-1), load2(X, i, j-1));
         min_milieu = min3(load2(X, i-2, j),load2(X, i-1, j),load2(X, i, j));
@@ -1577,42 +1572,28 @@ void line_swp_ouverture3_ui8matrix_fusion                     (uint8 **X, int i,
 
         l = i8left(min_gauche, min_milieu);
         r = i8right(min_milieu, min_droit);
-        min_all2 = min3( min_milieu, l, r);
-        // -----
-        // min_haut = min3( load2(X, i-2, j), load2(X, i-2, j+1), load2(X, i-2, j+2));
-        // min_milieu = min3( load2(X, i-1, j), load2(X, i-1, j+1), load2(X, i-1, j+2));
-        // min_bas = min3( load2(X, i, j), load2(X, i, j+1), load2(X, i, j+2));
+        min_all2_1 = min3(l, min_milieu, r);
+
+        // ---------------------------------------------------------------------------------------------
 
         min_gauche = min3( load2(X, i-2, j), load2(X, i-1, j), load2(X, i, j));
         min_milieu = min3(load2(X, i-2, j+1),load2(X, i-1, j+1),load2(X, i, j+1));
         min_droit = min3(load2(X, i-2, j+2),load2(X, i-1, j+2),load2(X, i, j+2));
-        
 
         l = i8left(min_gauche, min_milieu);
         r = i8right(min_milieu, min_droit);
-        min_all3 = min3( min_milieu, l, r);
-        // -----
-
-        l = i8left(min_all1, min_all2);
-        r = i8right(min_all2,min_all3);
-        max_all1 = max3( l, min_all2, r);
-
-        // min_haut = min3( load2(X, i-1, j-2), load2(X, i-1, j-1), load2(X, i-1, j));
-        // min_milieu = min3( load2(X, i, j-2), load2(X, i, j-1), load2(X, i, j));
-        // min_bas = min3( load2(X, i+1, j-2), load2(X, i+1, j-1), load2(X, i+1, j));
+        min_all3_1 = min3(l, min_milieu, r);
+        // ---------------------------------------------------------------------------------------------
 
         min_gauche = min3( load2(X, i-1, j-2), load2(X, i, j-2), load2(X, i+1, j-2));
         min_milieu = min3(load2(X, i-1, j-1),load2(X, i, j-1),load2(X, i+1, j-1));
         min_droit = min3(load2(X, i-1, j),load2(X, i, j),load2(X, i+1, j));
-        
+
         l = i8left(min_gauche, min_milieu);
         r = i8right(min_milieu, min_droit);
-        min_all1 = min3( min_milieu, l, r);
+        min_all1_2 = min3( min_milieu, l, r);
 
-        // -----
-        // min_haut = min3( load2(X, i-1, j-1), load2(X, i-1, j), load2(X, i-1, j+1));
-        // min_milieu = min3( load2(X, i, j-1), load2(X, i, j), load2(X, i, j+1));
-        // min_bas = min3( load2(X, i+1, j-1), load2(X, i+1, j), load2(X, i+1, j+1));
+        // ---------------------------------------------------------------------------------------------
 
         min_gauche = min3( load2(X, i-1, j-1), load2(X, i, j-1), load2(X, i+1, j-1));
         min_milieu = min3(load2(X, i-1, j),load2(X, i, j),load2(X, i+1, j));
@@ -1621,30 +1602,19 @@ void line_swp_ouverture3_ui8matrix_fusion                     (uint8 **X, int i,
 
         l = i8left(min_gauche, min_milieu);
         r = i8right(min_milieu, min_droit);
-        min_all2 = min3( min_milieu, l, r);
-        // -----
-        // min_haut = min3( load2(X, i-1, j), load2(X, i-1, j+1), load2(X, i-1, j+2));
-        // min_milieu = min3( load2(X, i, j), load2(X, i, j+1), load2(X, i, j+2));
-        // min_bas = min3( load2(X, i+1, j), load2(X, i+1, j+1), load2(X, i+1, j+2));
+        min_all2_2 = min3( min_milieu, l, r);
+        // ---------------------------------------------------------------------------------------------
 
         min_gauche = min3( load2(X, i-1, j), load2(X, i, j), load2(X, i+1, j));
         min_milieu = min3(load2(X, i-1, j+1),load2(X, i, j+1),load2(X, i+1, j+1));
         min_droit = min3(load2(X, i-1, j+2),load2(X, i, j+2),load2(X, i+1, j+2));
-        
-        
+
+
         l = i8left(min_gauche, min_milieu);
         r = i8right(min_milieu, min_droit);
-        min_all3 = min3( min_milieu, l, r);
-        // -----
-        l = i8left(min_all1, min_all2);
-        r = i8right(min_all2,min_all3);
-        max_all2 = max3( l, min_all2, r);
+        min_all3_2 = min3( min_milieu, l, r);
+        // ---------------------------------------------------------------------------------------------
 
-
-
-        // min_haut = min3( load2(X, i, j-2), load2(X, i, j-1), load2(X, i, j));
-        // min_milieu = min3( load2(X, i+1, j-2), load2(X, i+1, j-1), load2(X, i+1, j));
-        // min_bas = min3( load2(X, i+2, j-2), load2(X, i+2, j-1), load2(X, i+2, j));
         min_gauche = min3( load2(X, i, j-2), load2(X, i+1, j-2), load2(X, i+2, j-2));
         min_milieu = min3(load2(X, i, j-1),load2(X, i+1, j-1),load2(X, i+2, j-1));
         min_droit = min3(load2(X, i, j),load2(X, i+1, j),load2(X, i+2, j));
@@ -1652,36 +1622,33 @@ void line_swp_ouverture3_ui8matrix_fusion                     (uint8 **X, int i,
 
         l = i8left(min_gauche, min_milieu);
         r = i8right(min_milieu, min_droit);
-        min_all1 = min3( min_milieu, l, r);
+        min_all1_3 = min3( min_milieu, l, r);
 
-        // -----
-        // min_haut = min3( load2(X, i, j-1), load2(X, i, j), load2(X, i, j+1));
-        // min_milieu = min3( load2(X, i+1, j-1), load2(X, i+1, j), load2(X, i+1, j+1));
-        // min_bas = min3( load2(X, i+2, j-1), load2(X, i+2, j), load2(X, i+2, j+1));
+        // ---------------------------------------------------------------------------------------------
+
         min_gauche = min3( load2(X, i, j-1), load2(X, i+1, j-1), load2(X, i+2, j-1));
         min_milieu = min3(load2(X, i, j),load2(X, i+1, j),load2(X, i+2, j));
         min_droit = min3(load2(X, i, j+1),load2(X, i+1, j+1),load2(X, i+2, j+1));
-        
+
+
         l = i8left(min_gauche, min_milieu);
         r = i8right(min_milieu, min_droit);
-        min_all2 = min3( min_milieu, l, r);
-        // -----
-        // min_haut = min3( load2(X, i, j), load2(X, i, j+1), load2(X, i, j+2));
-        // min_milieu = min3( load2(X, i+1, j), load2(X, i+1, j+1), load2(X, i+1, j+2));
-        // min_bas = min3( load2(X, i+2, j), load2(X, i+2, j+1), load2(X, i+2, j+2));
-        
+        min_all2_3 = min3( min_milieu, l, r);
+        // ---------------------------------------------------------------------------------------------
+
         min_gauche = min3(load2(X, i, j), load2(X, i+1, j), load2(X, i+2, j));
         min_milieu = min3(load2(X, i, j+1),load2(X, i+1, j+1),load2(X, i+2, j+1));
         min_droit = min3(load2(X, i, j+2),load2(X, i+1, j+2),load2(X, i+2, j+2));
 
-        
+
         l = i8left(min_gauche, min_milieu);
         r = i8right(min_milieu, min_droit);
-        min_all3 = min3( min_milieu, l, r);
-        // -----
-        l = i8left(min_all1, min_all2);
-        r = i8right(min_all2,min_all3);
-        max_all3 = max3( l, min_all2, r);
+        min_all3_3 = min3( min_milieu, l, r);
+        // ---------------------------------------------------------------------------------------------
+
+        max_all1 = max3(min_all1_1, min_all1_2, min_all1_3);
+        max_all2 = max3(min_all2_1, min_all2_2, min_all2_3);
+        max_all3 = max3(min_all3_1, min_all3_2, min_all3_3);
 
 
         l = i8left(max_all1, max_all2);
