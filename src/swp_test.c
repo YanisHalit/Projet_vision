@@ -524,13 +524,13 @@ void test_swp8_morpho_ouverture_routine(int h, int w0)
     T_P_ilu3_elu2_red_factor        = ui8matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
 
     // Y_P deuxieme traitement
-    Y_P_bas                         = ui8matrix(0, h-1, 0, (w1-1)/8);
-    Y_P_red                         = ui8matrix(0, h-1, 0, (w1-1)/8);
-    Y_P_ilu3_red                    = ui8matrix(0, h-1, 0, (w1-1)/8);
-    Y_P_elu2_red                    = ui8matrix(0, h-1, 0, (w1-1)/8);
-    Y_P_elu2_red_factor             = ui8matrix(0, h-1, 0, (w1-1)/8);
-    Y_P_ilu3_elu2_red               = ui8matrix(0, h-1, 0, (w1-1)/8);
-    Y_P_ilu3_elu2_red_factor        = ui8matrix(0, h-1, 0, (w1-1)/8);
+    Y_P_bas                         = ui8matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    Y_P_red                         = ui8matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    Y_P_ilu3_red                    = ui8matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    Y_P_elu2_red                    = ui8matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    Y_P_elu2_red_factor             = ui8matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    Y_P_ilu3_elu2_red               = ui8matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    Y_P_ilu3_elu2_red_factor        = ui8matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
 
     // Y finale
     Y_pipeline_bas                  = ui8matrix(0, h-1, 0, w1-1);
@@ -565,13 +565,13 @@ void test_swp8_morpho_ouverture_routine(int h, int w0)
     zero_ui8matrix(T_P_ilu3_elu2_red_factor, 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
 
     // Y_P deuxiem traitement
-    zero_ui8matrix(Y_P_bas,                         0, h-1, 0, (w1-1)/8);
-    zero_ui8matrix(Y_P_red,                         0, h-1, 0, (w1-1)/8);
-    zero_ui8matrix(Y_P_ilu3_red,                    0, h-1, 0, (w1-1)/8);
-    zero_ui8matrix(Y_P_elu2_red,                    0, h-1, 0, (w1-1)/8);
-    zero_ui8matrix(Y_P_elu2_red_factor,             0, h-1, 0, (w1-1)/8);
-    zero_ui8matrix(Y_P_ilu3_elu2_red,               0, h-1, 0, (w1-1)/8);
-    zero_ui8matrix(Y_P_ilu3_elu2_red_factor,        0, h-1, 0, (w1-1)/8);
+    zero_ui8matrix(Y_P_bas,                          0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    zero_ui8matrix(Y_P_red,                          0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    zero_ui8matrix(Y_P_ilu3_red,                     0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    zero_ui8matrix(Y_P_elu2_red,                     0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    zero_ui8matrix(Y_P_elu2_red_factor,              0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    zero_ui8matrix(Y_P_ilu3_elu2_red,                0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    zero_ui8matrix(Y_P_ilu3_elu2_red_factor,         0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
 
     //PUTS("zero Y");
     zero_ui8matrix(Y_pipeline_bas               , 0, h-1, 0, w1-1);
@@ -609,27 +609,27 @@ void test_swp8_morpho_ouverture_routine(int h, int w0)
     // ouverture3_swp_ui8matrix_pipeline_basic               (X, 0, h, 0, w0, X_P_bas , T_P_bas, Y_P_bas, Y_pipeline_bas                             );
     // ouverture3_swp_ui8matrix_pipeline_red                 (X, 0, h, 0, w0, X_P_red , T_P_red, Y_P_red, Y_pipeline_red                             );
     // ouverture3_swp_ui8matrix_pipeline_ilu3_red            (X, 0, h, 0, w0, X_P_ilu3_red , T_P_ilu3_red, Y_P_ilu3_red, Y_pipeline_ilu3_red             );
-    ouverture3_swp_ui8matrix_pipeline_elu2_red            (X, 0, h, 0, w0, X_P_elu2_red , T_P_elu2_red, Y_P_elu2_red, Y_pipeline_elu2_red            );
-    // ouverture3_swp_ui8matrix_pipeline_elu2_red_factor     (X, 0, h-1, 0, w0-1, T_pipeline_elu2_red_factor     , Y_pipeline_elu2_red_factor     );
-    // ouverture3_swp_ui8matrix_pipeline_ilu3_elu2_red       (X, 0, h-1, 0, w0-1, T_pipeline_ilu3_elu2_red       , Y_pipeline_ilu3_elu2_red       );
-    // ouverture3_swp_ui8matrix_pipeline_ilu3_elu2_red_factor(X, 0, h-1, 0, w0-1, T_pipeline_ilu3_elu2_red_factor, Y_pipeline_ilu3_elu2_red_factor);
+    // ouverture3_swp_ui8matrix_pipeline_elu2_red            (X, 0, h, 0, w0, X_P_elu2_red , T_P_elu2_red, Y_P_elu2_red, Y_pipeline_elu2_red            );
+    // ouverture3_swp_ui8matrix_pipeline_elu2_red_factor     (X, 0, h, 0, w0, X_P_elu2_red_factor , T_P_elu2_red_factor, Y_P_elu2_red_factor, Y_pipeline_elu2_red_factor    );
+    // ouverture3_swp_ui8matrix_pipeline_ilu3_elu2_red       (X, 0, h, 0, w0, X_P_ilu3_elu2_red, T_P_ilu3_elu2_red, Y_P_ilu3_elu2_red, Y_pipeline_ilu3_elu2_red       );
+    ouverture3_swp_ui8matrix_pipeline_ilu3_elu2_red_factor(X, 0, h, 0, w0, X_P_ilu3_elu2_red_factor, T_P_ilu3_elu2_red_factor, Y_P_ilu3_elu2_red_factor, Y_pipeline_ilu3_elu2_red_factor      );
 
-    display_ui8matrix(Y_basic_or                        , 0, h-1, 0, w0-1, format1, "Y_basic_or                        ");
-    // display_ui8matrix(Y_pipeline_bas                    , 0, h-1, 0, w0-1, format1, "Y_pipeline_bas_swp                     ");
+    // display_ui8matrix(Y_basic_or                        , 0, h-1, 0, w0-1, format1, "Y_basic_or                        ");
+    // display_ui8matrix(Y_pipeline_bas                    , 0, h-1, 0, w0-1, format1, "Y_pipeline_bas                     ");
     // display_ui8matrix(Y_pipeline_red                    ,  0, h-1, 0, w0-1, format1, "Y_pipeline_red                   ");
     //display_ui8matrix(Y_pipeline_ilu3_red            , 0, h-1, 0, w0-1, format1, "Y_pipeline_ilu3_red            ");
-    display_ui8matrix(Y_pipeline_elu2_red            , 0, h-1, 0, w0-1, format1, "Y_pipeline_elu2_red            ");
+    // display_ui8matrix(Y_pipeline_elu2_red            , 0, h-1, 0, w0-1, format1, "Y_pipeline_elu2_red            ");
     //display_ui8matrix(Y_pipeline_elu2_red_factor     , 0, h-1, 0, w0-1, format1, "Y_pipeline_elu2_red_factor     ");
-    //display_ui8matrix(Y_pipeline_ilu3_elu2_red       , 0, h-1, 0, w0-1, format1, "Y_pipeline_ilu3_elu2_red       ");
-    //display_ui8matrix(Y_pipeline_ilu3_elu2_red_factor, 0, h-1, 0, w0-1, format1, "Y_pipeline_ilu3_elu2_red_factor");
-    
+    // display_ui8matrix(Y_pipeline_ilu3_elu2_red       , 0, h-1, 0, w0-1, format1, "Y_pipeline_ilu3_elu2_red       ");
+    // display_ui8matrix(Y_pipeline_ilu3_elu2_red_factor, 0, h-1, 0, w0-1, format1, "Y_pipeline_ilu3_elu2_red_factor");
+
     // c = compare_swp_ui8matrix(Y_basic_or, 0, h-1, 0, w0-1, Y_pipeline_bas                     , "Y_pipeline_bas_swp8                     ");
     // c = compare_swp_ui8matrix(Y_basic_or, 0, h-1, 0, w0-1, Y_pipeline_red                     , "Y_pipeline_red_swp8                 ");
     // c = compare_swp_ui8matrix(Y_basic_or, 0, h-1, 0, w0-1, Y_pipeline_ilu3_red            , "Y_pipeline_ilu3_red_swp8            ");
-    c = compare_swp_ui8matrix(Y_basic_or, 0, h-1, 0, w0-1, Y_pipeline_elu2_red            , "Y_pipeline_elu2_red_swp8            ");
-    // c = compare_swp_ui8matrix(Y_basic, 0, h-1, 0, w0-1, Y_pipeline_elu2_red_factor     , "Y_pipeline_elu2_red_factor     ");
-    // c = compare_swp_ui8matrix(Y_basic, 0, h-1, 0, w0-1, Y_pipeline_ilu3_elu2_red       , "Y_pipeline_ilu3_elu2_red       ");
-    // c = compare_swp_ui8matrix(Y_basic, 0, h-1, 0, w0-1, Y_pipeline_ilu3_elu2_red_factor, "Y_pipeline_ilu3_elu2_red_factor");
+    // c = compare_swp_ui8matrix(Y_basic_or, 0, h-1, 0, w0-1, Y_pipeline_elu2_red            , "Y_pipeline_elu2_red_swp8            ");
+    // c = compare_swp_ui8matrix(Y_basic_or, 0, h-1, 0, w0-1, Y_pipeline_elu2_red_factor     , "Y_pipeline_elu2_red_factor_swp8     ");
+    // c = compare_swp_ui8matrix(Y_basic_or, 0, h-1, 0, w0-1, Y_pipeline_ilu3_elu2_red       , "Y_pipeline_ilu3_elu2_red_swp8       ");
+    c = compare_swp_ui8matrix(Y_basic_or, 0, h-1, 0, w0-1, Y_pipeline_ilu3_elu2_red_factor, "Y_pipeline_ilu3_elu2_red_factor_swp8");
     // putchar('\n');
         
     // puts("----------");
