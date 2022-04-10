@@ -678,22 +678,22 @@ void test_swp8_morpho_ouverture_routine(int h, int w0)
     puts("--------------");
 // Traitement fusion swp 8
     // ouverture3_swp_ui8matrix_fusion                     (X, 0, h, 0, w0, X_P_bas_fusion, Y_P_bas_fusion,           Y_fusion_bas                     );
-    ouverture3_swp_ui8matrix_fusion_ilu5_red            (X, 0, h, 0, w0, X_P_ilu3_red_fusion, Y_P_ilu5_red_fusion,           Y_fusion_ilu5_red           );
+    // ouverture3_swp_ui8matrix_fusion_ilu5_red            (X, 0, h, 0, w0, X_P_ilu3_red_fusion, Y_P_ilu5_red_fusion,           Y_fusion_ilu5_red           );
     // ouverture3_swp_ui8matrix_fusion_ilu5_elu2_red       (X, 0, h-1, 0, w0-1,          Y_fusion_ilu5_elu2_red       );
     // ouverture3_swp_ui8matrix_fusion_ilu5_elu2_red_factor(X, 0, h-1, 0, w0-1,          Y_fusion_ilu5_elu2_red_factor);
 //
 
 // Affichage fusion swp8
     // display_ui8matrix(X                      ,  0, h-1, 0, w0-1, format1, "X                      ");
-    display_ui8matrix(Y_basic_or                      ,  0, h-1, 0, w0-1, format1, "Y_basic                      ");
+    // display_ui8matrix(Y_basic_or                      ,  0, h-1, 0, w0-1, format1, "Y_basic                      ");
     // display_ui8matrix(Y_fusion_bas                     ,  0, h-1, 0, w0-1, format1, "Y_fusion_bas                     ");
-    display_ui8matrix(Y_fusion_ilu5_red            ,  0, h-1, 0, w0-1, format1, "Y_fusion_ilu5_red            ");
+    // display_ui8matrix(Y_fusion_ilu5_red            ,  0, h-1, 0, w0-1, format1, "Y_fusion_ilu5_red            ");
     //display_ui8matrix(Y_fusion_ilu5_elu2_red       ,  0, h-1, 0, w0-1, format1, "Y_fusion_ilu5_elu2_red       ");
     // display_ui8matrix(Y_fusion_ilu5_elu2_red_factor,  0, h-1, 0, w0-1, format1, "Y_fusion_ilu5_elu2_red_factor");
 //
 
     // c = compare_swp_ui8matrix(Y_basic_or, 0, h-1, 0, w0-1, Y_fusion_bas                     , "Y_fusion_bas_swp8                     ");
-    c = compare_swp_ui8matrix(Y_basic_or, 0, h-1, 0, w0-1, Y_fusion_ilu5_red                     , "Y_fusion_ilu5_red_swp8                 ");
+    // c = compare_swp_ui8matrix(Y_basic_or, 0, h-1, 0, w0-1, Y_fusion_ilu5_red                     , "Y_fusion_ilu5_red_swp8                 ");
     // c = compare_swp_ui8matrix(Y_basic_or, 0, h-1, 0, w0-1, Y_pipeline_ilu3_red            , "Y_pipeline_ilu3_red_swp8            ");
     // c = compare_swp_ui8matrix(Y_basic_or, 0, h-1, 0, w0-1, Y_pipeline_elu2_red            , "Y_pipeline_elu2_red_swp8            ");
     // c = compare_swp_ui8matrix(Y_basic_or, 0, h-1, 0, w0-1, Y_pipeline_elu2_red_factor     , "Y_pipeline_elu2_red_factor_swp8     ");
