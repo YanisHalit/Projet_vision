@@ -1927,7 +1927,7 @@ void ouverture3_swp_ui8matrix_fusion_ilu5_elu2_red_factor(uint8 **X, int i0, int
 // ---------------------------------------------------------------------------------------------
 
 
-
+        // PIPELINE
 // ---------------------------------------------------------------------------------------------
 void ouverture3_ui8matrix_pipeline_basic(uint8 **X, int i0, int i1, int j0, int j1, uint8 **T, uint8 **Y)
 {
@@ -1996,6 +1996,8 @@ void ouverture3_ui8matrix_pipeline_ilu3_elu2_red_factor(uint8 **X, int i0, int i
 }
 // ---------------------------------------------------------------------------------------------
 
+
+        // PIPELINE SWP8
 // ---------------------------------------------------------------------------------------------
 void ouverture3_swp_ui8matrix_pipeline_basic(uint8 **X, int i0, int i1, int j0, int j1, uint8 **X_P, uint8 **T_P, uint8 **Y_P, uint8 **Y)
 {
@@ -2093,6 +2095,214 @@ void ouverture3_swp_ui8matrix_pipeline_ilu3_elu2_red_factor(uint8 **X, int i0, i
     }
 
     unpack_ui8matrix(Y_P, i1, (j1/8)+1, Y);
+
+}
+// // ---------------------------------------------------------------------------------------------
+
+
+
+        // PIPELINE SWP16
+// ---------------------------------------------------------------------------------------------
+void ouverture3_swp_ui16matrix_pipeline_basic(uint8 **X, int i0, int i1, int j0, int j1, uint16 **X_P, uint16 **T_P, uint16 **Y_P, uint8 **Y)
+{
+    pack_ui16matrix(X, i1, j1, X_P); // package X dans X_P
+
+    line_swp_min3_ui16matrix_basic(X_P, i0-1, j0, j1, T_P);
+    line_swp_min3_ui16matrix_basic(X_P, i0, j0, j1, T_P);
+    for( int i = i0; i < i1; i ++){
+        line_swp_min3_ui16matrix_basic(X_P, i+1, j0, j1, T_P);
+        line_swp_max3_ui16matrix_basic(T_P, i, j0, j1, Y_P);
+    }
+
+    unpack_ui16matrix(Y_P, i1, (j1/16)+1, Y);
+}
+// // ---------------------------------------------------------------------------------------------
+void ouverture3_swp_ui16matrix_pipeline_red(uint8 **X, int i0, int i1, int j0, int j1, uint16 **X_P, uint16 **T_P, uint16 **Y_P, uint8 **Y)
+{
+    pack_ui16matrix(X, i1, j1, X_P); // package X dans X_P
+
+    line_swp_min3_ui16matrix_red(X_P, i0-1, j0, j1, T_P);
+    line_swp_min3_ui16matrix_red(X_P, i0, j0, j1, T_P);
+    for( int i = i0; i < i1; i ++){
+        line_swp_min3_ui16matrix_red(X_P, i+1, j0, j1, T_P);
+        line_swp_max3_ui16matrix_red(T_P, i, j0, j1, Y_P);
+    }
+
+    unpack_ui16matrix(Y_P, i1, (j1/16)+1, Y);
+}
+// // ---------------------------------------------------------------------------------------------
+void ouverture3_swp_ui16matrix_pipeline_ilu3_red(uint8 **X, int i0, int i1, int j0, int j1, uint16 **X_P, uint16 **T_P, uint16 **Y_P, uint8 **Y)
+{
+    pack_ui16matrix(X, i1, j1, X_P); // package X dans X_P
+
+    line_swp_min3_ui16matrix_ilu3_red(X_P, i0-1, j0, j1, T_P);
+    line_swp_min3_ui16matrix_ilu3_red(X_P, i0, j0, j1, T_P);
+    for( int i = i0; i < i1; i ++){
+        line_swp_min3_ui16matrix_ilu3_red(X_P, i+1, j0, j1, T_P);
+        line_swp_max3_ui16matrix_ilu3_red(T_P, i, j0, j1, Y_P);
+    }
+
+    unpack_ui16matrix(Y_P, i1, (j1/16)+1, Y);
+}
+// // ---------------------------------------------------------------------------------------------
+void ouverture3_swp_ui16matrix_pipeline_elu2_red(uint8 **X, int i0, int i1, int j0, int j1, uint16 **X_P, uint16 **T_P, uint16 **Y_P, uint8 **Y)
+{
+    pack_ui16matrix(X, i1, j1, X_P); // package X dans X_P
+
+    line_swp_min3_ui16matrix_elu2_red(X_P, i0-1, j0, j1, T_P);
+    int i;
+    for( i = i0; i < i1-1; i ++){
+        line_swp_min3_ui16matrix_elu2_red(X_P, i+1, j0, j1, T_P);
+        line_swp_max3_ui16matrix_elu2_red(T_P, i, j0, j1, Y_P);
+    }
+
+    unpack_ui16matrix(Y_P, i1, (j1/16)+1, Y);
+}
+// // ---------------------------------------------------------------------------------------------
+void ouverture3_swp_ui16matrix_pipeline_elu2_red_factor(uint8 **X, int i0, int i1, int j0, int j1, uint16 **X_P, uint16 **T_P, uint16 **Y_P, uint8 **Y)
+{
+    pack_ui16matrix(X, i1, j1, X_P); // package X dans X_P
+
+    line_swp_min3_ui16matrix_elu2_red_factor(X_P, i0-1, j0, j1, T_P);
+    for( int i = i0; i < i1-1; i ++){
+        line_swp_min3_ui16matrix_elu2_red_factor(X_P, i+1, j0, j1, T_P);
+        line_swp_max3_ui16matrix_elu2_red_factor(T_P, i, j0, j1, Y_P);
+    }
+
+    unpack_ui16matrix(Y_P, i1, (j1/16)+1, Y);
+
+}
+// // ---------------------------------------------------------------------------------------------
+void ouverture3_swp_ui16matrix_pipeline_ilu3_elu2_red(uint8 **X, int i0, int i1, int j0, int j1, uint16 **X_P, uint16 **T_P, uint16 **Y_P, uint8 **Y)
+{
+
+    pack_ui16matrix(X, i1, j1, X_P); // package X dans X_P
+
+    line_swp_min3_ui16matrix_ilu3_elu2_red(X_P, i0-1, j0, j1, T_P);
+    for( int i = i0; i < i1-1; i ++){
+        line_swp_min3_ui16matrix_ilu3_elu2_red(X_P, i+1, j0, j1, T_P);
+        line_swp_max3_ui16matrix_ilu3_elu2_red(T_P, i, j0, j1, Y_P);
+    }
+
+    unpack_ui16matrix(Y_P, i1, (j1/16)+1, Y);
+
+}
+// // ---------------------------------------------------------------------------------------------
+void ouverture3_swp_ui16matrix_pipeline_ilu3_elu2_red_factor(uint8 **X, int i0, int i1, int j0, int j1, uint16 **X_P, uint16 **T_P, uint16 **Y_P, uint8 **Y)
+{
+    pack_ui16matrix(X, i1, j1, X_P); // package X dans X_P
+
+    line_swp_min3_ui16matrix_ilu3_elu2_red_factor(X_P, i0-1, j0, j1, T_P);
+    for( int i = i0; i < i1-1; i ++){
+        line_swp_min3_ui16matrix_ilu3_elu2_red_factor(X_P, i+1, j0, j1, T_P);
+        line_swp_max3_ui16matrix_ilu3_elu2_red_factor(T_P, i, j0, j1, Y_P);
+    }
+
+    unpack_ui16matrix(Y_P, i1, (j1/16)+1, Y);
+
+}
+// // ---------------------------------------------------------------------------------------------
+
+
+
+        // PIPELINE SWP32
+// ---------------------------------------------------------------------------------------------
+void ouverture3_swp_ui32matrix_pipeline_basic(uint8 **X, int i0, int i1, int j0, int j1, uint32 **X_P, uint32 **T_P, uint32 **Y_P, uint8 **Y)
+{
+    pack_ui32matrix(X, i1, j1, X_P); // package X dans X_P
+
+    line_swp_min3_ui32matrix_basic(X_P, i0-1, j0, j1, T_P);
+    line_swp_min3_ui32matrix_basic(X_P, i0, j0, j1, T_P);
+    for( int i = i0; i < i1; i ++){
+        line_swp_min3_ui32matrix_basic(X_P, i+1, j0, j1, T_P);
+        line_swp_max3_ui32matrix_basic(T_P, i, j0, j1, Y_P);
+    }
+
+    unpack_ui32matrix(Y_P, i1, (j1/32)+1, Y);
+}
+// // ---------------------------------------------------------------------------------------------
+void ouverture3_swp_ui32matrix_pipeline_red(uint8 **X, int i0, int i1, int j0, int j1, uint32 **X_P, uint32 **T_P, uint32 **Y_P, uint8 **Y)
+{
+    pack_ui32matrix(X, i1, j1, X_P); // package X dans X_P
+
+    line_swp_min3_ui32matrix_red(X_P, i0-1, j0, j1, T_P);
+    line_swp_min3_ui32matrix_red(X_P, i0, j0, j1, T_P);
+    for( int i = i0; i < i1; i ++){
+        line_swp_min3_ui32matrix_red(X_P, i+1, j0, j1, T_P);
+        line_swp_max3_ui32matrix_red(T_P, i, j0, j1, Y_P);
+    }
+
+    unpack_ui32matrix(Y_P, i1, (j1/32)+1, Y);
+}
+// // ---------------------------------------------------------------------------------------------
+void ouverture3_swp_ui32matrix_pipeline_ilu3_red(uint8 **X, int i0, int i1, int j0, int j1, uint32 **X_P, uint32 **T_P, uint32 **Y_P, uint8 **Y)
+{
+    pack_ui32matrix(X, i1, j1, X_P); // package X dans X_P
+
+    line_swp_min3_ui32matrix_ilu3_red(X_P, i0-1, j0, j1, T_P);
+    line_swp_min3_ui32matrix_ilu3_red(X_P, i0, j0, j1, T_P);
+    for( int i = i0; i < i1; i ++){
+        line_swp_min3_ui32matrix_ilu3_red(X_P, i+1, j0, j1, T_P);
+        line_swp_max3_ui32matrix_ilu3_red(T_P, i, j0, j1, Y_P);
+    }
+
+    unpack_ui32matrix(Y_P, i1, (j1/32)+1, Y);
+}
+// // ---------------------------------------------------------------------------------------------
+void ouverture3_swp_ui32matrix_pipeline_elu2_red(uint8 **X, int i0, int i1, int j0, int j1, uint32 **X_P, uint32 **T_P, uint32 **Y_P, uint8 **Y)
+{
+    pack_ui32matrix(X, i1, j1, X_P); // package X dans X_P
+
+    line_swp_min3_ui32matrix_elu2_red(X_P, i0-1, j0, j1, T_P);
+    int i;
+    for( i = i0; i < i1-1; i ++){
+        line_swp_min3_ui32matrix_elu2_red(X_P, i+1, j0, j1, T_P);
+        line_swp_max3_ui32matrix_elu2_red(T_P, i, j0, j1, Y_P);
+    }
+
+    unpack_ui32matrix(Y_P, i1, (j1/32)+1, Y);
+}
+// // ---------------------------------------------------------------------------------------------
+void ouverture3_swp_ui32matrix_pipeline_elu2_red_factor(uint8 **X, int i0, int i1, int j0, int j1, uint32 **X_P, uint32 **T_P, uint32 **Y_P, uint8 **Y)
+{
+    pack_ui32matrix(X, i1, j1, X_P); // package X dans X_P
+
+    line_swp_min3_ui32matrix_elu2_red_factor(X_P, i0-1, j0, j1, T_P);
+    for( int i = i0; i < i1-1; i ++){
+        line_swp_min3_ui32matrix_elu2_red_factor(X_P, i+1, j0, j1, T_P);
+        line_swp_max3_ui32matrix_elu2_red_factor(T_P, i, j0, j1, Y_P);
+    }
+
+    unpack_ui32matrix(Y_P, i1, (j1/32)+1, Y);
+
+}
+// // ---------------------------------------------------------------------------------------------
+void ouverture3_swp_ui32matrix_pipeline_ilu3_elu2_red(uint8 **X, int i0, int i1, int j0, int j1, uint32 **X_P, uint32 **T_P, uint32 **Y_P, uint8 **Y)
+{
+
+    pack_ui32matrix(X, i1, j1, X_P); // package X dans X_P
+
+    line_swp_min3_ui32matrix_ilu3_elu2_red(X_P, i0-1, j0, j1, T_P);
+    for( int i = i0; i < i1-1; i ++){
+        line_swp_min3_ui32matrix_ilu3_elu2_red(X_P, i+1, j0, j1, T_P);
+        line_swp_max3_ui32matrix_ilu3_elu2_red(T_P, i, j0, j1, Y_P);
+    }
+
+    unpack_ui32matrix(Y_P, i1, (j1/32)+1, Y);
+
+}
+// // ---------------------------------------------------------------------------------------------
+void ouverture3_swp_ui32matrix_pipeline_ilu3_elu2_red_factor(uint8 **X, int i0, int i1, int j0, int j1, uint32 **X_P, uint32 **T_P, uint32 **Y_P, uint8 **Y)
+{
+    pack_ui32matrix(X, i1, j1, X_P); // package X dans X_P
+
+    line_swp_min3_ui32matrix_ilu3_elu2_red_factor(X_P, i0-1, j0, j1, T_P);
+    for( int i = i0; i < i1-1; i ++){
+        line_swp_min3_ui32matrix_ilu3_elu2_red_factor(X_P, i+1, j0, j1, T_P);
+        line_swp_max3_ui32matrix_ilu3_elu2_red_factor(T_P, i, j0, j1, Y_P);
+    }
+
+    unpack_ui32matrix(Y_P, i1, (j1/32)+1, Y);
 
 }
 // // ---------------------------------------------------------------------------------------------

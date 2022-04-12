@@ -457,7 +457,7 @@ void test_swp8_morpho_ouverture_routine(int h, int w0)
 
     // POUR FUSION -----------------------------
 
-// X packé dans X_P fusion
+    // X packé dans X_P fusion
     uint8 **X_P_bas_fusion                   ,
         **X_P_red_fusion                     ,
         **X_P_ilu3_red_fusion                ,
@@ -465,23 +465,20 @@ void test_swp8_morpho_ouverture_routine(int h, int w0)
         **X_P_elu2_red_factor_fusion         ,
         **X_P_ilu3_elu2_red_fusion           ,
         **X_P_ilu3_elu2_red_factor_fusion    ;
-//
-// XP traité dans Y_P
+    // XP traité dans Y_P
     uint8 **Y_P_bas_fusion                             ,
         **Y_P_ilu5_red_fusion                          ,
         **Y_P_ilu5_elu2_red_fusion                     ,
         **Y_P_ilu5_elu2_red_factor_fusion              ;
-//
-// stockage final Y_fusion
+    // stockage final Y_fusion
     uint8 **Y_fusion_bas                      ,
         **Y_fusion_ilu5_red                   ,
         **Y_fusion_ilu5_elu2_red              ,
         **Y_fusion_ilu5_elu2_red_factor       ;
-//
 
     // POUR PIPELINE -----------------------------
 
-// X packée dans X_P
+    // X packée dans X_P
     uint8 **X_P_bas                   ,
         **X_P_red                     ,
         **X_P_ilu3_red                ,
@@ -489,8 +486,7 @@ void test_swp8_morpho_ouverture_routine(int h, int w0)
         **X_P_elu2_red_factor         ,
         **X_P_ilu3_elu2_red           ,
         **X_P_ilu3_elu2_red_factor    ;
-//
-// premier traitement T_P
+    // premier traitement T_P
     uint8 **T_P_bas                   ,
         **T_P_red                     ,
         **T_P_ilu3_red                ,
@@ -498,8 +494,7 @@ void test_swp8_morpho_ouverture_routine(int h, int w0)
         **T_P_elu2_red_factor         ,
         **T_P_ilu3_elu2_red           ,
         **T_P_ilu3_elu2_red_factor    ;
-//
-// deuxieme traitement Y_P
+    // deuxieme traitement Y_P
     uint8 **Y_P_bas                             ,
         **Y_P_red                               ,
         **Y_P_ilu3_red                          ,
@@ -507,8 +502,7 @@ void test_swp8_morpho_ouverture_routine(int h, int w0)
         **Y_P_elu2_red_factor                   ,
         **Y_P_ilu3_elu2_red                     ,
         **Y_P_ilu3_elu2_red_factor              ;
-//
-// stockage final pipeline
+    // stockage final pipeline
     uint8 **Y_pipeline_bas                      ,
         **Y_pipeline_red                        ,
         **Y_pipeline_ilu3_red                   ,
@@ -516,8 +510,6 @@ void test_swp8_morpho_ouverture_routine(int h, int w0)
         **Y_pipeline_elu2_red_factor            ,
         **Y_pipeline_ilu3_elu2_red              ,
         **Y_pipeline_ilu3_elu2_red_factor       ;
-//
-
 
     char *format1; // affichage 1 bit/pixel
     char *format8; // affichage 8 bits/pixel
@@ -541,7 +533,7 @@ void test_swp8_morpho_ouverture_routine(int h, int w0)
     // X1     = ui8matrix(0-2*r, h-1+2*r, 0-2*r, w1-1+2*r);
 
     // Pipeline init
-// X packée pipeline
+    // X packée pipeline
     X_P_bas                         = ui8matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
     X_P_red                         = ui8matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
     X_P_ilu3_red                    = ui8matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
@@ -549,8 +541,7 @@ void test_swp8_morpho_ouverture_routine(int h, int w0)
     X_P_elu2_red_factor             = ui8matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
     X_P_ilu3_elu2_red               = ui8matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
     X_P_ilu3_elu2_red_factor        = ui8matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
-//
-// T_P premier traitement pipeline
+    // T_P premier traitement pipeline
     T_P_bas                         = ui8matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
     T_P_red                         = ui8matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
     T_P_ilu3_red                    = ui8matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
@@ -558,8 +549,7 @@ void test_swp8_morpho_ouverture_routine(int h, int w0)
     T_P_elu2_red_factor             = ui8matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
     T_P_ilu3_elu2_red               = ui8matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
     T_P_ilu3_elu2_red_factor        = ui8matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
-//
-// Y_P final pipeline
+    // Y_P final pipeline
     Y_P_bas                         = ui8matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
     Y_P_red                         = ui8matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
     Y_P_ilu3_red                    = ui8matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
@@ -567,8 +557,7 @@ void test_swp8_morpho_ouverture_routine(int h, int w0)
     Y_P_elu2_red_factor             = ui8matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
     Y_P_ilu3_elu2_red               = ui8matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
     Y_P_ilu3_elu2_red_factor        = ui8matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
-//
-// Y finale pipeline
+    // Y finale pipeline
     Y_pipeline_bas                  = ui8matrix(0, h-1, 0, w1-1);
     Y_pipeline_red                  = ui8matrix(0, h-1, 0, w1-1);
     Y_pipeline_ilu3_red             = ui8matrix(0, h-1, 0, w1-1);
@@ -576,9 +565,8 @@ void test_swp8_morpho_ouverture_routine(int h, int w0)
     Y_pipeline_elu2_red_factor      = ui8matrix(0, h-1, 0, w1-1);
     Y_pipeline_ilu3_elu2_red        = ui8matrix(0, h-1, 0, w1-1);
     Y_pipeline_ilu3_elu2_red_factor = ui8matrix(0, h-1, 0, w1-1);
-//
 
-// X packée fusion
+    // X packée fusion
     X_P_bas_fusion                         = ui8matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
     X_P_red_fusion                         = ui8matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
     X_P_ilu3_red_fusion                    = ui8matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
@@ -586,18 +574,16 @@ void test_swp8_morpho_ouverture_routine(int h, int w0)
     X_P_elu2_red_factor_fusion             = ui8matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
     X_P_ilu3_elu2_red_fusion               = ui8matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
     X_P_ilu3_elu2_red_factor_fusion        = ui8matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
-//
-//  Y final packé
+    //  Y final packé
     Y_P_bas_fusion                  = ui8matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
     Y_P_ilu5_red_fusion             = ui8matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
     Y_P_ilu5_elu2_red_fusion        = ui8matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
     Y_P_ilu5_elu2_red_factor_fusion = ui8matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
-//  Y finale fusion
+    //  Y finale fusion
     Y_fusion_bas                  = ui8matrix(0, h-1, 0, w1-1);
     Y_fusion_ilu5_red             = ui8matrix(0, h-1, 0, w1-1);
     Y_fusion_ilu5_elu2_red        = ui8matrix(0, h-1, 0, w1-1);
     Y_fusion_ilu5_elu2_red_factor = ui8matrix(0, h-1, 0, w1-1);
-//
 
 
     //------- init  -------
@@ -607,7 +593,7 @@ void test_swp8_morpho_ouverture_routine(int h, int w0)
     zero_ui8matrix(Y_basic_or,                            0, h-1, 0, w1-1);
 
     // Pipeline
-// X packée pipeline
+    // X packée pipeline
     zero_ui8matrix(X_P_bas,                             0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
     zero_ui8matrix(X_P_red,                             0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
     zero_ui8matrix(X_P_ilu3_red,                        0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
@@ -615,8 +601,7 @@ void test_swp8_morpho_ouverture_routine(int h, int w0)
     zero_ui8matrix(X_P_elu2_red_factor,                 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
     zero_ui8matrix(X_P_ilu3_elu2_red,                   0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
     zero_ui8matrix(X_P_ilu3_elu2_red_factor,            0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
-//
-// T_P premier traitement pipeline
+    // T_P premier traitement pipeline
     zero_ui8matrix(T_P_bas                 , 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
     zero_ui8matrix(T_P_red                 , 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
     zero_ui8matrix(T_P_ilu3_red            , 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
@@ -624,8 +609,7 @@ void test_swp8_morpho_ouverture_routine(int h, int w0)
     zero_ui8matrix(T_P_elu2_red_factor     , 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
     zero_ui8matrix(T_P_ilu3_elu2_red       , 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
     zero_ui8matrix(T_P_ilu3_elu2_red_factor, 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
-//
-// Y_P deuxieme traitement pipeline
+    // Y_P deuxieme traitement pipeline
     zero_ui8matrix(Y_P_bas,                          0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
     zero_ui8matrix(Y_P_red,                          0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
     zero_ui8matrix(Y_P_ilu3_red,                     0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
@@ -633,8 +617,7 @@ void test_swp8_morpho_ouverture_routine(int h, int w0)
     zero_ui8matrix(Y_P_elu2_red_factor,              0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
     zero_ui8matrix(Y_P_ilu3_elu2_red,                0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
     zero_ui8matrix(Y_P_ilu3_elu2_red_factor,         0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
-//
-// Y final pipeline
+    // Y final pipeline
     zero_ui8matrix(Y_pipeline_bas               , 0, h-1, 0, w1-1);
     zero_ui8matrix(Y_pipeline_red                 , 0, h-1, 0, w1-1);
     zero_ui8matrix(Y_pipeline_ilu3_red            , 0, h-1, 0, w1-1);
@@ -642,10 +625,9 @@ void test_swp8_morpho_ouverture_routine(int h, int w0)
     zero_ui8matrix(Y_pipeline_elu2_red_factor     , 0, h-1, 0, w1-1);
     zero_ui8matrix(Y_pipeline_ilu3_elu2_red       , 0, h-1, 0, w1-1);
     zero_ui8matrix(Y_pipeline_ilu3_elu2_red_factor, 0, h-1, 0, w1-1);
-//
 
     // Fusion
-// X packé fusion
+    // X packé fusion
     zero_ui8matrix(X_P_bas_fusion,                             0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
     zero_ui8matrix(X_P_red_fusion,                             0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
     zero_ui8matrix(X_P_ilu3_red_fusion,                        0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
@@ -653,19 +635,16 @@ void test_swp8_morpho_ouverture_routine(int h, int w0)
     zero_ui8matrix(X_P_elu2_red_factor_fusion,                 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
     zero_ui8matrix(X_P_ilu3_elu2_red_fusion,                   0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
     zero_ui8matrix(X_P_ilu3_elu2_red_factor_fusion,            0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
-//
-// Y final packé fusion
+    // Y final packé fusion
     zero_ui8matrix(Y_P_bas_fusion, 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
     zero_ui8matrix(Y_P_ilu5_red_fusion, 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
     zero_ui8matrix(Y_P_ilu5_elu2_red_fusion, 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
     zero_ui8matrix(Y_P_ilu5_elu2_red_factor_fusion, 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
-//
-// Y final fusion
+    // Y final fusion
     zero_ui8matrix(Y_fusion_bas ,0, h-1, 0, w1-1);
     zero_ui8matrix(Y_fusion_ilu5_red, 0, h-1, 0, w1-1);
     zero_ui8matrix(Y_fusion_ilu5_elu2_red, 0, h-1, 0, w1-1);
     zero_ui8matrix(Y_fusion_ilu5_elu2_red_factor, 0, h-1, 0, w1-1);
-//
 
     rand1_swp_ui8matrix(X, 0, h-1, 0, w0-1, 80);
     rand1_swp_ui8matrix(X, 0, h-1, 0, w0-1, 90); // binaire [0,1] (afin d'avoir des '1' apres traitement et pas que des '0');
@@ -676,21 +655,19 @@ void test_swp8_morpho_ouverture_routine(int h, int w0)
     puts("--------------");
     puts("--- fusion ---");
     puts("--------------");
-// Traitement fusion swp 8
+    // Traitement fusion swp 8
     // ouverture3_swp_ui8matrix_fusion                     (X, 0, h, 0, w0, X_P_bas_fusion, Y_P_bas_fusion,           Y_fusion_bas                     );
     // ouverture3_swp_ui8matrix_fusion_ilu5_red            (X, 0, h, 0, w0, X_P_ilu3_red_fusion, Y_P_ilu5_red_fusion,           Y_fusion_ilu5_red           );
     // ouverture3_swp_ui8matrix_fusion_ilu5_elu2_red       (X, 0, h-1, 0, w0-1,          Y_fusion_ilu5_elu2_red       );
     // ouverture3_swp_ui8matrix_fusion_ilu5_elu2_red_factor(X, 0, h-1, 0, w0-1,          Y_fusion_ilu5_elu2_red_factor);
-//
 
-// Affichage fusion swp8
+    // Affichage fusion swp8
     // display_ui8matrix(X                      ,  0, h-1, 0, w0-1, format1, "X                      ");
     // display_ui8matrix(Y_basic_or                      ,  0, h-1, 0, w0-1, format1, "Y_basic                      ");
     // display_ui8matrix(Y_fusion_bas                     ,  0, h-1, 0, w0-1, format1, "Y_fusion_bas                     ");
     // display_ui8matrix(Y_fusion_ilu5_red            ,  0, h-1, 0, w0-1, format1, "Y_fusion_ilu5_red            ");
     //display_ui8matrix(Y_fusion_ilu5_elu2_red       ,  0, h-1, 0, w0-1, format1, "Y_fusion_ilu5_elu2_red       ");
     // display_ui8matrix(Y_fusion_ilu5_elu2_red_factor,  0, h-1, 0, w0-1, format1, "Y_fusion_ilu5_elu2_red_factor");
-//
 
     // c = compare_swp_ui8matrix(Y_basic_or, 0, h-1, 0, w0-1, Y_fusion_bas                     , "Y_fusion_bas_swp8                     ");
     // c = compare_swp_ui8matrix(Y_basic_or, 0, h-1, 0, w0-1, Y_fusion_ilu5_red                     , "Y_fusion_ilu5_red_swp8                 ");
@@ -1146,6 +1123,318 @@ void test_swp16_morpho_min_routine(int h, int w0)
     // free_ui8matrix(Y_ilu3_elu2rf, 0, h-1, 0, w1-1);
 }
 // ------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------
+void test_swp16_morpho_ouverture_routine(int h, int w0)
+// ------------------------------------------------------------------------------------
+{
+    int b = 1; // bord
+    // avec des ADD
+    int r = 1; // rayon des operateurs
+    int w8 = w0 / 8; if(w0 % 16) w8 = w8+1;
+    int w1 = 16 * w8; // w1 >= w
+
+    puts("--------------------------------------------------");
+    printf("test_swp16_morpho_ouverture_routine h = %d w0 = %d w8 = %d, w1 = %d\n", h, w0, w8, w1);
+    if(w1 > w0) puts("w1 > w0");
+
+    // ------- Def  -------
+
+    uint8 **X;
+
+    uint8 **X8, **X1;
+
+    uint8 **T_basic;
+
+    uint8 **Y_basic;
+
+
+
+    // POUR FUSION -----------------------------
+
+    // X packé dans X_P fusion
+    uint16 **X_P_bas_fusion                   ,
+        **X_P_red_fusion                     ,
+        **X_P_ilu3_red_fusion                ,
+        **X_P_elu2_red_fusion                ,
+        **X_P_elu2_red_factor_fusion         ,
+        **X_P_ilu3_elu2_red_fusion           ,
+        **X_P_ilu3_elu2_red_factor_fusion    ;
+    //
+    // XP traité dans Y_P
+    uint16 **Y_P_bas_fusion                             ,
+        **Y_P_ilu5_red_fusion                          ,
+        **Y_P_ilu5_elu2_red_fusion                     ,
+        **Y_P_ilu5_elu2_red_factor_fusion              ;
+    //
+    // stockage final Y_fusion
+    uint8 **Y_fusion_bas                      ,
+        **Y_fusion_ilu5_red                   ,
+        **Y_fusion_ilu5_elu2_red              ,
+        **Y_fusion_ilu5_elu2_red_factor       ;
+    //
+
+    // POUR PIPELINE -----------------------------
+
+    // X packée dans X_P
+    uint16 **X_P_bas                   ,
+        **X_P_red                     ,
+        **X_P_ilu3_red                ,
+        **X_P_elu2_red                ,
+        **X_P_elu2_red_factor         ,
+        **X_P_ilu3_elu2_red           ,
+        **X_P_ilu3_elu2_red_factor    ;
+    //
+    // premier traitement T_P
+    uint16 **T_P_bas                   ,
+        **T_P_red                     ,
+        **T_P_ilu3_red                ,
+        **T_P_elu2_red                ,
+        **T_P_elu2_red_factor         ,
+        **T_P_ilu3_elu2_red           ,
+        **T_P_ilu3_elu2_red_factor    ;
+    //
+    // deuxieme traitement Y_P
+    uint16 **Y_P_bas                             ,
+        **Y_P_red                               ,
+        **Y_P_ilu3_red                          ,
+        **Y_P_elu2_red                          ,
+        **Y_P_elu2_red_factor                   ,
+        **Y_P_ilu3_elu2_red                     ,
+        **Y_P_ilu3_elu2_red_factor              ;
+    //
+    // stockage final pipeline
+    uint8 **Y_pipeline_bas                      ,
+        **Y_pipeline_red                        ,
+        **Y_pipeline_ilu3_red                   ,
+        **Y_pipeline_elu2_red                   ,
+        **Y_pipeline_elu2_red_factor            ,
+        **Y_pipeline_ilu3_elu2_red              ,
+        **Y_pipeline_ilu3_elu2_red_factor       ;
+    //
+
+
+    char *format1; // affichage 1 bit/pixel
+    char *format8; // affichage 8 bits/pixel
+    
+    int c; // error
+
+    format8 = "%3x";
+    format1 = "%4d";
+    format1 = "%2d";
+    //format1 = "%1d";
+    
+
+    //------- Alloc  -------
+
+    // puts ("malloc");
+    // X 2r-border
+    X                               = ui8matrix(0-2*r, h-1+2*r, 0-2*r, w1-1+2*r);
+    X8                              = ui8matrix(0-2*r, h-1+2*r, 0-1*r, w8-1+1*r);
+    uint8 **T_basic_or              = ui8matrix(0-1*r, h-1+1*r, 0-1*r, w1-1+1*r);
+    uint8 **Y_basic_or              = ui8matrix(0, h-1, 0, w1-1);
+    // X1     = ui8matrix(0-2*r, h-1+2*r, 0-2*r, w1-1+2*r);
+
+    // Pipeline init
+    // X packée pipeline
+    X_P_bas                         = ui16matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    X_P_red                         = ui16matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    X_P_ilu3_red                    = ui16matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    X_P_elu2_red                    = ui16matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    X_P_elu2_red_factor             = ui16matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    X_P_ilu3_elu2_red               = ui16matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    X_P_ilu3_elu2_red_factor        = ui16matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    //
+    // T_P premier traitement pipeline
+    T_P_bas                         = ui16matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    T_P_red                         = ui16matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    T_P_ilu3_red                    = ui16matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    T_P_elu2_red                    = ui16matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    T_P_elu2_red_factor             = ui16matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    T_P_ilu3_elu2_red               = ui16matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    T_P_ilu3_elu2_red_factor        = ui16matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    //
+    // Y_P final pipeline
+    Y_P_bas                         = ui16matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    Y_P_red                         = ui16matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    Y_P_ilu3_red                    = ui16matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    Y_P_elu2_red                    = ui16matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    Y_P_elu2_red_factor             = ui16matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    Y_P_ilu3_elu2_red               = ui16matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    Y_P_ilu3_elu2_red_factor        = ui16matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    //
+    // Y finale pipeline
+    Y_pipeline_bas                  = ui8matrix(0, h-1, 0, w1-1);
+    Y_pipeline_red                  = ui8matrix(0, h-1, 0, w1-1);
+    Y_pipeline_ilu3_red             = ui8matrix(0, h-1, 0, w1-1);
+    Y_pipeline_elu2_red             = ui8matrix(0, h-1, 0, w1-1);
+    Y_pipeline_elu2_red_factor      = ui8matrix(0, h-1, 0, w1-1);
+    Y_pipeline_ilu3_elu2_red        = ui8matrix(0, h-1, 0, w1-1);
+    Y_pipeline_ilu3_elu2_red_factor = ui8matrix(0, h-1, 0, w1-1);
+    //
+
+    // X packée fusion
+    X_P_bas_fusion                         = ui16matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    X_P_red_fusion                         = ui16matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    X_P_ilu3_red_fusion                    = ui16matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    X_P_elu2_red_fusion                    = ui16matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    X_P_elu2_red_factor_fusion             = ui16matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    X_P_ilu3_elu2_red_fusion               = ui16matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    X_P_ilu3_elu2_red_factor_fusion        = ui16matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    //
+    //  Y final packé
+    Y_P_bas_fusion                  = ui16matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    Y_P_ilu5_red_fusion             = ui16matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    Y_P_ilu5_elu2_red_fusion        = ui16matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    Y_P_ilu5_elu2_red_factor_fusion = ui16matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    //  Y finale fusion
+    Y_fusion_bas                  = ui8matrix(0, h-1, 0, w1-1);
+    Y_fusion_ilu5_red             = ui8matrix(0, h-1, 0, w1-1);
+    Y_fusion_ilu5_elu2_red        = ui8matrix(0, h-1, 0, w1-1);
+    Y_fusion_ilu5_elu2_red_factor = ui8matrix(0, h-1, 0, w1-1);
+    //
+
+
+    //------- init  -------
+    // puts("zero X");
+    zero_ui8matrix(X,                     0-2*r, h-1+2*r, 0-2*r, w1-1+2*r);
+    zero_ui8matrix(T_basic_or,            0-1*r, h-1+1*r, 0-1*r, w1-1+1*r);
+    zero_ui8matrix(Y_basic_or,                            0, h-1, 0, w1-1);
+
+    // Pipeline
+    // X packée pipeline
+    zero_ui16matrix(X_P_bas,                             0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    zero_ui16matrix(X_P_red,                             0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    zero_ui16matrix(X_P_ilu3_red,                        0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    zero_ui16matrix(X_P_elu2_red,                        0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    zero_ui16matrix(X_P_elu2_red_factor,                 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    zero_ui16matrix(X_P_ilu3_elu2_red,                   0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    zero_ui16matrix(X_P_ilu3_elu2_red_factor,            0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    //
+    // T_P premier traitement pipeline
+    zero_ui16matrix(T_P_bas                 , 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    zero_ui16matrix(T_P_red                 , 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    zero_ui16matrix(T_P_ilu3_red            , 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    zero_ui16matrix(T_P_elu2_red            , 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    zero_ui16matrix(T_P_elu2_red_factor     , 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    zero_ui16matrix(T_P_ilu3_elu2_red       , 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    zero_ui16matrix(T_P_ilu3_elu2_red_factor, 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    //
+    // Y_P deuxieme traitement pipeline
+    zero_ui16matrix(Y_P_bas,                          0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    zero_ui16matrix(Y_P_red,                          0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    zero_ui16matrix(Y_P_ilu3_red,                     0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    zero_ui16matrix(Y_P_elu2_red,                     0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    zero_ui16matrix(Y_P_elu2_red_factor,              0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    zero_ui16matrix(Y_P_ilu3_elu2_red,                0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    zero_ui16matrix(Y_P_ilu3_elu2_red_factor,         0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    //
+    // Y final pipeline
+    zero_ui8matrix(Y_pipeline_bas               , 0, h-1, 0, w1-1);
+    zero_ui8matrix(Y_pipeline_red                 , 0, h-1, 0, w1-1);
+    zero_ui8matrix(Y_pipeline_ilu3_red            , 0, h-1, 0, w1-1);
+    zero_ui8matrix(Y_pipeline_elu2_red            , 0, h-1, 0, w1-1);
+    zero_ui8matrix(Y_pipeline_elu2_red_factor     , 0, h-1, 0, w1-1);
+    zero_ui8matrix(Y_pipeline_ilu3_elu2_red       , 0, h-1, 0, w1-1);
+    zero_ui8matrix(Y_pipeline_ilu3_elu2_red_factor, 0, h-1, 0, w1-1);
+    //
+
+    // Fusion
+    // X packé fusion
+    zero_ui16matrix(X_P_bas_fusion,                             0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    zero_ui16matrix(X_P_red_fusion,                             0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    zero_ui16matrix(X_P_ilu3_red_fusion,                        0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    zero_ui16matrix(X_P_elu2_red_fusion,                        0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    zero_ui16matrix(X_P_elu2_red_factor_fusion,                 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    zero_ui16matrix(X_P_ilu3_elu2_red_fusion,                   0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    zero_ui16matrix(X_P_ilu3_elu2_red_factor_fusion,            0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    //
+    // Y final packé fusion
+    zero_ui16matrix(Y_P_bas_fusion, 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    zero_ui16matrix(Y_P_ilu5_red_fusion, 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    zero_ui16matrix(Y_P_ilu5_elu2_red_fusion, 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    zero_ui16matrix(Y_P_ilu5_elu2_red_factor_fusion, 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    //
+    // Y final fusion
+    zero_ui8matrix(Y_fusion_bas ,0, h-1, 0, w1-1);
+    zero_ui8matrix(Y_fusion_ilu5_red, 0, h-1, 0, w1-1);
+    zero_ui8matrix(Y_fusion_ilu5_elu2_red, 0, h-1, 0, w1-1);
+    zero_ui8matrix(Y_fusion_ilu5_elu2_red_factor, 0, h-1, 0, w1-1);
+    //
+
+    rand1_swp_ui8matrix(X, 0, h-1, 0, w0-1, 80);
+    rand1_swp_ui8matrix(X, 0, h-1, 0, w0-1, 90); // binaire [0,1] (afin d'avoir des '1' apres traitement et pas que des '0');
+
+    ouverture3_ui8matrix_basic                      (X, 0, h, 0, w0, T_basic_or, Y_basic_or                      );
+    
+    
+    puts("--------------");
+    puts("--- fusion ---");
+    puts("--------------");
+    // Traitement fusion swp 16
+    // ouverture3_swp_ui16matrix_fusion                     (X, 0, h, 0, w0, X_P_bas_fusion, Y_P_bas_fusion,           Y_fusion_bas                     );
+    // ouverture3_swp_ui16matrix_fusion_ilu5_red            (X, 0, h, 0, w0, X_P_ilu3_red_fusion, Y_P_ilu5_red_fusion,           Y_fusion_ilu5_red           );
+    // ouverture3_swp_ui16matrix_fusion_ilu5_elu2_red       (X, 0, h-1, 0, w0-1,          Y_fusion_ilu5_elu2_red       );
+    // ouverture3_swp_ui16matrix_fusion_ilu5_elu2_red_factor(X, 0, h-1, 0, w0-1,          Y_fusion_ilu5_elu2_red_factor);
+    //
+
+    // Affichage fusion swp16
+    // display_ui8matrix(X                      ,  0, h-1, 0, w0-1, format1, "X                      ");
+    // display_ui8matrix(Y_basic_or                      ,  0, h-1, 0, w0-1, format1, "Y_basic                      ");
+    // display_ui8matrix(Y_fusion_bas                     ,  0, h-1, 0, w0-1, format1, "Y_fusion_bas                     ");
+    // display_ui8matrix(Y_fusion_ilu5_red            ,  0, h-1, 0, w0-1, format1, "Y_fusion_ilu5_red            ");
+    // display_ui8matrix(Y_fusion_ilu5_elu2_red       ,  0, h-1, 0, w0-1, format1, "Y_fusion_ilu5_elu2_red       ");
+    // display_ui8matrix(Y_fusion_ilu5_elu2_red_factor,  0, h-1, 0, w0-1, format1, "Y_fusion_ilu5_elu2_red_factor");
+    //
+
+    // c = compare_swp_ui8matrix(Y_basic_or, 0, h-1, 0, w0-1, Y_fusion_bas                     , "Y_fusion_bas_swp8                     ");
+    // c = compare_swp_ui8matrix(Y_basic_or, 0, h-1, 0, w0-1, Y_fusion_ilu5_red                     , "Y_fusion_ilu5_red_swp8                 ");
+    // c = compare_swp_ui8matrix(Y_basic_or, 0, h-1, 0, w0-1, Y_pipeline_ilu3_red            , "Y_pipeline_ilu3_red_swp8            ");
+    // c = compare_swp_ui8matrix(Y_basic_or, 0, h-1, 0, w0-1, Y_pipeline_elu2_red            , "Y_pipeline_elu2_red_swp8            ");
+    // c = compare_swp_ui8matrix(Y_basic_or, 0, h-1, 0, w0-1, Y_pipeline_elu2_red_factor     , "Y_pipeline_elu2_red_factor_swp8     ");
+    // c = compare_swp_ui8matrix(Y_basic_or, 0, h-1, 0, w0-1, Y_pipeline_ilu3_elu2_red       , "Y_pipeline_ilu3_elu2_red_swp8       ");
+    // c = compare_swp_ui8matrix(Y_basic_or, 0, h-1, 0, w0-1, Y_pipeline_ilu3_elu2_red_factor, "Y_pipeline_ilu3_elu2_red_factor_swp8");
+    // putchar('\n');
+
+
+    puts("--------------");
+    puts("-- pipeline --");
+    puts("--------------");
+
+    // T: full-matrix
+    // ouverture3_swp_ui16matrix_pipeline_basic               (X, 0, h, 0, w0, X_P_bas , T_P_bas, Y_P_bas, Y_pipeline_bas                             );
+    // ouverture3_swp_ui16matrix_pipeline_red                 (X, 0, h, 0, w0, X_P_red , T_P_red, Y_P_red, Y_pipeline_red                             );
+    // ouverture3_swp_ui16matrix_pipeline_ilu3_red            (X, 0, h, 0, w0, X_P_ilu3_red , T_P_ilu3_red, Y_P_ilu3_red, Y_pipeline_ilu3_red             );
+    // ouverture3_swp_ui16matrix_pipeline_elu2_red            (X, 0, h, 0, w0, X_P_elu2_red , T_P_elu2_red, Y_P_elu2_red, Y_pipeline_elu2_red            );
+    // ouverture3_swp_ui16matrix_pipeline_elu2_red_factor     (X, 0, h, 0, w0, X_P_elu2_red_factor , T_P_elu2_red_factor, Y_P_elu2_red_factor, Y_pipeline_elu2_red_factor    );
+    // ouverture3_swp_ui16matrix_pipeline_ilu3_elu2_red       (X, 0, h, 0, w0, X_P_ilu3_elu2_red, T_P_ilu3_elu2_red, Y_P_ilu3_elu2_red, Y_pipeline_ilu3_elu2_red       );
+    ouverture3_swp_ui16matrix_pipeline_ilu3_elu2_red_factor(X, 0, h, 0, w0, X_P_ilu3_elu2_red_factor, T_P_ilu3_elu2_red_factor, Y_P_ilu3_elu2_red_factor, Y_pipeline_ilu3_elu2_red_factor      );
+
+    //display_ui8matrix(Y_basic_or                        , 0, h-1, 0, w0-1, format1, "Y_basic_or                        ");
+    //display_ui8matrix(Y_pipeline_bas                    , 0, h-1, 0, w0-1, format1, "Y_pipeline_bas                     ");
+    //display_ui8matrix(Y_pipeline_red                    ,  0, h-1, 0, w0-1, format1, "Y_pipeline_red                   ");
+    //display_ui8matrix(Y_pipeline_ilu3_red            , 0, h-1, 0, w0-1, format1, "Y_pipeline_ilu3_red            ");
+    //display_ui8matrix(Y_pipeline_elu2_red            , 0, h-1, 0, w0-1, format1, "Y_pipeline_elu2_red            ");
+    //display_ui8matrix(Y_pipeline_elu2_red_factor     , 0, h-1, 0, w0-1, format1, "Y_pipeline_elu2_red_factor     ");
+    //display_ui8matrix(Y_pipeline_ilu3_elu2_red       , 0, h-1, 0, w0-1, format1, "Y_pipeline_ilu3_elu2_red       ");
+    //display_ui8matrix(Y_pipeline_ilu3_elu2_red_factor, 0, h-1, 0, w0-1, format1, "Y_pipeline_ilu3_elu2_red_factor");
+
+    // c = compare_swp_ui8matrix(Y_basic_or, 0, h-1, 0, w0-1, Y_pipeline_bas                     , "Y_pipeline_bas_swp16                     ");
+    // c = compare_swp_ui8matrix(Y_basic_or, 0, h-1, 0, w0-1, Y_pipeline_red                     , "Y_pipeline_red_swp16                 ");
+    // c = compare_swp_ui8matrix(Y_basic_or, 0, h-1, 0, w0-1, Y_pipeline_ilu3_red            , "Y_pipeline_ilu3_red_swp16            ");
+    // c = compare_swp_ui8matrix(Y_basic_or, 0, h-1, 0, w0-1, Y_pipeline_elu2_red            , "Y_pipeline_elu2_red_swp16            ");
+    // c = compare_swp_ui8matrix(Y_basic_or, 0, h-1, 0, w0-1, Y_pipeline_elu2_red_factor     , "Y_pipeline_elu2_red_factor_swp16     ");
+    // c = compare_swp_ui8matrix(Y_basic_or, 0, h-1, 0, w0-1, Y_pipeline_ilu3_elu2_red       , "Y_pipeline_ilu3_elu2_red_swp16       ");
+    c = compare_swp_ui8matrix(Y_basic_or, 0, h-1, 0, w0-1, Y_pipeline_ilu3_elu2_red_factor, "Y_pipeline_ilu3_elu2_red_factor_swp16");
+    // putchar('\n');
+
+
+    // puts("----------");
+    // puts("-- free --");
+    // puts("----------");
+
+
+}
+// ------------------------------------------------------------------------------------
 
 
 // ------------------------------ Test SWP32 ------------------------------------------
@@ -1535,6 +1824,318 @@ void test_swp32_morpho_min_routine(int h, int w0)
     // free_ui8matrix(Y_ilu3_elu2rf, 0, h-1, 0, w1-1);
 }
 // ------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------
+void test_swp32_morpho_ouverture_routine(int h, int w0)
+// ------------------------------------------------------------------------------------
+{
+    int b = 1; // bord
+    // avec des ADD
+    int r = 1; // rayon des operateurs
+    int w8 = w0 / 8; if(w0 % 32) w8 = w8+1;
+    int w1 = 32 * w8; // w1 >= w
+
+    puts("--------------------------------------------------");
+    printf("test_swp32_morpho_ouverture_routine h = %d w0 = %d w8 = %d, w1 = %d\n", h, w0, w8, w1);
+    if(w1 > w0) puts("w1 > w0");
+
+    // ------- Def  -------
+
+    uint8 **X;
+
+    uint8 **X8, **X1;
+
+    uint8 **T_basic;
+
+    uint8 **Y_basic;
+
+
+
+    // POUR FUSION -----------------------------
+
+    // X packé dans X_P fusion
+    uint32 **X_P_bas_fusion                   ,
+        **X_P_red_fusion                     ,
+        **X_P_ilu3_red_fusion                ,
+        **X_P_elu2_red_fusion                ,
+        **X_P_elu2_red_factor_fusion         ,
+        **X_P_ilu3_elu2_red_fusion           ,
+        **X_P_ilu3_elu2_red_factor_fusion    ;
+    //
+    // XP traité dans Y_P
+    uint32 **Y_P_bas_fusion                             ,
+        **Y_P_ilu5_red_fusion                          ,
+        **Y_P_ilu5_elu2_red_fusion                     ,
+        **Y_P_ilu5_elu2_red_factor_fusion              ;
+    //
+    // stockage final Y_fusion
+    uint8 **Y_fusion_bas                      ,
+        **Y_fusion_ilu5_red                   ,
+        **Y_fusion_ilu5_elu2_red              ,
+        **Y_fusion_ilu5_elu2_red_factor       ;
+    //
+
+    // POUR PIPELINE -----------------------------
+
+    // X packée dans X_P
+    uint32 **X_P_bas                   ,
+        **X_P_red                     ,
+        **X_P_ilu3_red                ,
+        **X_P_elu2_red                ,
+        **X_P_elu2_red_factor         ,
+        **X_P_ilu3_elu2_red           ,
+        **X_P_ilu3_elu2_red_factor    ;
+    //
+    // premier traitement T_P
+    uint32 **T_P_bas                   ,
+        **T_P_red                     ,
+        **T_P_ilu3_red                ,
+        **T_P_elu2_red                ,
+        **T_P_elu2_red_factor         ,
+        **T_P_ilu3_elu2_red           ,
+        **T_P_ilu3_elu2_red_factor    ;
+    //
+    // deuxieme traitement Y_P
+    uint32 **Y_P_bas                             ,
+        **Y_P_red                               ,
+        **Y_P_ilu3_red                          ,
+        **Y_P_elu2_red                          ,
+        **Y_P_elu2_red_factor                   ,
+        **Y_P_ilu3_elu2_red                     ,
+        **Y_P_ilu3_elu2_red_factor              ;
+    //
+    // stockage final pipeline
+    uint8 **Y_pipeline_bas                      ,
+        **Y_pipeline_red                        ,
+        **Y_pipeline_ilu3_red                   ,
+        **Y_pipeline_elu2_red                   ,
+        **Y_pipeline_elu2_red_factor            ,
+        **Y_pipeline_ilu3_elu2_red              ,
+        **Y_pipeline_ilu3_elu2_red_factor       ;
+    //
+
+
+    char *format1; // affichage 1 bit/pixel
+    char *format8; // affichage 8 bits/pixel
+    
+    int c; // error
+
+    format8 = "%3x";
+    format1 = "%4d";
+    format1 = "%2d";
+    //format1 = "%1d";
+    
+
+    //------- Alloc  -------
+
+    // puts ("malloc");
+    // X 2r-border
+    X                               = ui8matrix(0-2*r, h-1+2*r, 0-2*r, w1-1+2*r);
+    X8                              = ui8matrix(0-2*r, h-1+2*r, 0-1*r, w8-1+1*r);
+    uint8 **T_basic_or              = ui8matrix(0-1*r, h-1+1*r, 0-1*r, w1-1+1*r);
+    uint8 **Y_basic_or              = ui8matrix(0, h-1, 0, w1-1);
+    // X1     = ui8matrix(0-2*r, h-1+2*r, 0-2*r, w1-1+2*r);
+
+    // Pipeline init
+    // X packée pipeline
+    X_P_bas                         = ui32matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    X_P_red                         = ui32matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    X_P_ilu3_red                    = ui32matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    X_P_elu2_red                    = ui32matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    X_P_elu2_red_factor             = ui32matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    X_P_ilu3_elu2_red               = ui32matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    X_P_ilu3_elu2_red_factor        = ui32matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    //
+    // T_P premier traitement pipeline
+    T_P_bas                         = ui32matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    T_P_red                         = ui32matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    T_P_ilu3_red                    = ui32matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    T_P_elu2_red                    = ui32matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    T_P_elu2_red_factor             = ui32matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    T_P_ilu3_elu2_red               = ui32matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    T_P_ilu3_elu2_red_factor        = ui32matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    //
+    // Y_P final pipeline
+    Y_P_bas                         = ui32matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    Y_P_red                         = ui32matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    Y_P_ilu3_red                    = ui32matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    Y_P_elu2_red                    = ui32matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    Y_P_elu2_red_factor             = ui32matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    Y_P_ilu3_elu2_red               = ui32matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    Y_P_ilu3_elu2_red_factor        = ui32matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    //
+    // Y finale pipeline
+    Y_pipeline_bas                  = ui8matrix(0, h-1, 0, w1-1);
+    Y_pipeline_red                  = ui8matrix(0, h-1, 0, w1-1);
+    Y_pipeline_ilu3_red             = ui8matrix(0, h-1, 0, w1-1);
+    Y_pipeline_elu2_red             = ui8matrix(0, h-1, 0, w1-1);
+    Y_pipeline_elu2_red_factor      = ui8matrix(0, h-1, 0, w1-1);
+    Y_pipeline_ilu3_elu2_red        = ui8matrix(0, h-1, 0, w1-1);
+    Y_pipeline_ilu3_elu2_red_factor = ui8matrix(0, h-1, 0, w1-1);
+    //
+
+    // X packée fusion
+    X_P_bas_fusion                         = ui32matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    X_P_red_fusion                         = ui32matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    X_P_ilu3_red_fusion                    = ui32matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    X_P_elu2_red_fusion                    = ui32matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    X_P_elu2_red_factor_fusion             = ui32matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    X_P_ilu3_elu2_red_fusion               = ui32matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    X_P_ilu3_elu2_red_factor_fusion        = ui32matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    //
+    //  Y final packé
+    Y_P_bas_fusion                  = ui32matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    Y_P_ilu5_red_fusion             = ui32matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    Y_P_ilu5_elu2_red_fusion        = ui32matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    Y_P_ilu5_elu2_red_factor_fusion = ui32matrix(0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    //  Y finale fusion
+    Y_fusion_bas                  = ui8matrix(0, h-1, 0, w1-1);
+    Y_fusion_ilu5_red             = ui8matrix(0, h-1, 0, w1-1);
+    Y_fusion_ilu5_elu2_red        = ui8matrix(0, h-1, 0, w1-1);
+    Y_fusion_ilu5_elu2_red_factor = ui8matrix(0, h-1, 0, w1-1);
+    //
+
+
+    //------- init  -------
+    // puts("zero X");
+    zero_ui8matrix(X,                     0-2*r, h-1+2*r, 0-2*r, w1-1+2*r);
+    zero_ui8matrix(T_basic_or,            0-1*r, h-1+1*r, 0-1*r, w1-1+1*r);
+    zero_ui8matrix(Y_basic_or,                            0, h-1, 0, w1-1);
+
+    // Pipeline
+    // X packée pipeline
+    zero_ui32matrix(X_P_bas,                             0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    zero_ui32matrix(X_P_red,                             0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    zero_ui32matrix(X_P_ilu3_red,                        0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    zero_ui32matrix(X_P_elu2_red,                        0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    zero_ui32matrix(X_P_elu2_red_factor,                 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    zero_ui32matrix(X_P_ilu3_elu2_red,                   0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    zero_ui32matrix(X_P_ilu3_elu2_red_factor,            0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    //
+    // T_P premier traitement pipeline
+    zero_ui32matrix(T_P_bas                 , 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    zero_ui32matrix(T_P_red                 , 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    zero_ui32matrix(T_P_ilu3_red            , 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    zero_ui32matrix(T_P_elu2_red            , 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    zero_ui32matrix(T_P_elu2_red_factor     , 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    zero_ui32matrix(T_P_ilu3_elu2_red       , 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    zero_ui32matrix(T_P_ilu3_elu2_red_factor, 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    //
+    // Y_P deuxieme traitement pipeline
+    zero_ui32matrix(Y_P_bas,                          0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    zero_ui32matrix(Y_P_red,                          0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    zero_ui32matrix(Y_P_ilu3_red,                     0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    zero_ui32matrix(Y_P_elu2_red,                     0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    zero_ui32matrix(Y_P_elu2_red_factor,              0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    zero_ui32matrix(Y_P_ilu3_elu2_red,                0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    zero_ui32matrix(Y_P_ilu3_elu2_red_factor,         0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    //
+    // Y final pipeline
+    zero_ui8matrix(Y_pipeline_bas               , 0, h-1, 0, w1-1);
+    zero_ui8matrix(Y_pipeline_red                 , 0, h-1, 0, w1-1);
+    zero_ui8matrix(Y_pipeline_ilu3_red            , 0, h-1, 0, w1-1);
+    zero_ui8matrix(Y_pipeline_elu2_red            , 0, h-1, 0, w1-1);
+    zero_ui8matrix(Y_pipeline_elu2_red_factor     , 0, h-1, 0, w1-1);
+    zero_ui8matrix(Y_pipeline_ilu3_elu2_red       , 0, h-1, 0, w1-1);
+    zero_ui8matrix(Y_pipeline_ilu3_elu2_red_factor, 0, h-1, 0, w1-1);
+    //
+
+    // Fusion
+    // X packé fusion
+    zero_ui32matrix(X_P_bas_fusion,                             0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    zero_ui32matrix(X_P_red_fusion,                             0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    zero_ui32matrix(X_P_ilu3_red_fusion,                        0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    zero_ui32matrix(X_P_elu2_red_fusion,                        0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    zero_ui32matrix(X_P_elu2_red_factor_fusion,                 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    zero_ui32matrix(X_P_ilu3_elu2_red_fusion,                   0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    zero_ui32matrix(X_P_ilu3_elu2_red_factor_fusion,            0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    //
+    // Y final packé fusion
+    zero_ui32matrix(Y_P_bas_fusion, 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    zero_ui32matrix(Y_P_ilu5_red_fusion, 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    zero_ui32matrix(Y_P_ilu5_elu2_red_fusion, 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    zero_ui32matrix(Y_P_ilu5_elu2_red_factor_fusion, 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    //
+    // Y final fusion
+    zero_ui8matrix(Y_fusion_bas ,0, h-1, 0, w1-1);
+    zero_ui8matrix(Y_fusion_ilu5_red, 0, h-1, 0, w1-1);
+    zero_ui8matrix(Y_fusion_ilu5_elu2_red, 0, h-1, 0, w1-1);
+    zero_ui8matrix(Y_fusion_ilu5_elu2_red_factor, 0, h-1, 0, w1-1);
+    //
+
+    rand1_swp_ui8matrix(X, 0, h-1, 0, w0-1, 80);
+    rand1_swp_ui8matrix(X, 0, h-1, 0, w0-1, 90); // binaire [0,1] (afin d'avoir des '1' apres traitement et pas que des '0');
+
+    ouverture3_ui8matrix_basic                      (X, 0, h, 0, w0, T_basic_or, Y_basic_or                      );
+    
+    
+    puts("--------------");
+    puts("--- fusion ---");
+    puts("--------------");
+    // Traitement fusion swp 32
+    // ouverture3_swp_ui32matrix_fusion                     (X, 0, h, 0, w0, X_P_bas_fusion, Y_P_bas_fusion,           Y_fusion_bas                     );
+    // ouverture3_swp_ui32matrix_fusion_ilu5_red            (X, 0, h, 0, w0, X_P_ilu3_red_fusion, Y_P_ilu5_red_fusion,           Y_fusion_ilu5_red           );
+    // ouverture3_swp_ui32matrix_fusion_ilu5_elu2_red       (X, 0, h-1, 0, w0-1,          Y_fusion_ilu5_elu2_red       );
+    // ouverture3_swp_ui32matrix_fusion_ilu5_elu2_red_factor(X, 0, h-1, 0, w0-1,          Y_fusion_ilu5_elu2_red_factor);
+    //
+
+    // Affichage fusion swp32
+    // display_ui8matrix(X                      ,  0, h-1, 0, w0-1, format1, "X                      ");
+    // display_ui8matrix(Y_basic_or                      ,  0, h-1, 0, w0-1, format1, "Y_basic                      ");
+    // display_ui8matrix(Y_fusion_bas                     ,  0, h-1, 0, w0-1, format1, "Y_fusion_bas                     ");
+    // display_ui8matrix(Y_fusion_ilu5_red            ,  0, h-1, 0, w0-1, format1, "Y_fusion_ilu5_red            ");
+    // display_ui8matrix(Y_fusion_ilu5_elu2_red       ,  0, h-1, 0, w0-1, format1, "Y_fusion_ilu5_elu2_red       ");
+    // display_ui8matrix(Y_fusion_ilu5_elu2_red_factor,  0, h-1, 0, w0-1, format1, "Y_fusion_ilu5_elu2_red_factor");
+    //
+
+    // c = compare_swp_ui8matrix(Y_basic_or, 0, h-1, 0, w0-1, Y_fusion_bas                     , "Y_fusion_bas_swp8                     ");
+    // c = compare_swp_ui8matrix(Y_basic_or, 0, h-1, 0, w0-1, Y_fusion_ilu5_red                     , "Y_fusion_ilu5_red_swp8                 ");
+    // c = compare_swp_ui8matrix(Y_basic_or, 0, h-1, 0, w0-1, Y_pipeline_ilu3_red            , "Y_pipeline_ilu3_red_swp8            ");
+    // c = compare_swp_ui8matrix(Y_basic_or, 0, h-1, 0, w0-1, Y_pipeline_elu2_red            , "Y_pipeline_elu2_red_swp8            ");
+    // c = compare_swp_ui8matrix(Y_basic_or, 0, h-1, 0, w0-1, Y_pipeline_elu2_red_factor     , "Y_pipeline_elu2_red_factor_swp8     ");
+    // c = compare_swp_ui8matrix(Y_basic_or, 0, h-1, 0, w0-1, Y_pipeline_ilu3_elu2_red       , "Y_pipeline_ilu3_elu2_red_swp8       ");
+    // c = compare_swp_ui8matrix(Y_basic_or, 0, h-1, 0, w0-1, Y_pipeline_ilu3_elu2_red_factor, "Y_pipeline_ilu3_elu2_red_factor_swp8");
+    // putchar('\n');
+
+
+    puts("--------------");
+    puts("-- pipeline --");
+    puts("--------------");
+
+    // T: full-matrix
+    // ouverture3_swp_ui32matrix_pipeline_basic               (X, 0, h, 0, w0, X_P_bas , T_P_bas, Y_P_bas, Y_pipeline_bas                             );
+    // ouverture3_swp_ui32matrix_pipeline_red                 (X, 0, h, 0, w0, X_P_red , T_P_red, Y_P_red, Y_pipeline_red                             );
+    // ouverture3_swp_ui32matrix_pipeline_ilu3_red            (X, 0, h, 0, w0, X_P_ilu3_red , T_P_ilu3_red, Y_P_ilu3_red, Y_pipeline_ilu3_red             );
+    // ouverture3_swp_ui32matrix_pipeline_elu2_red            (X, 0, h, 0, w0, X_P_elu2_red , T_P_elu2_red, Y_P_elu2_red, Y_pipeline_elu2_red            );
+    // ouverture3_swp_ui32matrix_pipeline_elu2_red_factor     (X, 0, h, 0, w0, X_P_elu2_red_factor , T_P_elu2_red_factor, Y_P_elu2_red_factor, Y_pipeline_elu2_red_factor    );
+    // ouverture3_swp_ui32matrix_pipeline_ilu3_elu2_red       (X, 0, h, 0, w0, X_P_ilu3_elu2_red, T_P_ilu3_elu2_red, Y_P_ilu3_elu2_red, Y_pipeline_ilu3_elu2_red       );
+    // ouverture3_swp_ui32matrix_pipeline_ilu3_elu2_red_factor(X, 0, h, 0, w0, X_P_ilu3_elu2_red_factor, T_P_ilu3_elu2_red_factor, Y_P_ilu3_elu2_red_factor, Y_pipeline_ilu3_elu2_red_factor      );
+
+    //display_ui8matrix(Y_basic_or                        , 0, h-1, 0, w0-1, format1, "Y_basic_or                        ");
+    //display_ui8matrix(Y_pipeline_bas                    , 0, h-1, 0, w0-1, format1, "Y_pipeline_bas                     ");
+    //display_ui8matrix(Y_pipeline_red                    ,  0, h-1, 0, w0-1, format1, "Y_pipeline_red                   ");
+    //display_ui8matrix(Y_pipeline_ilu3_red            , 0, h-1, 0, w0-1, format1, "Y_pipeline_ilu3_red            ");
+    //display_ui8matrix(Y_pipeline_elu2_red            , 0, h-1, 0, w0-1, format1, "Y_pipeline_elu2_red            ");
+    //display_ui8matrix(Y_pipeline_elu2_red_factor     , 0, h-1, 0, w0-1, format1, "Y_pipeline_elu2_red_factor     ");
+    //display_ui8matrix(Y_pipeline_ilu3_elu2_red       , 0, h-1, 0, w0-1, format1, "Y_pipeline_ilu3_elu2_red       ");
+    //display_ui8matrix(Y_pipeline_ilu3_elu2_red_factor, 0, h-1, 0, w0-1, format1, "Y_pipeline_ilu3_elu2_red_factor");
+
+    // c = compare_swp_ui8matrix(Y_basic_or, 0, h-1, 0, w0-1, Y_pipeline_bas                     , "Y_pipeline_bas_swp32                     ");
+    // c = compare_swp_ui8matrix(Y_basic_or, 0, h-1, 0, w0-1, Y_pipeline_red                     , "Y_pipeline_red_swp32                 ");
+    // c = compare_swp_ui8matrix(Y_basic_or, 0, h-1, 0, w0-1, Y_pipeline_ilu3_red            , "Y_pipeline_ilu3_red_swp32            ");
+    // c = compare_swp_ui8matrix(Y_basic_or, 0, h-1, 0, w0-1, Y_pipeline_elu2_red            , "Y_pipeline_elu2_red_swp32            ");
+    // c = compare_swp_ui8matrix(Y_basic_or, 0, h-1, 0, w0-1, Y_pipeline_elu2_red_factor     , "Y_pipeline_elu2_red_factor_swp32     ");
+    // c = compare_swp_ui8matrix(Y_basic_or, 0, h-1, 0, w0-1, Y_pipeline_ilu3_elu2_red       , "Y_pipeline_ilu3_elu2_red_swp32       ");
+    // c = compare_swp_ui8matrix(Y_basic_or, 0, h-1, 0, w0-1, Y_pipeline_ilu3_elu2_red_factor, "Y_pipeline_ilu3_elu2_red_factor_swp32");
+    // putchar('\n');
+
+
+    // puts("----------");
+    // puts("-- free --");
+    // puts("----------");
+
+
+}
+// ------------------------------------------------------------------------------------
 
 
 // ------------------------------ Appel test SWP max ----------------------------------
@@ -1591,7 +2192,9 @@ void test_swp_morpho_ouverture(void)
     
     for(int h = h0; h <= h0+dh; h++) { // pour tester elu2
         for(int w = w0; w <= w0+dw; w++) { // pour tester ilu3
-            test_swp8_morpho_ouverture_routine(h, w);
+            // test_swp8_morpho_ouverture_routine(h, w);
+            test_swp16_morpho_ouverture_routine(h, w);
+            test_swp32_morpho_ouverture_routine(h, w);
         }
     }
 }
