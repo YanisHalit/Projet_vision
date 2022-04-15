@@ -649,8 +649,8 @@ void test_swp8_morpho_ouverture_routine(int h, int w0)
 
     // Traitement fusion swp 8
     // ouverture3_swp_ui8matrix_fusion                     (X, 0, h, 0, w1, X_P_bas_fusion,                    Y_P_bas_fusion,                                            Y_fusion_bas);
-    // ouverture3_swp_ui8matrix_fusion_ilu5_red            (X, 0, h, 0, w1, X_P_ilu5_red_fusion,                    Y_P_ilu5_red_fusion,                                            Y_fusion_ilu5_red);
-    ouverture3_swp_ui8matrix_fusion_ilu5_elu2_red       (X, 0, h, 0, w1, X_P_ilu5_elu2_red_fusion,                    Y_P_ilu5_elu2_red_fusion,                                            Y_fusion_ilu5_elu2_red);
+    ouverture3_swp_ui8matrix_fusion_ilu5_red            (X, 0, h, 0, w1, X_P_ilu5_red_fusion,                    Y_P_ilu5_red_fusion,                                            Y_fusion_ilu5_red);
+    // ouverture3_swp_ui8matrix_fusion_ilu5_elu2_red       (X, 0, h, 0, w1, X_P_ilu5_elu2_red_fusion,                    Y_P_ilu5_elu2_red_fusion,                                            Y_fusion_ilu5_elu2_red);
 
     // Affichage fusion swp8
     // display_ui8matrix(X                      ,  0, h-1, 0, w0-1, format1, "X                      ");
@@ -660,8 +660,8 @@ void test_swp8_morpho_ouverture_routine(int h, int w0)
     // display_ui8matrix(Y_fusion_ilu5_elu2_red       ,  0, h-1, 0, w0-1, format1, "Y_fusion_ilu5_elu2_red       ");
 
     // c = compare_swp_ui8matrix(Y_basic_or, 0, h-1, 0, w0-1, Y_fusion_bas                     , "Y_fusion_bas_swp8                     ");
-    // c = compare_swp_ui8matrix(Y_basic_or, 0, h-1, 0, w0-1, Y_fusion_ilu5_red                     , "Y_fusion_ilu5_red_swp8                ");
-    c = compare_swp_ui8matrix(Y_basic_or, 0, h-1, 0, w0-1, Y_fusion_ilu5_elu2_red                     , "Y_fusion_ilu5_elu2_red_swp8           ");
+    c = compare_swp_ui8matrix(Y_basic_or, 0, h-1, 0, w0-1, Y_fusion_ilu5_red                     , "Y_fusion_ilu5_red_swp8                ");
+    // c = compare_swp_ui8matrix(Y_basic_or, 0, h-1, 0, w0-1, Y_fusion_ilu5_elu2_red                     , "Y_fusion_ilu5_elu2_red_swp8           ");
 
     // putchar('\n');
 
@@ -2147,7 +2147,7 @@ void test_swp_morpho_ouverture(void)
     
     for(int h = h0; h <= h0+dh; h++) { // pour tester elu2
         for(int w = w0; w <= w0+dw; w++) { // pour tester ilu3
-            // test_swp8_morpho_ouverture_routine(h, w);
+            test_swp8_morpho_ouverture_routine(h, w);
             // test_swp16_morpho_ouverture_routine(h, w);
             // test_swp32_morpho_ouverture_routine(h, w);
         }
@@ -2164,7 +2164,7 @@ void bench_swp8_morpho_ouverture_in(int n0, int n1, int nstep)
 {
     // fichiers textes avec résultats
     char str[1000];
-    const char* filename = "./bench_txt/Pack Unpack interne/bench_swp8_OUVERTURE.txt";
+    const char* filename = "./bench_txt/Pack Unpack interne/bench_swp8_OUVERTURE_in.txt";
     FILE* output_file = fopen(filename, "w+");
     if (!output_file) {
         perror("fopen");
@@ -2381,7 +2381,7 @@ void bench_swp8_morpho_ouverture_in(int n0, int n1, int nstep)
 
     puts("temps de calcul en ccp (cycle/point)");
 
-    for(int n = n0; n <= n1; n += nstep) {
+    for(int n = n0; n < n1; n += nstep) {
 
         h = n;
         w8 = n / 8;
@@ -2443,28 +2443,28 @@ void bench_swp8_morpho_ouverture_in(int n0, int n1, int nstep)
         resize_ui8matrix(Y_P_ilu5_elu2_red_factor_fusion        , 0, h-1, 0, (w1-1)/8);
 
         // Y finale fusion
-        resize_ui8matrix(Y_fusion_bas                         , 0, h-1, 0, (w1-1)/8);
-        resize_ui8matrix(Y_fusion_ilu5_red                    , 0, h-1, 0, (w1-1)/8);
-        resize_ui8matrix(Y_fusion_ilu5_elu2_red               , 0, h-1, 0, (w1-1)/8);
-        resize_ui8matrix(Y_fusion_ilu5_elu2_red_factor        , 0, h-1, 0, (w1-1)/8);
+        resize_ui8matrix(Y_fusion_bas                         , 0, h-1, 0, (w1-1));
+        resize_ui8matrix(Y_fusion_ilu5_red                    , 0, h-1, 0, (w1-1));
+        resize_ui8matrix(Y_fusion_ilu5_elu2_red               , 0, h-1, 0, (w1-1));
+        resize_ui8matrix(Y_fusion_ilu5_elu2_red_factor        , 0, h-1, 0, (w1-1));
 
 
         // Bench basique
         BENCH(ouverture3_ui8matrix_basic                     (X, 0, h, 0, w1,                    T_basic  ,Y_basic)     , n, cpp_basic                      );
 
         // Bench fusion
-        BENCH(ouverture3_swp_ui8matrix_fusion                     (X, 0, h, 0, w1, X_P_bas_fusion,                  Y_P_bas_fusion,           Y_fusion_bas                     )     , n, cpp_fusion                      );
-        BENCH(ouverture3_swp_ui8matrix_fusion_ilu5_red            (X, 0, h, 0, w1, X_P_ilu5_red_fusion,             Y_P_ilu5_red_fusion,           Y_fusion_ilu5_red  )         , n, cpp_fusion_ilu5_red                     );
-        BENCH(ouverture3_swp_ui8matrix_fusion_ilu5_elu2_red       (X, 0, h, 0, w1, X_P_ilu5_elu2_red_fusion,        Y_P_ilu5_elu2_red_fusion,           Y_fusion_ilu5_elu2_red)  , n, cpp_fusion_ilu5_elu2_red                      );
+        BENCH(ouverture3_swp_ui8matrix_fusion                     (X, 0, h, 0, w8, X_P_bas_fusion,                  Y_P_bas_fusion,           Y_fusion_bas                     )     , n, cpp_fusion                      );
+        BENCH(ouverture3_swp_ui8matrix_fusion_ilu5_red            (X, 0, h, 0, w8, X_P_ilu5_red_fusion,             Y_P_ilu5_red_fusion,           Y_fusion_ilu5_red  )         , n, cpp_fusion_ilu5_red                     );
+        BENCH(ouverture3_swp_ui8matrix_fusion_ilu5_elu2_red       (X, 0, h, 0, w8, X_P_ilu5_elu2_red_fusion,        Y_P_ilu5_elu2_red_fusion,           Y_fusion_ilu5_elu2_red)  , n, cpp_fusion_ilu5_elu2_red                      );
 
         // Bench pipeline
-        BENCH(    ouverture3_swp_ui8matrix_pipeline_basic               (X, 0, h, 0, w1, X_P_bas , T_P_bas, Y_P_bas, Y_pipeline_bas                             ), n, cpp_pipeline_basic               );
-        BENCH(    ouverture3_swp_ui8matrix_pipeline_red                 (X, 0, h, 0, w1, X_P_red , T_P_red, Y_P_red, Y_pipeline_red                             ), n, cpp_pipeline_red                 );
-        BENCH(    ouverture3_swp_ui8matrix_pipeline_ilu3_red            (X, 0, h, 0, w1, X_P_ilu3_red , T_P_ilu3_red, Y_P_ilu3_red, Y_pipeline_ilu3_red             ), n, cpp_pipeline_ilu3_red            );
-        BENCH(    ouverture3_swp_ui8matrix_pipeline_elu2_red            (X, 0, h, 0, w1, X_P_elu2_red , T_P_elu2_red, Y_P_elu2_red, Y_pipeline_elu2_red            ), n, cpp_pipeline_elu2_red            );
-        BENCH(    ouverture3_swp_ui8matrix_pipeline_elu2_red_factor     (X, 0, h, 0, w1, X_P_elu2_red_factor , T_P_elu2_red_factor, Y_P_elu2_red_factor, Y_pipeline_elu2_red_factor    ), n, cpp_pipeline_elu2_red_factor     );
-        BENCH(    ouverture3_swp_ui8matrix_pipeline_ilu3_elu2_red       (X, 0, h, 0, w1, X_P_ilu3_elu2_red, T_P_ilu3_elu2_red, Y_P_ilu3_elu2_red, Y_pipeline_ilu3_elu2_red       ), n, cpp_pipeline_ilu3_elu2_red       );
-        BENCH(    ouverture3_swp_ui8matrix_pipeline_ilu3_elu2_red_factor(X, 0, h, 0, w1, X_P_ilu3_elu2_red_factor, T_P_ilu3_elu2_red_factor, Y_P_ilu3_elu2_red_factor, Y_pipeline_ilu3_elu2_red_factor      ), n, cpp_pipeline_ilu3_elu2_red_factor);
+        BENCH(    ouverture3_swp_ui8matrix_pipeline_basic               (X, 0, h, 0, w8, X_P_bas , T_P_bas, Y_P_bas, Y_pipeline_bas                             ), n, cpp_pipeline_basic               );
+        BENCH(    ouverture3_swp_ui8matrix_pipeline_red                 (X, 0, h, 0, w8, X_P_red , T_P_red, Y_P_red, Y_pipeline_red                             ), n, cpp_pipeline_red                 );
+        BENCH(    ouverture3_swp_ui8matrix_pipeline_ilu3_red            (X, 0, h, 0, w8, X_P_ilu3_red , T_P_ilu3_red, Y_P_ilu3_red, Y_pipeline_ilu3_red             ), n, cpp_pipeline_ilu3_red            );
+        BENCH(    ouverture3_swp_ui8matrix_pipeline_elu2_red            (X, 0, h, 0, w8, X_P_elu2_red , T_P_elu2_red, Y_P_elu2_red, Y_pipeline_elu2_red            ), n, cpp_pipeline_elu2_red            );
+        BENCH(    ouverture3_swp_ui8matrix_pipeline_elu2_red_factor     (X, 0, h, 0, w8, X_P_elu2_red_factor , T_P_elu2_red_factor, Y_P_elu2_red_factor, Y_pipeline_elu2_red_factor    ), n, cpp_pipeline_elu2_red_factor     );
+        BENCH(    ouverture3_swp_ui8matrix_pipeline_ilu3_elu2_red       (X, 0, h, 0, w8, X_P_ilu3_elu2_red, T_P_ilu3_elu2_red, Y_P_ilu3_elu2_red, Y_pipeline_ilu3_elu2_red       ), n, cpp_pipeline_ilu3_elu2_red       );
+        BENCH(    ouverture3_swp_ui8matrix_pipeline_ilu3_elu2_red_factor(X, 0, h, 0, w8, X_P_ilu3_elu2_red_factor, T_P_ilu3_elu2_red_factor, Y_P_ilu3_elu2_red_factor, Y_pipeline_ilu3_elu2_red_factor      ), n, cpp_pipeline_ilu3_elu2_red_factor);
 
         // /**/
         printf("i = %4d", n);
@@ -2522,7 +2522,7 @@ void bench_swp16_morpho_ouverture_in(int n0, int n1, int nstep)
 {
     // fichiers textes avec résultats
     char str[1000];
-    const char* filename = "./bench_txt/Pack Unpack interne/bench_swp16_OUVERTURE.txt";
+    const char* filename = "./bench_txt/Pack Unpack interne/bench_swp16_OUVERTURE_in.txt";
     FILE* output_file = fopen(filename, "w+");
     if (!output_file) {
         perror("fopen");
@@ -2806,27 +2806,27 @@ void bench_swp16_morpho_ouverture_in(int n0, int n1, int nstep)
         resize_ui16matrix(Y_P_ilu5_elu2_red_factor_fusion        , 0, h-1, 0, (w1-1)/16);
 
         // Y finale fusion
-        resize_ui8matrix(Y_fusion_bas                         , 0, h-1, 0, (w1-1)/8);
-        resize_ui8matrix(Y_fusion_ilu5_red                    , 0, h-1, 0, (w1-1)/8);
-        resize_ui8matrix(Y_fusion_ilu5_elu2_red               , 0, h-1, 0, (w1-1)/8);
-        resize_ui8matrix(Y_fusion_ilu5_elu2_red_factor        , 0, h-1, 0, (w1-1)/8);
+        resize_ui8matrix(Y_fusion_bas                         , 0, h-1, 0, (w1-1));
+        resize_ui8matrix(Y_fusion_ilu5_red                    , 0, h-1, 0, (w1-1));
+        resize_ui8matrix(Y_fusion_ilu5_elu2_red               , 0, h-1, 0, (w1-1));
+        resize_ui8matrix(Y_fusion_ilu5_elu2_red_factor        , 0, h-1, 0, (w1-1));
 
         // Bench basique
         BENCH(ouverture3_ui8matrix_basic                     (X, 0, h, 0, w1,                    T_basic  ,Y_basic)     , n, cpp_basic                      );
 
         // Bench fusion
-        BENCH(ouverture3_swp_ui16matrix_fusion                     (X, 0, h, 0, w0, X_P_bas_fusion,                  Y_P_bas_fusion,           Y_fusion_bas                     )     , n, cpp_fusion                      );
-        BENCH(ouverture3_swp_ui16matrix_fusion_ilu5_red            (X, 0, h, 0, w0, X_P_ilu5_red_fusion,             Y_P_ilu5_red_fusion,           Y_fusion_ilu5_red  )         , n, cpp_fusion_ilu5_red                      );
-        BENCH(ouverture3_swp_ui16matrix_fusion_ilu5_elu2_red       (X, 0, h, 0, w0, X_P_ilu5_elu2_red_fusion,        Y_P_ilu5_elu2_red_fusion,           Y_fusion_ilu5_elu2_red)  , n, cpp_fusion_ilu5_elu2_red                      );
+        BENCH(ouverture3_swp_ui16matrix_fusion                     (X, 0, h, 0, w8, X_P_bas_fusion,                  Y_P_bas_fusion,           Y_fusion_bas                     )     , n, cpp_fusion                      );
+        BENCH(ouverture3_swp_ui16matrix_fusion_ilu5_red            (X, 0, h, 0, w8, X_P_ilu5_red_fusion,             Y_P_ilu5_red_fusion,           Y_fusion_ilu5_red  )         , n, cpp_fusion_ilu5_red                      );
+        BENCH(ouverture3_swp_ui16matrix_fusion_ilu5_elu2_red       (X, 0, h, 0, w8, X_P_ilu5_elu2_red_fusion,        Y_P_ilu5_elu2_red_fusion,           Y_fusion_ilu5_elu2_red)  , n, cpp_fusion_ilu5_elu2_red                      );
 
         // Bench pipeline
-        BENCH(    ouverture3_swp_ui16matrix_pipeline_basic               (X, 0, h, 0, w1, X_P_bas , T_P_bas, Y_P_bas, Y_pipeline_bas                             ), n, cpp_pipeline_basic               );
-        BENCH(    ouverture3_swp_ui16matrix_pipeline_red                 (X, 0, h, 0, w1, X_P_red , T_P_red, Y_P_red, Y_pipeline_red                             ), n, cpp_pipeline_red                 );
-        BENCH(    ouverture3_swp_ui16matrix_pipeline_ilu3_red            (X, 0, h, 0, w1, X_P_ilu3_red , T_P_ilu3_red, Y_P_ilu3_red, Y_pipeline_ilu3_red             ), n, cpp_pipeline_ilu3_red            );
-        BENCH(    ouverture3_swp_ui16matrix_pipeline_elu2_red            (X, 0, h, 0, w1, X_P_elu2_red , T_P_elu2_red, Y_P_elu2_red, Y_pipeline_elu2_red            ), n, cpp_pipeline_elu2_red            );
-        BENCH(    ouverture3_swp_ui16matrix_pipeline_elu2_red_factor     (X, 0, h, 0, w1, X_P_elu2_red_factor , T_P_elu2_red_factor, Y_P_elu2_red_factor, Y_pipeline_elu2_red_factor    ), n, cpp_pipeline_elu2_red_factor     );
-        BENCH(    ouverture3_swp_ui16matrix_pipeline_ilu3_elu2_red       (X, 0, h, 0, w1, X_P_ilu3_elu2_red, T_P_ilu3_elu2_red, Y_P_ilu3_elu2_red, Y_pipeline_ilu3_elu2_red       ), n, cpp_pipeline_ilu3_elu2_red       );
-        BENCH(    ouverture3_swp_ui16matrix_pipeline_ilu3_elu2_red_factor(X, 0, h, 0, w1, X_P_ilu3_elu2_red_factor, T_P_ilu3_elu2_red_factor, Y_P_ilu3_elu2_red_factor, Y_pipeline_ilu3_elu2_red_factor      ), n, cpp_pipeline_ilu3_elu2_red_factor);
+        BENCH(    ouverture3_swp_ui16matrix_pipeline_basic               (X, 0, h, 0, w8, X_P_bas , T_P_bas, Y_P_bas, Y_pipeline_bas                             ), n, cpp_pipeline_basic               );
+        BENCH(    ouverture3_swp_ui16matrix_pipeline_red                 (X, 0, h, 0, w8, X_P_red , T_P_red, Y_P_red, Y_pipeline_red                             ), n, cpp_pipeline_red                 );
+        BENCH(    ouverture3_swp_ui16matrix_pipeline_ilu3_red            (X, 0, h, 0, w8, X_P_ilu3_red , T_P_ilu3_red, Y_P_ilu3_red, Y_pipeline_ilu3_red             ), n, cpp_pipeline_ilu3_red            );
+        BENCH(    ouverture3_swp_ui16matrix_pipeline_elu2_red            (X, 0, h, 0, w8, X_P_elu2_red , T_P_elu2_red, Y_P_elu2_red, Y_pipeline_elu2_red            ), n, cpp_pipeline_elu2_red            );
+        BENCH(    ouverture3_swp_ui16matrix_pipeline_elu2_red_factor     (X, 0, h, 0, w8, X_P_elu2_red_factor , T_P_elu2_red_factor, Y_P_elu2_red_factor, Y_pipeline_elu2_red_factor    ), n, cpp_pipeline_elu2_red_factor     );
+        BENCH(    ouverture3_swp_ui16matrix_pipeline_ilu3_elu2_red       (X, 0, h, 0, w8, X_P_ilu3_elu2_red, T_P_ilu3_elu2_red, Y_P_ilu3_elu2_red, Y_pipeline_ilu3_elu2_red       ), n, cpp_pipeline_ilu3_elu2_red       );
+        BENCH(    ouverture3_swp_ui16matrix_pipeline_ilu3_elu2_red_factor(X, 0, h, 0, w8, X_P_ilu3_elu2_red_factor, T_P_ilu3_elu2_red_factor, Y_P_ilu3_elu2_red_factor, Y_pipeline_ilu3_elu2_red_factor      ), n, cpp_pipeline_ilu3_elu2_red_factor);
 
         // /**/
         printf("i = %4d", n);
@@ -2884,7 +2884,7 @@ void bench_swp32_morpho_ouverture_in(int n0, int n1, int nstep)
 {
     // fichiers textes avec résultats
     char str[1000];
-    const char* filename = "./bench_txt/Pack Unpack interne/bench_swp32_OUVERTURE.txt";
+    const char* filename = "./bench_txt/Pack Unpack interne/bench_swp32_OUVERTURE_in.txt";
     FILE* output_file = fopen(filename, "w+");
     if (!output_file) {
         perror("fopen");
@@ -3168,38 +3168,37 @@ void bench_swp32_morpho_ouverture_in(int n0, int n1, int nstep)
         resize_ui32matrix(Y_P_ilu5_elu2_red_factor_fusion        , 0, h-1, 0, (w1-1)/32);
 
         // Y finale fusion
-        resize_ui8matrix(Y_fusion_bas                         , 0, h-1, 0, (w1-1)/8);
-        resize_ui8matrix(Y_fusion_ilu5_red                    , 0, h-1, 0, (w1-1)/8);
-        resize_ui8matrix(Y_fusion_ilu5_elu2_red               , 0, h-1, 0, (w1-1)/8);
-        resize_ui8matrix(Y_fusion_ilu5_elu2_red_factor        , 0, h-1, 0, (w1-1)/8);
+        resize_ui8matrix(Y_fusion_bas                         , 0, h-1, 0, (w1-1));
+        resize_ui8matrix(Y_fusion_ilu5_red                    , 0, h-1, 0, (w1-1));
+        resize_ui8matrix(Y_fusion_ilu5_elu2_red               , 0, h-1, 0, (w1-1));
+        resize_ui8matrix(Y_fusion_ilu5_elu2_red_factor        , 0, h-1, 0, (w1-1));
 
         // Bench basique
         BENCH(ouverture3_ui8matrix_basic                     (X, 0, h, 0, w1,                    T_basic  ,Y_basic)     , n, cpp_basic                      );
 
         // Bench fusion
-        BENCH(ouverture3_swp_ui32matrix_fusion                     (X, 0, h, 0, w0, X_P_bas_fusion,                  Y_P_bas_fusion,           Y_fusion_bas                     )     , n, cpp_fusion                      );
-        BENCH(ouverture3_swp_ui32matrix_fusion_ilu5_red            (X, 0, h, 0, w0, X_P_ilu5_red_fusion,             Y_P_ilu5_red_fusion,           Y_fusion_ilu5_red  )         , n, cpp_fusion_ilu5_red                      );
-        BENCH(ouverture3_swp_ui32matrix_fusion_ilu5_elu2_red       (X, 0, h, 0, w0, X_P_ilu5_elu2_red_fusion,        Y_P_ilu5_elu2_red_fusion,           Y_fusion_ilu5_elu2_red)  , n, cpp_fusion_ilu5_elu2_red                      );
+        BENCH(ouverture3_swp_ui32matrix_fusion                     (X, 0, h, 0, w8, X_P_bas_fusion,                  Y_P_bas_fusion,           Y_fusion_bas                     )     , n, cpp_fusion                      );
+        BENCH(ouverture3_swp_ui32matrix_fusion_ilu5_red            (X, 0, h, 0, w8, X_P_ilu5_red_fusion,             Y_P_ilu5_red_fusion,           Y_fusion_ilu5_red  )         , n, cpp_fusion_ilu5_red                      );
+        BENCH(ouverture3_swp_ui32matrix_fusion_ilu5_elu2_red       (X, 0, h, 0, w8, X_P_ilu5_elu2_red_fusion,        Y_P_ilu5_elu2_red_fusion,           Y_fusion_ilu5_elu2_red)  , n, cpp_fusion_ilu5_elu2_red                      );
 
         // Bench pipeline
-        BENCH(    ouverture3_swp_ui32matrix_pipeline_basic               (X, 0, h, 0, w1, X_P_bas , T_P_bas, Y_P_bas, Y_pipeline_bas                             ), n, cpp_pipeline_basic               );
-        BENCH(    ouverture3_swp_ui32matrix_pipeline_red                 (X, 0, h, 0, w1, X_P_red , T_P_red, Y_P_red, Y_pipeline_red                             ), n, cpp_pipeline_red                 );
-        BENCH(    ouverture3_swp_ui32matrix_pipeline_ilu3_red            (X, 0, h, 0, w1, X_P_ilu3_red , T_P_ilu3_red, Y_P_ilu3_red, Y_pipeline_ilu3_red             ), n, cpp_pipeline_ilu3_red            );
-        BENCH(    ouverture3_swp_ui32matrix_pipeline_elu2_red            (X, 0, h, 0, w1, X_P_elu2_red , T_P_elu2_red, Y_P_elu2_red, Y_pipeline_elu2_red            ), n, cpp_pipeline_elu2_red            );
-        BENCH(    ouverture3_swp_ui32matrix_pipeline_elu2_red_factor     (X, 0, h, 0, w1, X_P_elu2_red_factor , T_P_elu2_red_factor, Y_P_elu2_red_factor, Y_pipeline_elu2_red_factor    ), n, cpp_pipeline_elu2_red_factor     );
-        BENCH(    ouverture3_swp_ui32matrix_pipeline_ilu3_elu2_red       (X, 0, h, 0, w1, X_P_ilu3_elu2_red, T_P_ilu3_elu2_red, Y_P_ilu3_elu2_red, Y_pipeline_ilu3_elu2_red       ), n, cpp_pipeline_ilu3_elu2_red       );
-        BENCH(    ouverture3_swp_ui32matrix_pipeline_ilu3_elu2_red_factor(X, 0, h, 0, w1, X_P_ilu3_elu2_red_factor, T_P_ilu3_elu2_red_factor, Y_P_ilu3_elu2_red_factor, Y_pipeline_ilu3_elu2_red_factor      ), n, cpp_pipeline_ilu3_elu2_red_factor);
+        BENCH(    ouverture3_swp_ui32matrix_pipeline_basic               (X, 0, h, 0, w8, X_P_bas , T_P_bas, Y_P_bas, Y_pipeline_bas                             ), n, cpp_pipeline_basic               );
+        BENCH(    ouverture3_swp_ui32matrix_pipeline_red                 (X, 0, h, 0, w8, X_P_red , T_P_red, Y_P_red, Y_pipeline_red                             ), n, cpp_pipeline_red                 );
+        BENCH(    ouverture3_swp_ui32matrix_pipeline_ilu3_red            (X, 0, h, 0, w8, X_P_ilu3_red , T_P_ilu3_red, Y_P_ilu3_red, Y_pipeline_ilu3_red             ), n, cpp_pipeline_ilu3_red            );
+        BENCH(    ouverture3_swp_ui32matrix_pipeline_elu2_red            (X, 0, h, 0, w8, X_P_elu2_red , T_P_elu2_red, Y_P_elu2_red, Y_pipeline_elu2_red            ), n, cpp_pipeline_elu2_red            );
+        BENCH(    ouverture3_swp_ui32matrix_pipeline_elu2_red_factor     (X, 0, h, 0, w8, X_P_elu2_red_factor , T_P_elu2_red_factor, Y_P_elu2_red_factor, Y_pipeline_elu2_red_factor    ), n, cpp_pipeline_elu2_red_factor     );
+        BENCH(    ouverture3_swp_ui32matrix_pipeline_ilu3_elu2_red       (X, 0, h, 0, w8, X_P_ilu3_elu2_red, T_P_ilu3_elu2_red, Y_P_ilu3_elu2_red, Y_pipeline_ilu3_elu2_red       ), n, cpp_pipeline_ilu3_elu2_red       );
+        BENCH(    ouverture3_swp_ui32matrix_pipeline_ilu3_elu2_red_factor(X, 0, h, 0, w8, X_P_ilu3_elu2_red_factor, T_P_ilu3_elu2_red_factor, Y_P_ilu3_elu2_red_factor, Y_pipeline_ilu3_elu2_red_factor      ), n, cpp_pipeline_ilu3_elu2_red_factor);
 
         // /**/
         printf("i = %4d", n);
         printf("   ");
 
-        fwrite("i = ", 1, strlen("i = "), output_file);
-        fprintf(output_file, "%d    ", n);
+        fprintf(output_file, "%d        ", n);
 
         // basic
         printf(format, cpp_basic                      );
-        fprintf(output_file, "%.1f          ", cpp_basic);
+        fprintf(output_file, "%.1f      ", cpp_basic);
 
         // fusion
         printf(format, cpp_fusion                     );
@@ -3250,7 +3249,7 @@ void bench_swp8_morpho_max_in(int n0, int n1, int nstep)
 {
     // fichiers textes avec résultats
     char str[1000];
-    const char* filename = "./bench_txt/Pack Unpack interne/bench_swp8_MAX.txt";
+    const char* filename = "./bench_txt/Pack Unpack interne/bench_swp8_MAX_in.txt";
     FILE* output_file = fopen(filename, "w+");
     if (!output_file) {
         perror("fopen");
@@ -3297,7 +3296,7 @@ void bench_swp8_morpho_max_in(int n0, int n1, int nstep)
     format = "%5.0f";
     format = "%6.1f";
 
-    puts("== bench_morpho_SWP8_max ==");
+    puts("== bench_morpho_SWP8_max_in ==");
 
     //------- Alloc  -------
     // puts("malloc");
@@ -3422,15 +3421,15 @@ void bench_swp8_morpho_max_in(int n0, int n1, int nstep)
         BENCH(max3_ui8matrix_basic                     (X, 0, h-1, 0, h-1,                   Y_basic                     )     , n, cpp_basic                      );
 
         //Bench SWP8
-        BENCH(    max3_swp_ui8matrix_basic                       (X, 0, h-1, 0, h-1, T_bas, Y_P_bas, Y_bas) , n, cpp_bas               );
-        BENCH(    max3_swp_ui8matrix_rot                         (X, 0, h-1, 0, h-1, T_rot, Y_P_rot, Y_rot), n, cpp_rot                );
-        BENCH(    max3_swp_ui8matrix_red                         (X, 0, h-1, 0, h-1, T_red, Y_P_red, Y_red), n, cpp_red                );
-        BENCH(    max3_swp_ui8matrix_ilu3                        (X, 0, h-1, 0, h-1, T_ilu3, Y_P_ilu3, Y_ilu3), n, cpp_ilu3            );
-        BENCH(    max3_swp_ui8matrix_ilu3_red                    (X, 0, h-1, 0, h-1, T_ilu3r, Y_P_ilu3r, Y_ilu3r), n, cpp_ilu3_red     );
-        BENCH(    max3_swp_ui8matrix_elu2_red                    (X, 0, h-1, 0, h-1, T_elu2r, Y_P_elu2r, Y_elu2r), n, cpp_elu2_red      );
-        BENCH(    max3_swp_ui8matrix_elu2_red_factor             (X, 0, h-1, 0, h-1, T_elu2rf, Y_P_elu2rf, Y_elu2rf), n, cpp_elu2_red_factor);
-        BENCH(    max3_swp_ui8matrix_ilu3_elu2_red               (X, 0, h-1, 0, h-1, T_ilu3_elu2r, Y_P_ilu3_elu2r, Y_ilu3_elu2r), n, cpp_ilu3_elu2_red        );
-        BENCH(    max3_swp_ui8matrix_ilu3_elu2_red_factor        (X, 0, h-1, 0, h-1, T_ilu3_elu2r, Y_P_ilu3_elu2r, Y_ilu3_elu2rf), n, cpp_ilu3_elu2_red_factor);
+        BENCH(    max3_swp_ui8matrix_basic                       (X, 0, h-1, 0, w8, T_bas, Y_P_bas, Y_bas) , n, cpp_bas               );
+        BENCH(    max3_swp_ui8matrix_rot                         (X, 0, h-1, 0, w8, T_rot, Y_P_rot, Y_rot), n, cpp_rot                );
+        BENCH(    max3_swp_ui8matrix_red                         (X, 0, h-1, 0, w8, T_red, Y_P_red, Y_red), n, cpp_red                );
+        BENCH(    max3_swp_ui8matrix_ilu3                        (X, 0, h-1, 0, w8, T_ilu3, Y_P_ilu3, Y_ilu3), n, cpp_ilu3            );
+        BENCH(    max3_swp_ui8matrix_ilu3_red                    (X, 0, h-1, 0, w8, T_ilu3r, Y_P_ilu3r, Y_ilu3r), n, cpp_ilu3_red     );
+        BENCH(    max3_swp_ui8matrix_elu2_red                    (X, 0, h-1, 0, w8, T_elu2r, Y_P_elu2r, Y_elu2r), n, cpp_elu2_red      );
+        BENCH(    max3_swp_ui8matrix_elu2_red_factor             (X, 0, h-1, 0, w8, T_elu2rf, Y_P_elu2rf, Y_elu2rf), n, cpp_elu2_red_factor);
+        BENCH(    max3_swp_ui8matrix_ilu3_elu2_red               (X, 0, h-1, 0, w8, T_ilu3_elu2r, Y_P_ilu3_elu2r, Y_ilu3_elu2r), n, cpp_ilu3_elu2_red        );
+        BENCH(    max3_swp_ui8matrix_ilu3_elu2_red_factor        (X, 0, h-1, 0, w8, T_ilu3_elu2r, Y_P_ilu3_elu2r, Y_ilu3_elu2rf), n, cpp_ilu3_elu2_red_factor);
 
         // /**/
         printf("i = %4d", n);
@@ -3473,7 +3472,7 @@ void bench_swp16_morpho_max_in(int n0, int n1, int nstep)
 {
     // fichiers textes avec résultats
     char str[1000];
-    const char* filename = "./bench_txt/Pack Unpack interne/bench_swp16MAX.txt";
+    const char* filename = "./bench_txt/Pack Unpack interne/bench_swp16MAX_in.txt";
     FILE* output_file = fopen(filename, "w+");
     if (!output_file) {
         perror("fopen");
@@ -3532,7 +3531,7 @@ void bench_swp16_morpho_max_in(int n0, int n1, int nstep)
     format = "%5.0f";
     format = "%6.1f";
 
-    puts("== bench_morpho_SWP16_max ==");
+    puts("== bench_morpho_SWP16_max_in ==");
 
     //------- Alloc  -------
     // puts("malloc");
@@ -3656,15 +3655,15 @@ void bench_swp16_morpho_max_in(int n0, int n1, int nstep)
         // Bench basic
         BENCH(max3_ui8matrix_basic                     (X, 0, h-1, 0, h-1,                   Y_basic                     )     , n, cpp_basic                      );
         // Bench SWP16
-        BENCH(    max3_swp_ui16matrix_basic                       (X, 0, h-1, 0, h-1, T_bas, Y_P_bas, Y_bas) , n, cpp_bas               );
-        BENCH(    max3_swp_ui16matrix_rot                         (X, 0, h-1, 0, h-1, T_rot, Y_P_rot, Y_rot), n, cpp_rot                );
-        BENCH(    max3_swp_ui16matrix_red                         (X, 0, h-1, 0, h-1, T_red, Y_P_red, Y_red), n, cpp_red                );
-        BENCH(    max3_swp_ui16matrix_ilu3                        (X, 0, h-1, 0, h-1, T_ilu3, Y_P_ilu3, Y_ilu3), n, cpp_ilu3            );
-        BENCH(    max3_swp_ui16matrix_ilu3_red                    (X, 0, h-1, 0, h-1, T_ilu3r, Y_P_ilu3r, Y_ilu3r), n, cpp_ilu3_red     );
-        BENCH(    max3_swp_ui16matrix_elu2_red                    (X, 0, h-1, 0, h-1, T_elu2r, Y_P_elu2r, Y_elu2r), n, cpp_elu2_red      );
-        BENCH(    max3_swp_ui16matrix_elu2_red_factor             (X, 0, h-1, 0, h-1, T_elu2rf, Y_P_elu2rf, Y_elu2rf), n, cpp_elu2_red_factor);
-        BENCH(    max3_swp_ui16matrix_ilu3_elu2_red               (X, 0, h-1, 0, h-1, T_ilu3_elu2r, Y_P_ilu3_elu2r, Y_ilu3_elu2r), n, cpp_ilu3_elu2_red        );
-        BENCH(    max3_swp_ui16matrix_ilu3_elu2_red_factor        (X, 0, h-1, 0, h-1, T_ilu3_elu2r, Y_P_ilu3_elu2r, Y_ilu3_elu2rf), n, cpp_ilu3_elu2_red_factor);
+        BENCH(    max3_swp_ui16matrix_basic                       (X, 0, h-1, 0, w8, T_bas, Y_P_bas, Y_bas) , n, cpp_bas               );
+        BENCH(    max3_swp_ui16matrix_rot                         (X, 0, h-1, 0, w8, T_rot, Y_P_rot, Y_rot), n, cpp_rot                );
+        BENCH(    max3_swp_ui16matrix_red                         (X, 0, h-1, 0, w8, T_red, Y_P_red, Y_red), n, cpp_red                );
+        BENCH(    max3_swp_ui16matrix_ilu3                        (X, 0, h-1, 0, w8, T_ilu3, Y_P_ilu3, Y_ilu3), n, cpp_ilu3            );
+        BENCH(    max3_swp_ui16matrix_ilu3_red                    (X, 0, h-1, 0, w8, T_ilu3r, Y_P_ilu3r, Y_ilu3r), n, cpp_ilu3_red     );
+        BENCH(    max3_swp_ui16matrix_elu2_red                    (X, 0, h-1, 0, w8, T_elu2r, Y_P_elu2r, Y_elu2r), n, cpp_elu2_red      );
+        BENCH(    max3_swp_ui16matrix_elu2_red_factor             (X, 0, h-1, 0, w8, T_elu2rf, Y_P_elu2rf, Y_elu2rf), n, cpp_elu2_red_factor);
+        BENCH(    max3_swp_ui16matrix_ilu3_elu2_red               (X, 0, h-1, 0, w8, T_ilu3_elu2r, Y_P_ilu3_elu2r, Y_ilu3_elu2r), n, cpp_ilu3_elu2_red        );
+        BENCH(    max3_swp_ui16matrix_ilu3_elu2_red_factor        (X, 0, h-1, 0, w8, T_ilu3_elu2r, Y_P_ilu3_elu2r, Y_ilu3_elu2rf), n, cpp_ilu3_elu2_red_factor);
 
         // /**/
         printf("i = %4d", n);
@@ -3708,7 +3707,7 @@ void bench_swp32_morpho_max_in(int n0, int n1, int nstep)
 {
     // fichiers textes avec résultats
     char str[1000];
-    const char* filename = "./bench_txt/Pack Unpack interne/bench_swp32_MAX.txt";
+    const char* filename = "./bench_txt/Pack Unpack interne/bench_swp32_MAX_in.txt";
     FILE* output_file = fopen(filename, "w+");
     if (!output_file) {
         perror("fopen");
@@ -3891,15 +3890,15 @@ void bench_swp32_morpho_max_in(int n0, int n1, int nstep)
         // Bench basic
         BENCH(    max3_ui8matrix_basic                     (X, 0, h-1, 0, h-1,                   Y_basic                     )     , n, cpp_basic                      );
         // Bench SWP32
-        BENCH(    max3_swp_ui32matrix_basic                       (X, 0, h-1, 0, h-1, T_bas, Y_P_bas, Y_bas) , n, cpp_bas               );
-        BENCH(    max3_swp_ui32matrix_rot                         (X, 0, h-1, 0, h-1, T_rot, Y_P_rot, Y_rot), n, cpp_rot                );
-        BENCH(    max3_swp_ui32matrix_red                         (X, 0, h-1, 0, h-1, T_red, Y_P_red, Y_red), n, cpp_red                );
-        BENCH(    max3_swp_ui32matrix_ilu3                        (X, 0, h-1, 0, h-1, T_ilu3, Y_P_ilu3, Y_ilu3), n, cpp_ilu3            );
-        BENCH(    max3_swp_ui32matrix_ilu3_red                    (X, 0, h-1, 0, h-1, T_ilu3r, Y_P_ilu3r, Y_ilu3r), n, cpp_ilu3_red     );
-        BENCH(    max3_swp_ui32matrix_elu2_red                    (X, 0, h-1, 0, h-1, T_elu2r, Y_P_elu2r, Y_elu2r), n, cpp_elu2_red      );
-        BENCH(    max3_swp_ui32matrix_elu2_red_factor             (X, 0, h-1, 0, h-1, T_elu2rf, Y_P_elu2rf, Y_elu2rf), n, cpp_elu2_red_factor);
-        BENCH(    max3_swp_ui32matrix_ilu3_elu2_red               (X, 0, h-1, 0, h-1, T_ilu3_elu2r, Y_P_ilu3_elu2r, Y_ilu3_elu2r), n, cpp_ilu3_elu2_red        );
-        BENCH(    max3_swp_ui32matrix_ilu3_elu2_red_factor        (X, 0, h-1, 0, h-1, T_ilu3_elu2r, Y_P_ilu3_elu2r, Y_ilu3_elu2rf), n, cpp_ilu3_elu2_red_factor);
+        BENCH(    max3_swp_ui32matrix_basic                       (X, 0, h-1, 0, w8, T_bas, Y_P_bas, Y_bas) , n, cpp_bas               );
+        BENCH(    max3_swp_ui32matrix_rot                         (X, 0, h-1, 0, w8, T_rot, Y_P_rot, Y_rot), n, cpp_rot                );
+        BENCH(    max3_swp_ui32matrix_red                         (X, 0, h-1, 0, w8, T_red, Y_P_red, Y_red), n, cpp_red                );
+        BENCH(    max3_swp_ui32matrix_ilu3                        (X, 0, h-1, 0, w8, T_ilu3, Y_P_ilu3, Y_ilu3), n, cpp_ilu3            );
+        BENCH(    max3_swp_ui32matrix_ilu3_red                    (X, 0, h-1, 0, w8, T_ilu3r, Y_P_ilu3r, Y_ilu3r), n, cpp_ilu3_red     );
+        BENCH(    max3_swp_ui32matrix_elu2_red                    (X, 0, h-1, 0, w8, T_elu2r, Y_P_elu2r, Y_elu2r), n, cpp_elu2_red      );
+        BENCH(    max3_swp_ui32matrix_elu2_red_factor             (X, 0, h-1, 0, w8, T_elu2rf, Y_P_elu2rf, Y_elu2rf), n, cpp_elu2_red_factor);
+        BENCH(    max3_swp_ui32matrix_ilu3_elu2_red               (X, 0, h-1, 0, w8, T_ilu3_elu2r, Y_P_ilu3_elu2r, Y_ilu3_elu2r), n, cpp_ilu3_elu2_red        );
+        BENCH(    max3_swp_ui32matrix_ilu3_elu2_red_factor        (X, 0, h-1, 0, w8, T_ilu3_elu2r, Y_P_ilu3_elu2r, Y_ilu3_elu2rf), n, cpp_ilu3_elu2_red_factor);
 
         // /**/
         printf("i = %4d", n);
@@ -3951,7 +3950,7 @@ void bench_swp8_morpho_ouverture_out(int n0, int n1, int nstep)
 {
     // fichiers textes avec résultats
     char str[1000];
-    const char* filename = "./bench_txt/Pack Unpack externe/bench_swp8_OUVERTURE.txt";
+    const char* filename = "./bench_txt/Pack Unpack externe/bench_swp8_OUVERTURE_ext.txt";
     FILE* output_file = fopen(filename, "w+");
     if (!output_file) {
         perror("fopen");
@@ -4230,10 +4229,10 @@ void bench_swp8_morpho_ouverture_out(int n0, int n1, int nstep)
         resize_ui8matrix(Y_P_ilu5_elu2_red_factor_fusion        , 0, h-1, 0, (w1-1)/8);
 
         // Y finale fusion
-        resize_ui8matrix(Y_fusion_bas                         , 0, h-1, 0, (w1-1)/8);
-        resize_ui8matrix(Y_fusion_ilu5_red                    , 0, h-1, 0, (w1-1)/8);
-        resize_ui8matrix(Y_fusion_ilu5_elu2_red               , 0, h-1, 0, (w1-1)/8);
-        resize_ui8matrix(Y_fusion_ilu5_elu2_red_factor        , 0, h-1, 0, (w1-1)/8);
+        resize_ui8matrix(Y_fusion_bas                         , 0, h-1, 0, (w1-1));
+        resize_ui8matrix(Y_fusion_ilu5_red                    , 0, h-1, 0, (w1-1));
+        resize_ui8matrix(Y_fusion_ilu5_elu2_red               , 0, h-1, 0, (w1-1));
+        resize_ui8matrix(Y_fusion_ilu5_elu2_red_factor        , 0, h-1, 0, (w1-1));
 
         // PACK FUSION
         pack_ui8matrix(X, h-1, h-1, X_P_bas_fusion);
@@ -4253,18 +4252,18 @@ void bench_swp8_morpho_ouverture_out(int n0, int n1, int nstep)
         BENCH(ouverture3_ui8matrix_basic                     (X, 0, h, 0, w1,                    T_basic  ,Y_basic)     , n, cpp_basic                      );
 
         // Bench fusion
-        BENCH(ouverture3_swp_ui8matrix_fusion_bench                     (X, 0, h, 0, w1, X_P_bas_fusion,                  Y_P_bas_fusion,           Y_fusion_bas                     )     , n, cpp_fusion                      );
-        BENCH(ouverture3_swp_ui8matrix_fusion_ilu5_red_bench            (X, 0, h, 0, w1, X_P_ilu5_red_fusion,             Y_P_ilu5_red_fusion,           Y_fusion_ilu5_red  )         , n, cpp_fusion_ilu5_red                     );
-        BENCH(ouverture3_swp_ui8matrix_fusion_ilu5_elu2_red_bench       (X, 0, h, 0, w1, X_P_ilu5_elu2_red_fusion,        Y_P_ilu5_elu2_red_fusion,           Y_fusion_ilu5_elu2_red)  , n, cpp_fusion_ilu5_elu2_red                      );
+        BENCH(ouverture3_swp_ui8matrix_fusion_bench                     (X, 0, h, 0, w8, X_P_bas_fusion,                  Y_P_bas_fusion,           Y_fusion_bas                     )     , n, cpp_fusion                      );
+        BENCH(ouverture3_swp_ui8matrix_fusion_ilu5_red_bench            (X, 0, h, 0, w8, X_P_ilu5_red_fusion,             Y_P_ilu5_red_fusion,           Y_fusion_ilu5_red  )         , n, cpp_fusion_ilu5_red                     );
+        BENCH(ouverture3_swp_ui8matrix_fusion_ilu5_elu2_red_bench       (X, 0, h, 0, w8, X_P_ilu5_elu2_red_fusion,        Y_P_ilu5_elu2_red_fusion,           Y_fusion_ilu5_elu2_red)  , n, cpp_fusion_ilu5_elu2_red                      );
 
         // Bench pipeline
-        BENCH(    ouverture3_swp_ui8matrix_pipeline_basic_bench               (X, 0, h, 0, w1, X_P_bas , T_P_bas, Y_P_bas, Y_pipeline_bas                             ), n, cpp_pipeline_basic               );
-        BENCH(    ouverture3_swp_ui8matrix_pipeline_red_bench                 (X, 0, h, 0, w1, X_P_red , T_P_red, Y_P_red, Y_pipeline_red                             ), n, cpp_pipeline_red                 );
-        BENCH(    ouverture3_swp_ui8matrix_pipeline_ilu3_red_bench            (X, 0, h, 0, w1, X_P_ilu3_red , T_P_ilu3_red, Y_P_ilu3_red, Y_pipeline_ilu3_red             ), n, cpp_pipeline_ilu3_red            );
-        BENCH(    ouverture3_swp_ui8matrix_pipeline_elu2_red_bench            (X, 0, h, 0, w1, X_P_elu2_red , T_P_elu2_red, Y_P_elu2_red, Y_pipeline_elu2_red            ), n, cpp_pipeline_elu2_red            );
-        BENCH(    ouverture3_swp_ui8matrix_pipeline_elu2_red_factor_bench     (X, 0, h, 0, w1, X_P_elu2_red_factor , T_P_elu2_red_factor, Y_P_elu2_red_factor, Y_pipeline_elu2_red_factor    ), n, cpp_pipeline_elu2_red_factor     );
-        BENCH(    ouverture3_swp_ui8matrix_pipeline_ilu3_elu2_red_bench       (X, 0, h, 0, w1, X_P_ilu3_elu2_red, T_P_ilu3_elu2_red, Y_P_ilu3_elu2_red, Y_pipeline_ilu3_elu2_red       ), n, cpp_pipeline_ilu3_elu2_red       );
-        BENCH(    ouverture3_swp_ui8matrix_pipeline_ilu3_elu2_red_factor_bench(X, 0, h, 0, w1, X_P_ilu3_elu2_red_factor, T_P_ilu3_elu2_red_factor, Y_P_ilu3_elu2_red_factor, Y_pipeline_ilu3_elu2_red_factor      ), n, cpp_pipeline_ilu3_elu2_red_factor);
+        BENCH(    ouverture3_swp_ui8matrix_pipeline_basic_bench               (X, 0, h, 0, w8, X_P_bas , T_P_bas, Y_P_bas, Y_pipeline_bas                             ), n, cpp_pipeline_basic               );
+        BENCH(    ouverture3_swp_ui8matrix_pipeline_red_bench                 (X, 0, h, 0, w8, X_P_red , T_P_red, Y_P_red, Y_pipeline_red                             ), n, cpp_pipeline_red                 );
+        BENCH(    ouverture3_swp_ui8matrix_pipeline_ilu3_red_bench            (X, 0, h, 0, w8, X_P_ilu3_red , T_P_ilu3_red, Y_P_ilu3_red, Y_pipeline_ilu3_red             ), n, cpp_pipeline_ilu3_red            );
+        BENCH(    ouverture3_swp_ui8matrix_pipeline_elu2_red_bench            (X, 0, h, 0, w8, X_P_elu2_red , T_P_elu2_red, Y_P_elu2_red, Y_pipeline_elu2_red            ), n, cpp_pipeline_elu2_red            );
+        BENCH(    ouverture3_swp_ui8matrix_pipeline_elu2_red_factor_bench     (X, 0, h, 0, w8, X_P_elu2_red_factor , T_P_elu2_red_factor, Y_P_elu2_red_factor, Y_pipeline_elu2_red_factor    ), n, cpp_pipeline_elu2_red_factor     );
+        BENCH(    ouverture3_swp_ui8matrix_pipeline_ilu3_elu2_red_bench       (X, 0, h, 0, w8, X_P_ilu3_elu2_red, T_P_ilu3_elu2_red, Y_P_ilu3_elu2_red, Y_pipeline_ilu3_elu2_red       ), n, cpp_pipeline_ilu3_elu2_red       );
+        BENCH(    ouverture3_swp_ui8matrix_pipeline_ilu3_elu2_red_factor_bench(X, 0, h, 0, w8, X_P_ilu3_elu2_red_factor, T_P_ilu3_elu2_red_factor, Y_P_ilu3_elu2_red_factor, Y_pipeline_ilu3_elu2_red_factor      ), n, cpp_pipeline_ilu3_elu2_red_factor);
 
         // UNPACK FUSION
         unpack_ui8matrix(Y_P_bas_fusion, h-1, h-1, Y_fusion_bas);
@@ -4337,7 +4336,7 @@ void bench_swp16_morpho_ouverture_out(int n0, int n1, int nstep)
 {
     // fichiers textes avec résultats
     char str[1000];
-    const char* filename = "./bench_txt/Pack Unpack externe/bench_swp16_OUVERTURE.txt";
+    const char* filename = "./bench_txt/Pack Unpack externe/bench_swp16_OUVERTURE_ext.txt";
     FILE* output_file = fopen(filename, "w+");
     if (!output_file) {
         perror("fopen");
@@ -4621,10 +4620,10 @@ void bench_swp16_morpho_ouverture_out(int n0, int n1, int nstep)
         resize_ui16matrix(Y_P_ilu5_elu2_red_factor_fusion        , 0, h-1, 0, (w1-1)/16);
 
         // Y finale fusion
-        resize_ui8matrix(Y_fusion_bas                         , 0, h-1, 0, (w1-1)/8);
-        resize_ui8matrix(Y_fusion_ilu5_red                    , 0, h-1, 0, (w1-1)/8);
-        resize_ui8matrix(Y_fusion_ilu5_elu2_red               , 0, h-1, 0, (w1-1)/8);
-        resize_ui8matrix(Y_fusion_ilu5_elu2_red_factor        , 0, h-1, 0, (w1-1)/8);
+        resize_ui8matrix(Y_fusion_bas                         , 0, h-1, 0, (w1-1));
+        resize_ui8matrix(Y_fusion_ilu5_red                    , 0, h-1, 0, (w1-1));
+        resize_ui8matrix(Y_fusion_ilu5_elu2_red               , 0, h-1, 0, (w1-1));
+        resize_ui8matrix(Y_fusion_ilu5_elu2_red_factor        , 0, h-1, 0, (w1-1));
 
         // PACK FUSION
         pack_ui16matrix(X, h-1, h-1, X_P_bas_fusion);
@@ -4644,18 +4643,18 @@ void bench_swp16_morpho_ouverture_out(int n0, int n1, int nstep)
         BENCH(ouverture3_ui8matrix_basic                     (X, 0, h, 0, w1,                    T_basic  ,Y_basic)     , n, cpp_basic                      );
 
         // Bench fusion
-        BENCH(ouverture3_swp_ui16matrix_fusion_bench                     (X, 0, h, 0, w0, X_P_bas_fusion,                  Y_P_bas_fusion,           Y_fusion_bas                     )     , n, cpp_fusion                      );
-        BENCH(ouverture3_swp_ui16matrix_fusion_ilu5_red_bench            (X, 0, h, 0, w0, X_P_ilu5_red_fusion,             Y_P_ilu5_red_fusion,           Y_fusion_ilu5_red  )         , n, cpp_fusion_ilu5_red                      );
-        BENCH(ouverture3_swp_ui16matrix_fusion_ilu5_elu2_red_bench       (X, 0, h, 0, w0, X_P_ilu5_elu2_red_fusion,        Y_P_ilu5_elu2_red_fusion,           Y_fusion_ilu5_elu2_red)  , n, cpp_fusion_ilu5_elu2_red                      );
+        BENCH(ouverture3_swp_ui16matrix_fusion_bench                     (X, 0, h, 0, w8, X_P_bas_fusion,                  Y_P_bas_fusion,           Y_fusion_bas                     )     , n, cpp_fusion                      );
+        BENCH(ouverture3_swp_ui16matrix_fusion_ilu5_red_bench            (X, 0, h, 0, w8, X_P_ilu5_red_fusion,             Y_P_ilu5_red_fusion,           Y_fusion_ilu5_red  )         , n, cpp_fusion_ilu5_red                      );
+        BENCH(ouverture3_swp_ui16matrix_fusion_ilu5_elu2_red_bench       (X, 0, h, 0, w8, X_P_ilu5_elu2_red_fusion,        Y_P_ilu5_elu2_red_fusion,           Y_fusion_ilu5_elu2_red)  , n, cpp_fusion_ilu5_elu2_red                      );
 
         // Bench pipeline
-        BENCH(    ouverture3_swp_ui16matrix_pipeline_basic_bench               (X, 0, h, 0, w1, X_P_bas , T_P_bas, Y_P_bas, Y_pipeline_bas                             ), n, cpp_pipeline_basic               );
-        BENCH(    ouverture3_swp_ui16matrix_pipeline_red_bench                 (X, 0, h, 0, w1, X_P_red , T_P_red, Y_P_red, Y_pipeline_red                             ), n, cpp_pipeline_red                 );
-        BENCH(    ouverture3_swp_ui16matrix_pipeline_ilu3_red_bench            (X, 0, h, 0, w1, X_P_ilu3_red , T_P_ilu3_red, Y_P_ilu3_red, Y_pipeline_ilu3_red             ), n, cpp_pipeline_ilu3_red            );
-        BENCH(    ouverture3_swp_ui16matrix_pipeline_elu2_red_bench            (X, 0, h, 0, w1, X_P_elu2_red , T_P_elu2_red, Y_P_elu2_red, Y_pipeline_elu2_red            ), n, cpp_pipeline_elu2_red            );
-        BENCH(    ouverture3_swp_ui16matrix_pipeline_elu2_red_factor_bench     (X, 0, h, 0, w1, X_P_elu2_red_factor , T_P_elu2_red_factor, Y_P_elu2_red_factor, Y_pipeline_elu2_red_factor    ), n, cpp_pipeline_elu2_red_factor     );
-        BENCH(    ouverture3_swp_ui16matrix_pipeline_ilu3_elu2_red_bench       (X, 0, h, 0, w1, X_P_ilu3_elu2_red, T_P_ilu3_elu2_red, Y_P_ilu3_elu2_red, Y_pipeline_ilu3_elu2_red       ), n, cpp_pipeline_ilu3_elu2_red       );
-        BENCH(    ouverture3_swp_ui16matrix_pipeline_ilu3_elu2_red_factor_bench(X, 0, h, 0, w1, X_P_ilu3_elu2_red_factor, T_P_ilu3_elu2_red_factor, Y_P_ilu3_elu2_red_factor, Y_pipeline_ilu3_elu2_red_factor      ), n, cpp_pipeline_ilu3_elu2_red_factor);
+        BENCH(    ouverture3_swp_ui16matrix_pipeline_basic_bench               (X, 0, h, 0, w8, X_P_bas , T_P_bas, Y_P_bas, Y_pipeline_bas                             ), n, cpp_pipeline_basic               );
+        BENCH(    ouverture3_swp_ui16matrix_pipeline_red_bench                 (X, 0, h, 0, w8, X_P_red , T_P_red, Y_P_red, Y_pipeline_red                             ), n, cpp_pipeline_red                 );
+        BENCH(    ouverture3_swp_ui16matrix_pipeline_ilu3_red_bench            (X, 0, h, 0, w8, X_P_ilu3_red , T_P_ilu3_red, Y_P_ilu3_red, Y_pipeline_ilu3_red             ), n, cpp_pipeline_ilu3_red            );
+        BENCH(    ouverture3_swp_ui16matrix_pipeline_elu2_red_bench            (X, 0, h, 0, w8, X_P_elu2_red , T_P_elu2_red, Y_P_elu2_red, Y_pipeline_elu2_red            ), n, cpp_pipeline_elu2_red            );
+        BENCH(    ouverture3_swp_ui16matrix_pipeline_elu2_red_factor_bench     (X, 0, h, 0, w8, X_P_elu2_red_factor , T_P_elu2_red_factor, Y_P_elu2_red_factor, Y_pipeline_elu2_red_factor    ), n, cpp_pipeline_elu2_red_factor     );
+        BENCH(    ouverture3_swp_ui16matrix_pipeline_ilu3_elu2_red_bench       (X, 0, h, 0, w8, X_P_ilu3_elu2_red, T_P_ilu3_elu2_red, Y_P_ilu3_elu2_red, Y_pipeline_ilu3_elu2_red       ), n, cpp_pipeline_ilu3_elu2_red       );
+        BENCH(    ouverture3_swp_ui16matrix_pipeline_ilu3_elu2_red_factor_bench(X, 0, h, 0, w8, X_P_ilu3_elu2_red_factor, T_P_ilu3_elu2_red_factor, Y_P_ilu3_elu2_red_factor, Y_pipeline_ilu3_elu2_red_factor      ), n, cpp_pipeline_ilu3_elu2_red_factor);
 
         // UNPACK FUSION
         unpack_ui16matrix(Y_P_bas_fusion, h-1, h-1, Y_fusion_bas);
@@ -4728,7 +4727,7 @@ void bench_swp32_morpho_ouverture_out(int n0, int n1, int nstep)
 {
     // fichiers textes avec résultats
     char str[1000];
-    const char* filename = "./bench_txt/Pack Unpack externe/bench_swp32_OUVERTURE.txt";
+    const char* filename = "./bench_txt/Pack Unpack externe/bench_swp32_OUVERTURE_ext.txt";
     FILE* output_file = fopen(filename, "w+");
     if (!output_file) {
         perror("fopen");
@@ -5012,10 +5011,10 @@ void bench_swp32_morpho_ouverture_out(int n0, int n1, int nstep)
         resize_ui32matrix(Y_P_ilu5_elu2_red_factor_fusion        , 0, h-1, 0, (w1-1)/32);
 
         // Y finale fusion
-        resize_ui8matrix(Y_fusion_bas                         , 0, h-1, 0, (w1-1)/8);
-        resize_ui8matrix(Y_fusion_ilu5_red                    , 0, h-1, 0, (w1-1)/8);
-        resize_ui8matrix(Y_fusion_ilu5_elu2_red               , 0, h-1, 0, (w1-1)/8);
-        resize_ui8matrix(Y_fusion_ilu5_elu2_red_factor        , 0, h-1, 0, (w1-1)/8);
+        resize_ui8matrix(Y_fusion_bas                         , 0, h-1, 0, (w1-1));
+        resize_ui8matrix(Y_fusion_ilu5_red                    , 0, h-1, 0, (w1-1));
+        resize_ui8matrix(Y_fusion_ilu5_elu2_red               , 0, h-1, 0, (w1-1));
+        resize_ui8matrix(Y_fusion_ilu5_elu2_red_factor        , 0, h-1, 0, (w1-1));
 
         // PACK FUSION
         pack_ui32matrix(X, h-1, h-1, X_P_bas_fusion);
@@ -5035,18 +5034,18 @@ void bench_swp32_morpho_ouverture_out(int n0, int n1, int nstep)
         BENCH(ouverture3_ui8matrix_basic                     (X, 0, h, 0, w1,                    T_basic  ,Y_basic)     , n, cpp_basic                      );
 
         // Bench fusion
-        BENCH(ouverture3_swp_ui32matrix_fusion_bench                     (X, 0, h, 0, w0, X_P_bas_fusion,                  Y_P_bas_fusion,           Y_fusion_bas                     )     , n, cpp_fusion                      );
-        BENCH(ouverture3_swp_ui32matrix_fusion_ilu5_red_bench            (X, 0, h, 0, w0, X_P_ilu5_red_fusion,             Y_P_ilu5_red_fusion,           Y_fusion_ilu5_red  )         , n, cpp_fusion_ilu5_red                      );
-        BENCH(ouverture3_swp_ui32matrix_fusion_ilu5_elu2_red_bench       (X, 0, h, 0, w0, X_P_ilu5_elu2_red_fusion,        Y_P_ilu5_elu2_red_fusion,           Y_fusion_ilu5_elu2_red)  , n, cpp_fusion_ilu5_elu2_red                      );
+        BENCH(ouverture3_swp_ui32matrix_fusion_bench                     (X, 0, h, 0, w8, X_P_bas_fusion,                  Y_P_bas_fusion,           Y_fusion_bas                     )     , n, cpp_fusion                      );
+        BENCH(ouverture3_swp_ui32matrix_fusion_ilu5_red_bench            (X, 0, h, 0, w8, X_P_ilu5_red_fusion,             Y_P_ilu5_red_fusion,           Y_fusion_ilu5_red  )         , n, cpp_fusion_ilu5_red                      );
+        BENCH(ouverture3_swp_ui32matrix_fusion_ilu5_elu2_red_bench       (X, 0, h, 0, w8, X_P_ilu5_elu2_red_fusion,        Y_P_ilu5_elu2_red_fusion,           Y_fusion_ilu5_elu2_red)  , n, cpp_fusion_ilu5_elu2_red                      );
 
         // Bench pipeline
-        BENCH(    ouverture3_swp_ui32matrix_pipeline_basic_bench               (X, 0, h, 0, w1, X_P_bas , T_P_bas, Y_P_bas, Y_pipeline_bas                             ), n, cpp_pipeline_basic               );
-        BENCH(    ouverture3_swp_ui32matrix_pipeline_red_bench                 (X, 0, h, 0, w1, X_P_red , T_P_red, Y_P_red, Y_pipeline_red                             ), n, cpp_pipeline_red                 );
-        BENCH(    ouverture3_swp_ui32matrix_pipeline_ilu3_red_bench            (X, 0, h, 0, w1, X_P_ilu3_red , T_P_ilu3_red, Y_P_ilu3_red, Y_pipeline_ilu3_red             ), n, cpp_pipeline_ilu3_red            );
-        BENCH(    ouverture3_swp_ui32matrix_pipeline_elu2_red_bench            (X, 0, h, 0, w1, X_P_elu2_red , T_P_elu2_red, Y_P_elu2_red, Y_pipeline_elu2_red            ), n, cpp_pipeline_elu2_red            );
-        BENCH(    ouverture3_swp_ui32matrix_pipeline_elu2_red_factor_bench     (X, 0, h, 0, w1, X_P_elu2_red_factor , T_P_elu2_red_factor, Y_P_elu2_red_factor, Y_pipeline_elu2_red_factor    ), n, cpp_pipeline_elu2_red_factor     );
-        BENCH(    ouverture3_swp_ui32matrix_pipeline_ilu3_elu2_red_bench       (X, 0, h, 0, w1, X_P_ilu3_elu2_red, T_P_ilu3_elu2_red, Y_P_ilu3_elu2_red, Y_pipeline_ilu3_elu2_red       ), n, cpp_pipeline_ilu3_elu2_red       );
-        BENCH(    ouverture3_swp_ui32matrix_pipeline_ilu3_elu2_red_factor_bench(X, 0, h, 0, w1, X_P_ilu3_elu2_red_factor, T_P_ilu3_elu2_red_factor, Y_P_ilu3_elu2_red_factor, Y_pipeline_ilu3_elu2_red_factor      ), n, cpp_pipeline_ilu3_elu2_red_factor);
+        BENCH(    ouverture3_swp_ui32matrix_pipeline_basic_bench               (X, 0, h, 0, w8, X_P_bas , T_P_bas, Y_P_bas, Y_pipeline_bas                             ), n, cpp_pipeline_basic               );
+        BENCH(    ouverture3_swp_ui32matrix_pipeline_red_bench                 (X, 0, h, 0, w8, X_P_red , T_P_red, Y_P_red, Y_pipeline_red                             ), n, cpp_pipeline_red                 );
+        BENCH(    ouverture3_swp_ui32matrix_pipeline_ilu3_red_bench            (X, 0, h, 0, w8, X_P_ilu3_red , T_P_ilu3_red, Y_P_ilu3_red, Y_pipeline_ilu3_red             ), n, cpp_pipeline_ilu3_red            );
+        BENCH(    ouverture3_swp_ui32matrix_pipeline_elu2_red_bench            (X, 0, h, 0, w8, X_P_elu2_red , T_P_elu2_red, Y_P_elu2_red, Y_pipeline_elu2_red            ), n, cpp_pipeline_elu2_red            );
+        BENCH(    ouverture3_swp_ui32matrix_pipeline_elu2_red_factor_bench     (X, 0, h, 0, w8, X_P_elu2_red_factor , T_P_elu2_red_factor, Y_P_elu2_red_factor, Y_pipeline_elu2_red_factor    ), n, cpp_pipeline_elu2_red_factor     );
+        BENCH(    ouverture3_swp_ui32matrix_pipeline_ilu3_elu2_red_bench       (X, 0, h, 0, w8, X_P_ilu3_elu2_red, T_P_ilu3_elu2_red, Y_P_ilu3_elu2_red, Y_pipeline_ilu3_elu2_red       ), n, cpp_pipeline_ilu3_elu2_red       );
+        BENCH(    ouverture3_swp_ui32matrix_pipeline_ilu3_elu2_red_factor_bench(X, 0, h, 0, w8, X_P_ilu3_elu2_red_factor, T_P_ilu3_elu2_red_factor, Y_P_ilu3_elu2_red_factor, Y_pipeline_ilu3_elu2_red_factor      ), n, cpp_pipeline_ilu3_elu2_red_factor);
 
         // UNPACK FUSION
         unpack_ui32matrix(Y_P_bas_fusion, h-1, h-1, Y_fusion_bas);
@@ -5122,7 +5121,7 @@ void bench_swp8_morpho_max_out(int n0, int n1, int nstep)
 {
     // fichiers textes avec résultats
     char str[1000];
-    const char* filename = "./bench_txt/Pack Unpack externe/bench_swp8_MAX.txt";
+    const char* filename = "./bench_txt/Pack Unpack externe/bench_swp8_MAX_ext.txt";
     FILE* output_file = fopen(filename, "w+");
     if (!output_file) {
         perror("fopen");
@@ -5169,7 +5168,7 @@ void bench_swp8_morpho_max_out(int n0, int n1, int nstep)
     format = "%5.0f";
     format = "%6.1f";
 
-    puts("== bench_morpho_SWP8_max ==");
+    puts("== bench_morpho_SWP8_max_ext ==");
 
     //------- Alloc  -------
     // puts("malloc");
@@ -5365,7 +5364,7 @@ void bench_swp16_morpho_max_out(int n0, int n1, int nstep)
 {
     // fichiers textes avec résultats
     char str[1000];
-    const char* filename = "./bench_txt/Pack Unpack externe/bench_swp16MAX.txt";
+    const char* filename = "./bench_txt/Pack Unpack externe/bench_swp16MAX_ext.txt";
     FILE* output_file = fopen(filename, "w+");
     if (!output_file) {
         perror("fopen");
@@ -5424,7 +5423,7 @@ void bench_swp16_morpho_max_out(int n0, int n1, int nstep)
     format = "%5.0f";
     format = "%6.1f";
 
-    puts("== bench_morpho_SWP16_max ==");
+    puts("== bench_morpho_SWP16_max_ext ==");
 
     //------- Alloc  -------
     // puts("malloc");
@@ -5621,7 +5620,7 @@ void bench_swp32_morpho_max_out(int n0, int n1, int nstep)
 {
     // fichiers textes avec résultats
     char str[1000];
-    const char* filename = "./bench_txt/Pack Unpack externe/bench_swp32_MAX.txt";
+    const char* filename = "./bench_txt/Pack Unpack externe/bench_swp32_MAX_ext.txt";
     FILE* output_file = fopen(filename, "w+");
     if (!output_file) {
         perror("fopen");
@@ -5680,7 +5679,7 @@ void bench_swp32_morpho_max_out(int n0, int n1, int nstep)
     format = "%5.0f";
     format = "%6.1f";
 
-    puts("== bench_morpho_SWP32_max ==");
+    puts("== bench_morpho_SWP32_max_ext ==");
 
     //------- Alloc  -------
     // puts("malloc");
@@ -5885,7 +5884,7 @@ void bench_swp32_morpho_max_out(int n0, int n1, int nstep)
 
 // ------------------------------ Test SWP --------------------------------------------
 int test_swp(int argc, char* argv[]){
-    puts("=== test_swap ===");
+    puts("=== test_swp ===");
     // test_swp_morpho_max();
     // test_swp_morpho_min();
     // test_swp_morpho_ouverture();
@@ -5893,20 +5892,20 @@ int test_swp(int argc, char* argv[]){
 
 // BENCH IN
     // MAX
-        // bench_swp8_morpho_max_in(128, 512, 8);
+        bench_swp8_morpho_max_in(128, 512, 8);
         // bench_swp8_morpho_max_in(128, 1024, 8);
 
-        // bench_swp16_morpho_max_in(128, 512, 8);
+        bench_swp16_morpho_max_in(128, 512, 8);
         // bench_swp16_morpho_max_in(128, 1024, 8);
 
-        // bench_swp32_morpho_max_in(128, 512, 8);
+        bench_swp32_morpho_max_in(128, 512, 8);
         // bench_swp32_morpho_max_in(128, 1024, 8);
 
     // OUVERTURE
-        // bench_swp8_morpho_ouverture_in(128, 520, 8);
+        bench_swp8_morpho_ouverture_in(128, 520, 8);
         // bench_swp8_morpho_ouverture_in(128, 1024, 8);
 
-        // bench_swp16_morpho_ouverture_in(128, 520, 8);
+        bench_swp16_morpho_ouverture_in(128, 520, 8);
         // bench_swp16_morpho_ouverture_in(128, 1024, 8);
 
         bench_swp32_morpho_ouverture_in(128, 520, 8);
@@ -5915,13 +5914,13 @@ int test_swp(int argc, char* argv[]){
 
 // BENCH OUT
     // MAX
-        // bench_swp8_morpho_max_out(128, 520, 8);
+        bench_swp8_morpho_max_out(128, 520, 8);
         // bench_swp8_morpho_max_out(128, 1032, 8);
 
-        // bench_swp16_morpho_max_out(128, 520, 8);
+        bench_swp16_morpho_max_out(128, 520, 8);
         // bench_swp16_morpho_max_out(128, 1032, 8);
 
-        // bench_swp32_morpho_max_out(128, 520, 8);
+        bench_swp32_morpho_max_out(128, 520, 8);
         // bench_swp32_morpho_max_out(128, 1032, 8);
 
     // OUVERTURE
