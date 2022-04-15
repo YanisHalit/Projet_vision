@@ -2159,6 +2159,16 @@ void test_swp_morpho_ouverture(void)
 // ------------------------------ Bench SWP8 ouverture ----------------------------------
 void bench_swp8_morpho_ouverture(int n0, int n1, int nstep)
 {
+    // fichiers textes avec résultats
+    char str[1000];
+    const char* filename = "./bench_txt/bench_swp8_OUVERTURE.txt";
+    FILE* output_file = fopen(filename, "w+");
+    if (!output_file) {
+        perror("fopen");
+        exit(EXIT_FAILURE);
+    }
+    //
+
     int r = 1;
     int h = n1; // max size
     int w = n1; //max size
@@ -2440,9 +2450,9 @@ void bench_swp8_morpho_ouverture(int n0, int n1, int nstep)
         BENCH(ouverture3_ui8matrix_basic                     (X, 0, h, 0, w1,                    T_basic  ,Y_basic)     , n, cpp_basic                      );
 
         // Bench fusion
-        // BENCH(ouverture3_swp_ui8matrix_fusion                     (X, 0, h, 0, w1, X_P_bas_fusion,                  Y_P_bas_fusion,           Y_fusion_bas                     )     , n, cpp_fusion                      );
-        // BENCH(ouverture3_swp_ui8matrix_fusion_ilu5_red            (X, 0, h, 0, w1, X_P_ilu5_red_fusion,             Y_P_ilu5_red_fusion,           Y_fusion_ilu5_red  )         , n, cpp_fusion_ilu5_red                     );
-        // BENCH(ouverture3_swp_ui8matrix_fusion_ilu5_elu2_red       (X, 0, h, 0, w1, X_P_ilu5_elu2_red_fusion,        Y_P_ilu5_elu2_red_fusion,           Y_fusion_ilu5_elu2_red)  , n, cpp_fusion_ilu5_elu2_red                      );
+        BENCH(ouverture3_swp_ui8matrix_fusion                     (X, 0, h, 0, w1, X_P_bas_fusion,                  Y_P_bas_fusion,           Y_fusion_bas                     )     , n, cpp_fusion                      );
+        BENCH(ouverture3_swp_ui8matrix_fusion_ilu5_red            (X, 0, h, 0, w1, X_P_ilu5_red_fusion,             Y_P_ilu5_red_fusion,           Y_fusion_ilu5_red  )         , n, cpp_fusion_ilu5_red                     );
+        BENCH(ouverture3_swp_ui8matrix_fusion_ilu5_elu2_red       (X, 0, h, 0, w1, X_P_ilu5_elu2_red_fusion,        Y_P_ilu5_elu2_red_fusion,           Y_fusion_ilu5_elu2_red)  , n, cpp_fusion_ilu5_elu2_red                      );
 
         // Bench pipeline
         BENCH(    ouverture3_swp_ui8matrix_pipeline_basic               (X, 0, h, 0, w1, X_P_bas , T_P_bas, Y_P_bas, Y_pipeline_bas                             ), n, cpp_pipeline_basic               );
@@ -2457,33 +2467,67 @@ void bench_swp8_morpho_ouverture(int n0, int n1, int nstep)
         printf("i = %4d", n);
         printf("   ");
 
-        // basic 
+        fwrite("i = ", 1, strlen("i = "), output_file);
+        fprintf(output_file, "%d   ", n);
+
+        // basic
         printf(format, cpp_basic                      );
+        fprintf(output_file, "%.1f   ", cpp_basic);
 
         printf("   ");
         // fusion
-        // printf(format, cpp_fusion                     );
-        // printf(format, cpp_fusion_ilu5_red            );
-        // printf(format, cpp_fusion_ilu5_elu2_red       );
+        printf(format, cpp_fusion                     );
+                fprintf(output_file, "%.1f   ", cpp_fusion);
+
+        printf(format, cpp_fusion_ilu5_red            );
+                fprintf(output_file, "%.1f   ", cpp_fusion_ilu5_red);
+
+        printf(format, cpp_fusion_ilu5_elu2_red       );
+                fprintf(output_file, "%.1f   ", cpp_fusion_ilu5_elu2_red);
+
 
         printf("   ");
 
         // pipeline
         printf(format, cpp_pipeline_basic                      );
-        printf(format, cpp_pipeline_red                        );
-        printf(format, cpp_pipeline_ilu3_red                   );
-        printf(format, cpp_pipeline_elu2_red                   );
-        printf(format, cpp_pipeline_elu2_red_factor            );
-        printf(format, cpp_pipeline_ilu3_elu2_red              );
-        printf(format, cpp_pipeline_ilu3_elu2_red_factor       );
+                fprintf(output_file, "%.1f   ", cpp_pipeline_basic);
 
+        printf(format, cpp_pipeline_red                        );
+                fprintf(output_file, "%.1f   ", cpp_pipeline_red);
+
+        printf(format, cpp_pipeline_ilu3_red                   );
+                fprintf(output_file, "%.1f   ", cpp_pipeline_ilu3_red);
+
+        printf(format, cpp_pipeline_elu2_red                   );
+                fprintf(output_file, "%.1f   ", cpp_pipeline_elu2_red);
+
+        printf(format, cpp_pipeline_elu2_red_factor            );
+                fprintf(output_file, "%.1f   ", cpp_pipeline_elu2_red_factor);
+
+        printf(format, cpp_pipeline_ilu3_elu2_red              );
+                fprintf(output_file, "%.1f   ", cpp_pipeline_ilu3_elu2_red);
+
+        printf(format, cpp_pipeline_ilu3_elu2_red_factor       );
+                fprintf(output_file, "%.1f", cpp_pipeline_ilu3_elu2_red_factor);
+
+        fprintf(output_file, "\n");
         putchar('\n');
     }
-
+    fclose(output_file);
 }
 // ------------------------------ Bench SWP16 ouverture ----------------------------------
 void bench_swp16_morpho_ouverture(int n0, int n1, int nstep)
 {
+    // fichiers textes avec résultats
+    char str[1000];
+    const char* filename = "./bench_txt/bench_swp16_OUVERTURE.txt";
+    FILE* output_file = fopen(filename, "w+");
+    if (!output_file) {
+        perror("fopen");
+        exit(EXIT_FAILURE);
+    }
+    //
+
     int r = 1;
     int h = n1; // max size
     int w = n1; //max size
@@ -2493,6 +2537,9 @@ void bench_swp16_morpho_ouverture(int n0, int n1, int nstep)
 
     uint8 **X;
     uint8 **X8, **X1;
+
+    uint8 **T_basic;
+    uint8 **Y_basic;
 
     // POUR FUSION -----------------------------
     // X packé dans X_P fusion
@@ -2580,7 +2627,8 @@ void bench_swp16_morpho_ouverture(int n0, int n1, int nstep)
 
     // X 2r-border
     X      = ui8matrix(0-2*r, h-1+2*r, 0-2*r, w1-1+2*r);
-
+    T_basic = ui8matrix(0-2*r, h-1+2*r, 0-2*r, w1-1+2*r);
+    Y_basic = ui8matrix(0, h-1, 0, w1-1);
 
     // Pipeline alloc
     // X packée pipeline
@@ -2635,7 +2683,8 @@ void bench_swp16_morpho_ouverture(int n0, int n1, int nstep)
 
     //------- init  -------
     zero_ui8matrix(X,                     0-2*r, h-1+2*r, 0-2*r, w1-1+2*r);
-
+    zero_ui8matrix(T_basic,                     0-2*r, h-1+2*r, 0-2*r, w1-1+2*r);
+    zero_ui8matrix(Y_basic,                     0, h-1, 0, w1-1);
 
     // Pipeline init
     // X packée pipeline
@@ -2760,11 +2809,13 @@ void bench_swp16_morpho_ouverture(int n0, int n1, int nstep)
         resize_ui8matrix(Y_fusion_ilu5_elu2_red               , 0, h-1, 0, (w1-1)/8);
         resize_ui8matrix(Y_fusion_ilu5_elu2_red_factor        , 0, h-1, 0, (w1-1)/8);
 
+        // Bench basique
+        BENCH(ouverture3_ui8matrix_basic                     (X, 0, h, 0, w1,                    T_basic  ,Y_basic)     , n, cpp_basic                      );
+
         // Bench fusion
-        // BENCH(ouverture3_swp_ui16matrix_fusion                     (X, 0, h, 0, w0, X_P_bas_fusion,                  Y_P_bas_fusion,           Y_fusion_bas                     )     , n, cpp_basic                      );
-        // BENCH(ouverture3_swp_ui16matrix_fusion_ilu5_red            (X, 0, h, 0, w0, X_P_ilu5_red_fusion,             Y_P_ilu5_red_fusion,           Y_fusion_ilu5_red  )         , n, cpp_basic                      );
-        // BENCH(ouverture3_swp_ui16matrix_fusion_ilu5_elu2_red       (X, 0, h, 0, w0, X_P_ilu5_elu2_red_fusion,        Y_P_ilu5_elu2_red_fusion,           Y_fusion_ilu5_elu2_red)  , n, cpp_basic                      );
-        // BENCH(ouverture3_swp_ui16matrix_fusion_ilu5_elu2_red_factor(X, 0, h, 0, w0, X_P_ilu5_elu2_red_factor_fusion, Y_P_ilu5_elu2_red_factor_fusion,           Y_fusion_ilu5_elu2_red_factor), n, cpp_basic                      );
+        BENCH(ouverture3_swp_ui16matrix_fusion                     (X, 0, h, 0, w0, X_P_bas_fusion,                  Y_P_bas_fusion,           Y_fusion_bas                     )     , n, cpp_fusion                      );
+        BENCH(ouverture3_swp_ui16matrix_fusion_ilu5_red            (X, 0, h, 0, w0, X_P_ilu5_red_fusion,             Y_P_ilu5_red_fusion,           Y_fusion_ilu5_red  )         , n, cpp_fusion_ilu5_red                      );
+        BENCH(ouverture3_swp_ui16matrix_fusion_ilu5_elu2_red       (X, 0, h, 0, w0, X_P_ilu5_elu2_red_fusion,        Y_P_ilu5_elu2_red_fusion,           Y_fusion_ilu5_elu2_red)  , n, cpp_fusion_ilu5_elu2_red                      );
 
         // Bench pipeline
         BENCH(    ouverture3_swp_ui16matrix_pipeline_basic               (X, 0, h, 0, w1, X_P_bas , T_P_bas, Y_P_bas, Y_pipeline_bas                             ), n, cpp_pipeline_basic               );
@@ -2779,32 +2830,67 @@ void bench_swp16_morpho_ouverture(int n0, int n1, int nstep)
         printf("i = %4d", n);
         printf("   ");
 
+        fwrite("i = ", 1, strlen("i = "), output_file);
+        fprintf(output_file, "%d    ", n);
+
+        // basic
+        printf(format, cpp_basic                      );
+        fprintf(output_file, "%.1f  ", cpp_basic);
+
         // fusion
-        // printf(format, cpp_basic                      );
-        // printf(format, cpp_fusion                     );
-        // printf(format, cpp_fusion_ilu5_red            );
-        // printf(format, cpp_fusion_ilu5_elu2_red       );
-        // printf(format, cpp_fusion_ilu5_elu2_red_factor);
-        // printf(format, cpp_fusion_ilu15_red           );
+        printf(format, cpp_fusion                     );
+                fprintf(output_file, "%.1f  ", cpp_fusion);
+
+        printf(format, cpp_fusion_ilu5_red            );
+                fprintf(output_file, "%.1f  ", cpp_fusion_ilu5_red);
+
+        printf(format, cpp_fusion_ilu5_elu2_red       );
+                fprintf(output_file, "%.1f  ", cpp_fusion_ilu5_elu2_red);
+
 
         printf("   ");
 
         // pipeline
         printf(format, cpp_pipeline_basic                      );
+                        fprintf(output_file, "%.1f  ", cpp_pipeline_basic);
+
         printf(format, cpp_pipeline_red                        );
+                        fprintf(output_file, "%.1f  ", cpp_pipeline_red);
+
         printf(format, cpp_pipeline_ilu3_red                   );
+                        fprintf(output_file, "%.1f  ", cpp_pipeline_ilu3_red);
+
         printf(format, cpp_pipeline_elu2_red                   );
+                        fprintf(output_file, "%.1f  ", cpp_pipeline_elu2_red);
+
         printf(format, cpp_pipeline_elu2_red_factor            );
+                        fprintf(output_file, "%.1f  ", cpp_pipeline_elu2_red_factor);
+        
         printf(format, cpp_pipeline_ilu3_elu2_red              );
+                        fprintf(output_file, "%.1f  ", cpp_pipeline_ilu3_elu2_red);
+
         printf(format, cpp_pipeline_ilu3_elu2_red_factor       );
+                        fprintf(output_file, "%.1f", cpp_pipeline_ilu3_elu2_red_factor);
+
 
         putchar('\n');
+        fprintf(output_file, "\n");
     }
-
+    fclose(output_file);
 }
 // ------------------------------ Bench SWP32 ouverture ----------------------------------
 void bench_swp32_morpho_ouverture(int n0, int n1, int nstep)
 {
+    // fichiers textes avec résultats
+    char str[1000];
+    const char* filename = "./bench_txt/bench_swp32_OUVERTURE.txt";
+    FILE* output_file = fopen(filename, "w+");
+    if (!output_file) {
+        perror("fopen");
+        exit(EXIT_FAILURE);
+    }
+    //
+
     int r = 1;
     int h = n1; // max size
     int w = n1; //max size
@@ -2814,6 +2900,9 @@ void bench_swp32_morpho_ouverture(int n0, int n1, int nstep)
 
     uint8 **X;
     uint8 **X8, **X1;
+
+    uint8 **T_basic;
+    uint8 **Y_basic;
 
     // POUR FUSION -----------------------------
     // X packé dans X_P fusion
@@ -2901,7 +2990,8 @@ void bench_swp32_morpho_ouverture(int n0, int n1, int nstep)
 
     // X 2r-border
     X      = ui8matrix(0-2*r, h-1+2*r, 0-2*r, w1-1+2*r);
-
+    T_basic = ui8matrix(0-2*r, h-1+2*r, 0-2*r, w1-1+2*r);
+    Y_basic = ui8matrix(0, h-1, 0, w1-1);
 
     // Pipeline alloc
     // X packée pipeline
@@ -2956,7 +3046,8 @@ void bench_swp32_morpho_ouverture(int n0, int n1, int nstep)
 
     //------- init  -------
     zero_ui8matrix(X,                     0-2*r, h-1+2*r, 0-2*r, w1-1+2*r);
-
+    zero_ui8matrix(T_basic,                     0-2*r, h-1+2*r, 0-2*r, w1-1+2*r);
+    zero_ui8matrix(Y_basic,                     0, h-1, 0, w1-1);
 
     // Pipeline init
     // X packée pipeline
@@ -3081,11 +3172,13 @@ void bench_swp32_morpho_ouverture(int n0, int n1, int nstep)
         resize_ui8matrix(Y_fusion_ilu5_elu2_red               , 0, h-1, 0, (w1-1)/8);
         resize_ui8matrix(Y_fusion_ilu5_elu2_red_factor        , 0, h-1, 0, (w1-1)/8);
 
+        // Bench basique
+        BENCH(ouverture3_ui8matrix_basic                     (X, 0, h, 0, w1,                    T_basic  ,Y_basic)     , n, cpp_basic                      );
+
         // Bench fusion
-        // BENCH(ouverture3_swp_ui32matrix_fusion                     (X, 0, h, 0, w0, X_P_bas_fusion,                  Y_P_bas_fusion,           Y_fusion_bas                     )     , n, cpp_basic                      );
-        // BENCH(ouverture3_swp_ui32matrix_fusion_ilu5_red            (X, 0, h, 0, w0, X_P_ilu5_red_fusion,             Y_P_ilu5_red_fusion,           Y_fusion_ilu5_red  )         , n, cpp_basic                      );
-        // BENCH(ouverture3_swp_ui32matrix_fusion_ilu5_elu2_red       (X, 0, h, 0, w0, X_P_ilu5_elu2_red_fusion,        Y_P_ilu5_elu2_red_fusion,           Y_fusion_ilu5_elu2_red)  , n, cpp_basic                      );
-        // BENCH(ouverture3_swp_ui32matrix_fusion_ilu5_elu2_red_factor(X, 0, h, 0, w0, X_P_ilu5_elu2_red_factor_fusion, Y_P_ilu5_elu2_red_factor_fusion,           Y_fusion_ilu5_elu2_red_factor), n, cpp_basic                      );
+        BENCH(ouverture3_swp_ui32matrix_fusion                     (X, 0, h, 0, w0, X_P_bas_fusion,                  Y_P_bas_fusion,           Y_fusion_bas                     )     , n, cpp_fusion                      );
+        BENCH(ouverture3_swp_ui32matrix_fusion_ilu5_red            (X, 0, h, 0, w0, X_P_ilu5_red_fusion,             Y_P_ilu5_red_fusion,           Y_fusion_ilu5_red  )         , n, cpp_fusion_ilu5_red                      );
+        BENCH(ouverture3_swp_ui32matrix_fusion_ilu5_elu2_red       (X, 0, h, 0, w0, X_P_ilu5_elu2_red_fusion,        Y_P_ilu5_elu2_red_fusion,           Y_fusion_ilu5_elu2_red)  , n, cpp_fusion_ilu5_elu2_red                      );
 
         // Bench pipeline
         BENCH(    ouverture3_swp_ui32matrix_pipeline_basic               (X, 0, h, 0, w1, X_P_bas , T_P_bas, Y_P_bas, Y_pipeline_bas                             ), n, cpp_pipeline_basic               );
@@ -3100,28 +3193,53 @@ void bench_swp32_morpho_ouverture(int n0, int n1, int nstep)
         printf("i = %4d", n);
         printf("   ");
 
+        fwrite("i = ", 1, strlen("i = "), output_file);
+        fprintf(output_file, "%d    ", n);
+
+        // basic
+        printf(format, cpp_basic                      );
+        fprintf(output_file, "%.1f  ", cpp_basic);
+
         // fusion
-        // printf(format, cpp_basic                      );
-        // printf(format, cpp_fusion                     );
-        // printf(format, cpp_fusion_ilu5_red            );
-        // printf(format, cpp_fusion_ilu5_elu2_red       );
-        // printf(format, cpp_fusion_ilu5_elu2_red_factor);
-        // printf(format, cpp_fusion_ilu15_red           );
+        printf(format, cpp_fusion                     );
+                fprintf(output_file, "%.1f  ", cpp_fusion);
+
+        printf(format, cpp_fusion_ilu5_red            );
+                fprintf(output_file, "%.1f  ", cpp_fusion_ilu5_red);
+
+        printf(format, cpp_fusion_ilu5_elu2_red       );
+                fprintf(output_file, "%.1f  ", cpp_fusion_ilu5_elu2_red);
+
 
         printf("   ");
 
         // pipeline
         printf(format, cpp_pipeline_basic                      );
+                        fprintf(output_file, "%.1f  ", cpp_pipeline_basic);
+
         printf(format, cpp_pipeline_red                        );
+                        fprintf(output_file, "%.1f  ", cpp_pipeline_red);
+
         printf(format, cpp_pipeline_ilu3_red                   );
+                        fprintf(output_file, "%.1f  ", cpp_pipeline_ilu3_red);
+
         printf(format, cpp_pipeline_elu2_red                   );
+                        fprintf(output_file, "%.1f  ", cpp_pipeline_elu2_red);
+
         printf(format, cpp_pipeline_elu2_red_factor            );
+                        fprintf(output_file, "%.1f  ", cpp_pipeline_elu2_red_factor);
+        
         printf(format, cpp_pipeline_ilu3_elu2_red              );
+                        fprintf(output_file, "%.1f  ", cpp_pipeline_ilu3_elu2_red);
+
         printf(format, cpp_pipeline_ilu3_elu2_red_factor       );
+                        fprintf(output_file, "%.1f", cpp_pipeline_ilu3_elu2_red_factor);
+
 
         putchar('\n');
+        fprintf(output_file, "\n");
     }
-
+    fclose(output_file);
 }
 // ------------------------------------------------------------------------------------
 
@@ -3130,14 +3248,15 @@ void bench_swp32_morpho_ouverture(int n0, int n1, int nstep)
 // ------------------------------ Appel test SWP8 MAX ----------------------------------
 void bench_swp8_morpho_max(int n0, int n1, int nstep)
 {
-    const char* filename = "bench_swp8_MAX.txt";
+    // fichiers textes avec résultats
+    char str[1000];
+    const char* filename = "./bench_txt/bench_swp8_MAX.txt";
     FILE* output_file = fopen(filename, "w+");
-    
     if (!output_file) {
         perror("fopen");
         exit(EXIT_FAILURE);
     }
-
+    //
 
     int r = 1;
     int h = n1; // max size
@@ -3317,28 +3436,52 @@ void bench_swp8_morpho_max(int n0, int n1, int nstep)
         printf("i = %4d", n);
         printf("   ");
 
+        fwrite("i = ", 1, strlen("i = "), output_file);
+        fprintf(output_file, "%d   ", n);
+
         // basic 
         printf(format, cpp_basic                      );
+        fprintf(output_file, "%.1f   ", cpp_basic);
         printf("   ");
 
         printf(format, cpp_bas                     );
+                fprintf(output_file, "%.1f   ", cpp_bas);
         printf(format, cpp_rot            );
+                fprintf(output_file, "%.1f   ", cpp_rot);
         printf(format, cpp_red       );
+                fprintf(output_file, "%.1f   ", cpp_red);
         printf(format, cpp_ilu3);
+                fprintf(output_file, "%.1f   ", cpp_ilu3);
         printf(format, cpp_ilu3_red           );
+                fprintf(output_file, "%.1f   ", cpp_ilu3_red);
         printf(format, cpp_elu2_red           );
+                fprintf(output_file, "%.1f   ", cpp_elu2_red);
         printf(format, cpp_elu2_red_factor           );
+                fprintf(output_file, "%.1f   ", cpp_elu2_red_factor);
         printf(format, cpp_ilu3_elu2_red           );
+                fprintf(output_file, "%.1f   ", cpp_ilu3_elu2_red);
         printf(format, cpp_ilu3_elu2_red_factor           );
+                fprintf(output_file, "%.1f", cpp_ilu3_elu2_red_factor);
+        fprintf(output_file, "\n");
 
         putchar('\n');
 
     }
-
+    fclose(output_file);
 }
 // ------------------------------ Appel test SWP16 MAX ----------------------------------
 void bench_swp16_morpho_max(int n0, int n1, int nstep)
 {
+    // fichiers textes avec résultats
+    char str[1000];
+    const char* filename = "./bench_txt/bench_swp16MAX.txt";
+    FILE* output_file = fopen(filename, "w+");
+    if (!output_file) {
+        perror("fopen");
+        exit(EXIT_FAILURE);
+    }
+    //
+
     int r = 1;
     int h = n1; // max size
     int w = n1; //max size
@@ -3528,29 +3671,53 @@ void bench_swp16_morpho_max(int n0, int n1, int nstep)
         printf("i = %4d", n);
         printf("   ");
 
+        fwrite("i = ", 1, strlen("i = "), output_file);
+        fprintf(output_file, "%d   ", n);
+
         // basic
         printf(format, cpp_basic                      );
         printf("   ");
+        fprintf(output_file, "%.1f   ", cpp_basic);
 
         // fusion
         printf(format, cpp_bas                     );
+            fprintf(output_file, "%.1f   ", cpp_bas);
         printf(format, cpp_rot            );
+            fprintf(output_file, "%.1f   ", cpp_rot);
         printf(format, cpp_red       );
+            fprintf(output_file, "%.1f   ", cpp_red);
         printf(format, cpp_ilu3);
+            fprintf(output_file, "%.1f   ", cpp_ilu3);
         printf(format, cpp_ilu3_red           );
+            fprintf(output_file, "%.1f   ", cpp_ilu3_red);
         printf(format, cpp_elu2_red           );
+            fprintf(output_file, "%.1f   ", cpp_elu2_red);
         printf(format, cpp_elu2_red_factor           );
+            fprintf(output_file, "%.1f   ", cpp_elu2_red_factor);
         printf(format, cpp_ilu3_elu2_red           );
+            fprintf(output_file, "%.1f   ", cpp_ilu3_elu2_red);
         printf(format, cpp_ilu3_elu2_red_factor           );
+            fprintf(output_file, "%.1f", cpp_ilu3_elu2_red_factor);
 
+        fprintf(output_file, "\n");
         putchar('\n');
 
     }
-
+    fclose(output_file);
 }
 // ------------------------------ Appel test SWP32 MAX ----------------------------------
 void bench_swp32_morpho_max(int n0, int n1, int nstep)
 {
+    // fichiers textes avec résultats
+    char str[1000];
+    const char* filename = "./bench_txt/bench_swp32_MAX.txt";
+    FILE* output_file = fopen(filename, "w+");
+    if (!output_file) {
+        perror("fopen");
+        exit(EXIT_FAILURE);
+    }
+    //
+
     int r = 1;
     int h = n1; // max size
     int w = n1; //max size
@@ -3740,24 +3907,40 @@ void bench_swp32_morpho_max(int n0, int n1, int nstep)
         printf("i = %4d", n);
         printf("   ");
 
+
+        fwrite("i = ", 1, strlen("i = "), output_file);
+        fprintf(output_file, "%d   ", n);
+
         // basic
         printf(format, cpp_basic                      );
         printf("   ");
+        fprintf(output_file, "%.1f          ", cpp_basic);
 
-        // fusion
         printf(format, cpp_bas                     );
+                fprintf(output_file, "%.1f   ", cpp_bas);
         printf(format, cpp_rot            );
+                fprintf(output_file, "%.1f   ", cpp_rot);
         printf(format, cpp_red       );
+                fprintf(output_file, "%.1f   ", cpp_red);
         printf(format, cpp_ilu3);
+                fprintf(output_file, "%.1f   ", cpp_ilu3);
         printf(format, cpp_ilu3_red           );
+                fprintf(output_file, "%.1f   ", cpp_ilu3_red);
         printf(format, cpp_elu2_red           );
+                fprintf(output_file, "%.1f   ", cpp_elu2_red);
         printf(format, cpp_elu2_red_factor           );
+                fprintf(output_file, "%.1f   ", cpp_elu2_red_factor);
         printf(format, cpp_ilu3_elu2_red           );
+                fprintf(output_file, "%.1f   ", cpp_ilu3_elu2_red);
         printf(format, cpp_ilu3_elu2_red_factor           );
+                fprintf(output_file, "%.1f", cpp_ilu3_elu2_red_factor);
+        fprintf(output_file, "\n");
 
         putchar('\n');
 
     }
+
+    fclose(output_file);
 
 }
 // ------------------------------------------------------------------------------------
@@ -3788,7 +3971,7 @@ int test_swp(int argc, char* argv[]){
         // bench_swp16_morpho_ouverture(128, 512, 8);
         // bench_swp16_morpho_ouverture(128, 1024, 8);
 
-        // bench_swp32_morpho_ouverture(128, 512, 8);
+        bench_swp32_morpho_ouverture(128, 512, 8);
         // bench_swp32_morpho_ouverture(128, 1024, 8);
 
     return 0;
