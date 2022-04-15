@@ -1,4 +1,4 @@
-/* -------------------------- */
+ /* -------------------------- */
 /* --- morpho_ouverture.c --- */
 /* -------------------------- */
 
@@ -4230,7 +4230,6 @@ void ouverture3_swp_ui32matrix_fusion_ilu5_elu2_red_factor_bench (uint8 **X, int
 // ---------------------------------------------------------------------------------------------
 void ouverture3_swp_ui8matrix_pipeline_basic_bench (uint8 **X, int i0, int i1, int j0, int j1, uint8 **X_P, uint8 **T_P, uint8 **Y_P, uint8 **Y)
 {
-
     line_swp_min3_ui8matrix_basic(X_P, i0-1, j0, j1, T_P);
     line_swp_min3_ui8matrix_basic(X_P, i0, j0, j1, T_P);
     for( int i = i0; i < i1; i ++){

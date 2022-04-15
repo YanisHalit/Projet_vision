@@ -64,6 +64,7 @@ void ouverture3_ui8matrix_basic                      (uint8 **X, int i0, int i1,
     void ouverture3_ui8matrix_fusion_ilu5_elu2_red_factor(uint8 **X, int i0, int i1, int j0, int j1, uint8 **Y);
 //
 
+    // interne
 // fusion d'operateurs SWP8
     void ouverture3_swp_ui8matrix_fusion                     (uint8 **X, int i0, int i1, int j0, int j1, uint8 **X_P, uint8 **Y_P, uint8 **Y);
     void ouverture3_swp_ui8matrix_fusion_ilu5_red            (uint8 **X, int i0, int i1, int j0, int j1, uint8 **X_P, uint8 **Y_P, uint8 **Y);
@@ -78,11 +79,33 @@ void ouverture3_ui8matrix_basic                      (uint8 **X, int i0, int i1,
     void ouverture3_swp_ui16matrix_fusion_ilu5_elu2_red_factor(uint8 **X, int i0, int i1, int j0, int j1, uint16 **X_P, uint16 **Y_P, uint8 **Y);
 //
 
-// fusion d'operateurs SWP8
+// fusion d'operateurs SWP32
     void ouverture3_swp_ui32matrix_fusion                     (uint8 **X, int i0, int i1, int j0, int j1, uint32 **X_P, uint32 **Y_P, uint8 **Y);
     void ouverture3_swp_ui32matrix_fusion_ilu5_red            (uint8 **X, int i0, int i1, int j0, int j1, uint32 **X_P, uint32 **Y_P, uint8 **Y);
     void ouverture3_swp_ui32matrix_fusion_ilu5_elu2_red       (uint8 **X, int i0, int i1, int j0, int j1, uint32 **X_P, uint32 **Y_P, uint8 **Y);
     void ouverture3_swp_ui32matrix_fusion_ilu5_elu2_red_factor(uint8 **X, int i0, int i1, int j0, int j1, uint32 **X_P, uint32 **Y_P, uint8 **Y);
+//
+
+    // externe
+// fusion d'operateurs SWP8
+    void ouverture3_swp_ui8matrix_fusion_bench                     (uint8 **X, int i0, int i1, int j0, int j1, uint8 **X_P, uint8 **Y_P, uint8 **Y);
+    void ouverture3_swp_ui8matrix_fusion_ilu5_red_bench            (uint8 **X, int i0, int i1, int j0, int j1, uint8 **X_P, uint8 **Y_P, uint8 **Y);
+    void ouverture3_swp_ui8matrix_fusion_ilu5_elu2_red_bench       (uint8 **X, int i0, int i1, int j0, int j1, uint8 **X_P, uint8 **Y_P, uint8 **Y);
+    void ouverture3_swp_ui8matrix_fusion_ilu5_elu2_red_factor_bench(uint8 **X, int i0, int i1, int j0, int j1, uint8 **X_P, uint8 **Y_P, uint8 **Y);
+//
+
+// fusion d'operateurs SWP16
+    void ouverture3_swp_ui16matrix_fusion_bench                     (uint8 **X, int i0, int i1, int j0, int j1, uint16 **X_P, uint16 **Y_P, uint8 **Y);
+    void ouverture3_swp_ui16matrix_fusion_ilu5_red_bench            (uint8 **X, int i0, int i1, int j0, int j1, uint16 **X_P, uint16 **Y_P, uint8 **Y);
+    void ouverture3_swp_ui16matrix_fusion_ilu5_elu2_red_bench       (uint8 **X, int i0, int i1, int j0, int j1, uint16 **X_P, uint16 **Y_P, uint8 **Y);
+    void ouverture3_swp_ui16matrix_fusion_ilu5_elu2_red_factor_bench(uint8 **X, int i0, int i1, int j0, int j1, uint16 **X_P, uint16 **Y_P, uint8 **Y);
+//
+
+// fusion d'operateurs SWP32
+    void ouverture3_swp_ui32matrix_fusion_bench                     (uint8 **X, int i0, int i1, int j0, int j1, uint32 **X_P, uint32 **Y_P, uint8 **Y);
+    void ouverture3_swp_ui32matrix_fusion_ilu5_red_bench            (uint8 **X, int i0, int i1, int j0, int j1, uint32 **X_P, uint32 **Y_P, uint8 **Y);
+    void ouverture3_swp_ui32matrix_fusion_ilu5_elu2_red_bench       (uint8 **X, int i0, int i1, int j0, int j1, uint32 **X_P, uint32 **Y_P, uint8 **Y);
+    void ouverture3_swp_ui32matrix_fusion_ilu5_elu2_red_factor_bench(uint8 **X, int i0, int i1, int j0, int j1, uint32 **X_P, uint32 **Y_P, uint8 **Y);
 //
 
 
@@ -96,6 +119,7 @@ void ouverture3_ui8matrix_basic                      (uint8 **X, int i0, int i1,
     void ouverture3_ui8matrix_pipeline_ilu3_elu2_red_factor(uint8 **X, int i0, int i1, int j0, int j1, uint8 **T, uint8 **Y);
 //
 
+    // interne
 // swp8 pipeline
     void ouverture3_swp_ui8matrix_pipeline_basic               (uint8 **X, int i0, int i1, int j0, int j1, uint8 **X_P, uint8 **T_P, uint8 **Y_P, uint8 **Y);
     void ouverture3_swp_ui8matrix_pipeline_red                 (uint8 **X, int i0, int i1, int j0, int j1, uint8 **X_P, uint8 **T_P, uint8 **Y_P, uint8 **Y);
@@ -126,6 +150,36 @@ void ouverture3_ui8matrix_basic                      (uint8 **X, int i0, int i1,
     void ouverture3_swp_ui32matrix_pipeline_ilu3_elu2_red_factor(uint8 **X, int i0, int i1, int j0, int j1, uint32 **X_P, uint32 **T_P, uint32 **Y_P, uint8 **Y);
 //
 
+    // externe
+// swp8 pipeline
+    void ouverture3_swp_ui8matrix_pipeline_basic_bench              (uint8 **X, int i0, int i1, int j0, int j1, uint8 **X_P, uint8 **T_P, uint8 **Y_P, uint8 **Y);
+    void ouverture3_swp_ui8matrix_pipeline_red_bench                  (uint8 **X, int i0, int i1, int j0, int j1, uint8 **X_P, uint8 **T_P, uint8 **Y_P, uint8 **Y);
+    void ouverture3_swp_ui8matrix_pipeline_ilu3_red_bench             (uint8 **X, int i0, int i1, int j0, int j1, uint8 **X_P, uint8 **T_P, uint8 **Y_P, uint8 **Y);
+    void ouverture3_swp_ui8matrix_pipeline_elu2_red_bench             (uint8 **X, int i0, int i1, int j0, int j1, uint8 **X_P, uint8 **T_P, uint8 **Y_P, uint8 **Y);
+    void ouverture3_swp_ui8matrix_pipeline_elu2_red_factor_bench      (uint8 **X, int i0, int i1, int j0, int j1, uint8 **X_P, uint8 **T_P, uint8 **Y_P, uint8 **Y);
+    void ouverture3_swp_ui8matrix_pipeline_ilu3_elu2_red_bench        (uint8 **X, int i0, int i1, int j0, int j1, uint8 **X_P, uint8 **T_P, uint8 **Y_P, uint8 **Y);
+    void ouverture3_swp_ui8matrix_pipeline_ilu3_elu2_red_factor_bench (uint8 **X, int i0, int i1, int j0, int j1, uint8 **X_P, uint8 **T_P, uint8 **Y_P, uint8 **Y);
+//
+
+// swp16 pipeline
+    void ouverture3_swp_ui16matrix_pipeline_basic_bench                (uint8 **X, int i0, int i1, int j0, int j1, uint16 **X_P, uint16 **T_P, uint16 **Y_P, uint8 **Y);
+    void ouverture3_swp_ui16matrix_pipeline_red_bench                  (uint8 **X, int i0, int i1, int j0, int j1, uint16 **X_P, uint16 **T_P, uint16 **Y_P, uint8 **Y);
+    void ouverture3_swp_ui16matrix_pipeline_ilu3_red_bench             (uint8 **X, int i0, int i1, int j0, int j1, uint16 **X_P, uint16 **T_P, uint16 **Y_P, uint8 **Y);
+    void ouverture3_swp_ui16matrix_pipeline_elu2_red_bench             (uint8 **X, int i0, int i1, int j0, int j1, uint16 **X_P, uint16 **T_P, uint16 **Y_P, uint8 **Y);
+    void ouverture3_swp_ui16matrix_pipeline_elu2_red_factor_bench      (uint8 **X, int i0, int i1, int j0, int j1, uint16 **X_P, uint16 **T_P, uint16 **Y_P, uint8 **Y);
+    void ouverture3_swp_ui16matrix_pipeline_ilu3_elu2_red_bench        (uint8 **X, int i0, int i1, int j0, int j1, uint16 **X_P, uint16 **T_P, uint16 **Y_P, uint8 **Y);
+    void ouverture3_swp_ui16matrix_pipeline_ilu3_elu2_red_factor_bench (uint8 **X, int i0, int i1, int j0, int j1, uint16 **X_P, uint16 **T_P, uint16 **Y_P, uint8 **Y);
+//
+
+// swp32 pipeline
+    void ouverture3_swp_ui32matrix_pipeline_basic_bench                (uint8 **X, int i0, int i1, int j0, int j1, uint32 **X_P, uint32 **T_P, uint32 **Y_P, uint8 **Y);
+    void ouverture3_swp_ui32matrix_pipeline_red_bench                  (uint8 **X, int i0, int i1, int j0, int j1, uint32 **X_P, uint32 **T_P, uint32 **Y_P, uint8 **Y);
+    void ouverture3_swp_ui32matrix_pipeline_ilu3_red_bench             (uint8 **X, int i0, int i1, int j0, int j1, uint32 **X_P, uint32 **T_P, uint32 **Y_P, uint8 **Y);
+    void ouverture3_swp_ui32matrix_pipeline_elu2_red_bench             (uint8 **X, int i0, int i1, int j0, int j1, uint32 **X_P, uint32 **T_P, uint32 **Y_P, uint8 **Y);
+    void ouverture3_swp_ui32matrix_pipeline_elu2_red_factor_bench      (uint8 **X, int i0, int i1, int j0, int j1, uint32 **X_P, uint32 **T_P, uint32 **Y_P, uint8 **Y);
+    void ouverture3_swp_ui32matrix_pipeline_ilu3_elu2_red_bench        (uint8 **X, int i0, int i1, int j0, int j1, uint32 **X_P, uint32 **T_P, uint32 **Y_P, uint8 **Y);
+    void ouverture3_swp_ui32matrix_pipeline_ilu3_elu2_red_factor_bench (uint8 **X, int i0, int i1, int j0, int j1, uint32 **X_P, uint32 **T_P, uint32 **Y_P, uint8 **Y);
+//
 
 #ifdef __cplusplus
 }
