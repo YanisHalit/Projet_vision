@@ -2811,3 +2811,285 @@ void max3_swp_ui32matrix_ilu3_elu2_red_factor(uint8 **X, int i0, int i1, int j0,
     unpack_ui32matrix(Y_P, i1, (j1/32)+1, Y_UP); // unpack de result packé dans Y_UP
 }
 // -------------------------------------------------------------------------------------------
+
+
+
+
+// -------------------------------------------------------------------------------------------
+//  BENCH 8
+// -------------------------------------------------------------------------------------------
+void max3_swp_ui8matrix_basic_bench(uint8 **X, int i0, int i1, int j0, int j1, uint8 **T, uint8 **Y_P, uint8 **Y_UP)
+{
+            // display_ui8matrix(X,  i0, i1-1, j0, j1-1, "%5d", "X        "); // affichage de X normal
+            // displayM_ui8matrix(T, i0, i1-1, j0, (j1)/8, "X pack");         // affichage de X packé
+    for( int i = i0; i < i1; i++){
+        line_swp_max3_ui8matrix_basic(T, i, j0, (j1)/8, Y_P);
+    }
+            // displayM_ui8matrix(Y_P, i0, i1-1, j0, (j1-1)/8, "RESULT packé"); // résultat packé
+    // display_ui8matrix(Y_UP,     i0, i1-1, j0, j1-1, "%5d", "RESULT UNPACK        "); // affichage résultat unpacké
+}
+// -------------------------------------------------------------------------------------------
+void max3_swp_ui8matrix_rot_bench(uint8 **X, int i0, int i1, int j0, int j1, uint8 **T, uint8 **Y_P, uint8 **Y_UP)
+{
+    for( int i = i0; i < i1; i++){
+        line_swp_max3_ui8matrix_rot(T, i, j0, (j1)/8, Y_P);
+    }
+}
+// -------------------------------------------------------------------------------------------
+void max3_swp_ui8matrix_red_bench                 (uint8 **X, int i0, int i1, int j0, int j1, uint8 **T, uint8 **Y_P, uint8 **Y_UP)
+{
+    for( int i = i0; i < i1; i++){
+        line_swp_max3_ui8matrix_red(T, i, j0, (j1)/8, Y_P);
+    }
+}
+// -------------------------------------------------------------------------------------------
+void max3_swp_ui8matrix_ilu3_bench                (uint8 **X, int i0, int i1, int j0, int j1, uint8 **T, uint8 **Y_P, uint8 **Y_UP)
+{
+    for( int i = i0; i < i1; i++){
+        line_swp_max3_ui8matrix_ilu3(T, i, j0, (j1)/8, Y_P);
+    }
+}
+// -------------------------------------------------------------------------------------------
+void max3_swp_ui8matrix_ilu3_red_bench            (uint8 **X, int i0, int i1, int j0, int j1, uint8 **T, uint8 **Y_P, uint8 **Y_UP)
+{
+    for( int i = i0; i < i1; i++){
+        line_swp_max3_ui8matrix_ilu3_red(T, i, j0, (j1)/8, Y_P);
+    }
+}
+// -------------------------------------------------------------------------------------------
+void max3_swp_ui8matrix_elu2_red_bench            (uint8 **X, int i0, int i1, int j0, int j1, uint8 **T, uint8 **Y_P, uint8 **Y_UP)
+{
+    for( int i = i0; i < i1-2; i += 2){
+        line_swp_max3_ui8matrix_elu2_red(T, i, j0, (j1)/8, Y_P);
+    }
+
+    int r = (i1-i0-1) % 2;
+    for(int i = (i1-i0-r-1); i < (i1-i0); i++){
+        line_swp_max3_ui8matrix_basic(T, i, j0, (j1)/8, Y_P);
+    }
+}
+// -------------------------------------------------------------------------------------------
+void max3_swp_ui8matrix_elu2_red_factor_bench     (uint8 **X, int i0, int i1, int j0, int j1, uint8 **T, uint8 **Y_P, uint8 **Y_UP)
+{
+    for( int i = i0; i < i1-2; i += 2){
+        line_swp_max3_ui8matrix_elu2_red_factor(T, i, j0, (j1)/8, Y_P);
+    }
+
+    int r = (i1-i0-1) % 2;
+    for(int i = (i1-i0-r-1); i < (i1-i0); i++){
+        line_swp_max3_ui8matrix_basic(T, i, j0, (j1)/8, Y_P);
+    }
+}
+// -------------------------------------------------------------------------------------------
+void max3_swp_ui8matrix_ilu3_elu2_red_bench(uint8 **X, int i0, int i1, int j0, int j1, uint8 **T, uint8 **Y_P, uint8 **Y_UP)
+{
+    for( int i = i0; i < i1-2; i += 2){
+        line_swp_max3_ui8matrix_ilu3_elu2_red(T, i, j0, (j1)/8, Y_P);
+    }
+
+    int r = (i1-i0-1) % 2;
+    for(int i = (i1-i0-r-1); i < (i1-i0); i++){
+        line_swp_max3_ui8matrix_basic(T, i, j0, (j1)/8, Y_P);
+    }
+}
+// -------------------------------------------------------------------------------------------
+void max3_swp_ui8matrix_ilu3_elu2_red_factor_bench(uint8 **X, int i0, int i1, int j0, int j1, uint8 **T, uint8 **Y_P, uint8 **Y_UP)
+{
+    for( int i = i0; i < i1-2; i += 2){
+        line_swp_max3_ui8matrix_ilu3_elu2_red_factor(T, i, j0, (j1)/8, Y_P);
+    }
+
+    int r = (i1-i0-1) % 2;
+    for(int i = (i1-i0-r-1); i < (i1-i0); i++){
+        line_swp_max3_ui8matrix_basic(T, i, j0, (j1)/8, Y_P);
+    }
+}
+// -------------------------------------------------------------------------------------------
+
+
+
+
+// -------------------------------------------------------------------------------------------
+//  BENCH 16
+// -------------------------------------------------------------------------------------------
+void max3_swp_ui16matrix_basic_bench          (uint8 **X, int i0, int i1, int j0, int j1, uint16 **T16, uint16 **Y_P16, uint8 **Y_UP16)
+{
+
+            // display_ui8matrix(X,  i0, i1-1, j0, j1-1, "%5d", "X        "); // affichage de X normal
+            // displayM_ui16matrix(T16, i0, i1-1, j0, (j1-1)/16, "X16 pack");         // affichage de X packé
+    for( int i = i0; i < i1; i++){
+        line_swp_max3_ui16matrix_basic(T16, i, j0, (j1-1)/16, Y_P16);
+    }
+            // displayM_ui16matrix(Y_P16, i0, i1-1, j0, (j1-1)/16, "RESULT packé"); // résultat packé
+    // display_ui8matrix(Y_UP16,  i0, i1-1, j0, j1, "%5d", "Y UP        "); // affichage de X normal
+}
+// -------------------------------------------------------------------------------------------
+void max3_swp_ui16matrix_rot_bench                (uint8 **X, int i0, int i1, int j0, int j1, uint16 **T, uint16 **Y_P, uint8 **Y_UP)
+{
+    for( int i = i0; i < i1; i++){
+        line_swp_max3_ui16matrix_rot(T, i, j0, (j1)/16, Y_P);
+    }
+}
+// -------------------------------------------------------------------------------------------
+void max3_swp_ui16matrix_red_bench                 (uint8 **X, int i0, int i1, int j0, int j1, uint16 **T, uint16 **Y_P, uint8 **Y_UP)
+{
+    for( int i = i0; i < i1; i++){
+        line_swp_max3_ui16matrix_red(T, i, j0, (j1)/16, Y_P);
+    }
+}
+// -------------------------------------------------------------------------------------------
+void max3_swp_ui16matrix_ilu3_bench                (uint8 **X, int i0, int i1, int j0, int j1, uint16 **T, uint16 **Y_P, uint8 **Y_UP)
+{
+    for( int i = i0; i < i1; i++){
+        line_swp_max3_ui16matrix_ilu3(T, i, j0, (j1)/16, Y_P);
+    }
+}
+// -------------------------------------------------------------------------------------------
+void max3_swp_ui16matrix_ilu3_red_bench            (uint8 **X, int i0, int i1, int j0, int j1, uint16 **T, uint16 **Y_P, uint8 **Y_UP)
+{
+    for( int i = i0; i < i1; i++){
+        line_swp_max3_ui16matrix_ilu3_red(T, i, j0, (j1)/16, Y_P);
+    }
+}
+// -------------------------------------------------------------------------------------------
+void max3_swp_ui16matrix_elu2_red_bench            (uint8 **X, int i0, int i1, int j0, int j1, uint16 **T, uint16 **Y_P, uint8 **Y_UP)
+{
+    for( int i = i0; i < i1-2; i += 2){
+        line_swp_max3_ui16matrix_elu2_red(T, i, j0, (j1)/16, Y_P);
+    }
+
+    int r = (i1-i0-1) % 2;
+    for(int i = (i1-i0-r-1); i < (i1-i0); i++){
+        line_swp_max3_ui16matrix_basic(T, i, j0, (j1)/16, Y_P);
+    }
+}
+// -------------------------------------------------------------------------------------------
+void max3_swp_ui16matrix_elu2_red_factor_bench     (uint8 **X, int i0, int i1, int j0, int j1, uint16 **T, uint16 **Y_P, uint8 **Y_UP)
+{
+    for( int i = i0; i < i1-2; i += 2){
+        line_swp_max3_ui16matrix_elu2_red_factor(T, i, j0, (j1)/16, Y_P);
+    }
+
+    int r = (i1-i0-1) % 2;
+    for(int i = (i1-i0-r-1); i < (i1-i0); i++){
+        line_swp_max3_ui16matrix_basic(T, i, j0, (j1)/16, Y_P);
+    }
+}
+// -------------------------------------------------------------------------------------------
+void max3_swp_ui16matrix_ilu3_elu2_red_bench       (uint8 **X, int i0, int i1, int j0, int j1, uint16 **T, uint16 **Y_P, uint8 **Y_UP)
+{
+    for( int i = i0; i < i1-2; i += 2){
+        line_swp_max3_ui16matrix_ilu3_elu2_red(T, i, j0, (j1)/16, Y_P);
+    }
+
+    int r = (i1-i0-1) % 2;
+    for(int i = (i1-i0-r-1); i < (i1-i0); i++){
+        line_swp_max3_ui16matrix_basic(T, i, j0, (j1)/16, Y_P);
+    }
+}
+// -------------------------------------------------------------------------------------------
+void max3_swp_ui16matrix_ilu3_elu2_red_factor_bench(uint8 **X, int i0, int i1, int j0, int j1, uint16 **T, uint16 **Y_P, uint8 **Y_UP)
+{
+    for( int i = i0; i < i1-2; i += 2){
+        line_swp_max3_ui16matrix_ilu3_elu2_red_factor(T, i, j0, (j1)/16, Y_P);
+    }
+
+    int r = (i1-i0-1) % 2;
+    for(int i = (i1-i0-r-1); i < (i1-i0); i++){
+        line_swp_max3_ui16matrix_basic(T, i, j0, (j1)/16, Y_P);
+    }
+}
+// -------------------------------------------------------------------------------------------
+
+
+
+// -------------------------------------------------------------------------------------------
+//  BENCH 32
+// -------------------------------------------------------------------------------------------
+void max3_swp_ui32matrix_basic_bench          (uint8 **X, int i0, int i1, int j0, int j1, uint32 **T32, uint32 **Y_P32, uint8 **Y_UP32)
+{
+            // display_ui8matrix(X,  i0, i1-1, j0, j1-1, "%5d", "X        "); // affichage de X normal
+            // displayM_ui32matrix(T32, i0, i1-1, j0, (j1-1)/32, "X32 pack");         // affichage de X packé
+    for( int i = i0; i < i1; i++){
+        line_swp_max3_ui32matrix_basic(T32, i, j0, (j1-1)/32, Y_P32);
+    }
+            // displayM_ui32matrix(Y_P32, i0, i1-1, j0, (j1-1)/32, "RESULT packé"); // résultat packé
+    // display_ui8matrix(Y_UP32,  i0, i1-1, j0, j1, "%5d", "Y UP        "); // affichage de X normal
+}
+// -------------------------------------------------------------------------------------------
+void max3_swp_ui32matrix_rot_bench                (uint8 **X, int i0, int i1, int j0, int j1, uint32 **T, uint32 **Y_P, uint8 **Y_UP)
+{
+    for( int i = i0; i < i1; i++){
+        line_swp_max3_ui32matrix_rot(T, i, j0, (j1)/32, Y_P);
+    }
+}
+// -------------------------------------------------------------------------------------------
+void max3_swp_ui32matrix_red_bench                 (uint8 **X, int i0, int i1, int j0, int j1, uint32 **T, uint32 **Y_P, uint8 **Y_UP)
+{
+    for( int i = i0; i < i1; i++){
+        line_swp_max3_ui32matrix_red(T, i, j0, (j1)/32, Y_P);
+    }
+}
+// -------------------------------------------------------------------------------------------
+void max3_swp_ui32matrix_ilu3_bench                (uint8 **X, int i0, int i1, int j0, int j1, uint32 **T, uint32 **Y_P, uint8 **Y_UP)
+{
+    for( int i = i0; i < i1; i++){
+        line_swp_max3_ui32matrix_ilu3(T, i, j0, (j1)/32, Y_P);
+    }
+}
+// -------------------------------------------------------------------------------------------
+void max3_swp_ui32matrix_ilu3_red_bench            (uint8 **X, int i0, int i1, int j0, int j1, uint32 **T, uint32 **Y_P, uint8 **Y_UP)
+{
+    for( int i = i0; i < i1; i++){
+        line_swp_max3_ui32matrix_ilu3_red(T, i, j0, (j1)/32, Y_P);
+    }
+}
+// -------------------------------------------------------------------------------------------
+void max3_swp_ui32matrix_elu2_red_bench            (uint8 **X, int i0, int i1, int j0, int j1, uint32 **T, uint32 **Y_P, uint8 **Y_UP)
+{
+    for( int i = i0; i < i1-2; i += 2){
+        line_swp_max3_ui32matrix_elu2_red(T, i, j0, (j1)/32, Y_P);
+    }
+
+    int r = (i1-i0-1) % 2;
+    for(int i = (i1-i0-r-1); i < (i1-i0); i++){
+        line_swp_max3_ui32matrix_basic(T, i, j0, (j1)/32, Y_P);
+    }
+}
+// -------------------------------------------------------------------------------------------
+void max3_swp_ui32matrix_elu2_red_factor_bench     (uint8 **X, int i0, int i1, int j0, int j1, uint32 **T, uint32 **Y_P, uint8 **Y_UP)
+{
+    for( int i = i0; i < i1-2; i += 2){
+        line_swp_max3_ui32matrix_elu2_red_factor(T, i, j0, (j1)/32, Y_P);
+    }
+
+    int r = (i1-i0-1) % 2;
+    for(int i = (i1-i0-r-1); i < (i1-i0); i++){
+        line_swp_max3_ui32matrix_basic(T, i, j0, (j1)/32, Y_P);
+    }
+}
+// -------------------------------------------------------------------------------------------
+void max3_swp_ui32matrix_ilu3_elu2_red_bench       (uint8 **X, int i0, int i1, int j0, int j1, uint32 **T, uint32 **Y_P, uint8 **Y_UP)
+{
+    for( int i = i0; i < i1-2; i += 2){
+        line_swp_max3_ui32matrix_ilu3_elu2_red(T, i, j0, (j1)/32, Y_P);
+    }
+
+    int r = (i1-i0-1) % 2;
+    for(int i = (i1-i0-r-1); i < (i1-i0); i++){
+        line_swp_max3_ui32matrix_basic(T, i, j0, (j1)/32, Y_P);
+    }
+}
+// -------------------------------------------------------------------------------------------
+void max3_swp_ui32matrix_ilu3_elu2_red_factor_bench(uint8 **X, int i0, int i1, int j0, int j1, uint32 **T, uint32 **Y_P, uint8 **Y_UP)
+{
+    for( int i = i0; i < i1-2; i += 2){
+        line_swp_max3_ui32matrix_ilu3_elu2_red_factor(T, i, j0, (j1)/32, Y_P);
+    }
+
+    int r = (i1-i0-1) % 2;
+    for(int i = (i1-i0-r-1); i < (i1-i0); i++){
+        line_swp_max3_ui32matrix_basic(T, i, j0, (j1)/32, Y_P);
+    }
+}
+// -------------------------------------------------------------------------------------------

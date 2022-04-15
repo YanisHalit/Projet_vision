@@ -2156,12 +2156,15 @@ void test_swp_morpho_ouverture(void)
 // ------------------------------------------------------------------------------------
 
 
+
+
+    // BENCH SWP PACK/UNPACK INTERNE
 // ------------------------------ Bench SWP8 ouverture ----------------------------------
-void bench_swp8_morpho_ouverture(int n0, int n1, int nstep)
+void bench_swp8_morpho_ouverture_in(int n0, int n1, int nstep)
 {
     // fichiers textes avec résultats
     char str[1000];
-    const char* filename = "./bench_txt/bench_swp8_OUVERTURE.txt";
+    const char* filename = "./bench_txt/Pack Unpack interne/bench_swp8_OUVERTURE.txt";
     FILE* output_file = fopen(filename, "w+");
     if (!output_file) {
         perror("fopen");
@@ -2260,7 +2263,7 @@ void bench_swp8_morpho_ouverture(int n0, int n1, int nstep)
     puts("== bench_morpho_SWP8_ouverture ==");
 
     //------- Alloc  -------
-    puts("malloc");
+    // puts("malloc");
 
     X      = ui8matrix(0-2*r, h-1+2*r, 0-2*r, w1-1+2*r);
     T_basic = ui8matrix(0-2*r, h-1+2*r, 0-2*r, w1-1+2*r);
@@ -2383,7 +2386,7 @@ void bench_swp8_morpho_ouverture(int n0, int n1, int nstep)
         h = n;
         w8 = n / 8;
         w1 = n / 1;
-        
+
         //printf("i = %3d\n", n);
 
         resize_ui8matrix(X , 0-2*r, h-1+2*r, 0-2*r, w1-1+2*r);
@@ -2467,45 +2470,44 @@ void bench_swp8_morpho_ouverture(int n0, int n1, int nstep)
         printf("i = %4d", n);
         printf("   ");
 
-        fwrite("i = ", 1, strlen("i = "), output_file);
-        fprintf(output_file, "%d   ", n);
+        fprintf(output_file, "%d        ", n);
 
         // basic
         printf(format, cpp_basic                      );
-        fprintf(output_file, "%.1f   ", cpp_basic);
+        fprintf(output_file, "%.1f      ", cpp_basic);
 
         printf("   ");
         // fusion
         printf(format, cpp_fusion                     );
-                fprintf(output_file, "%.1f   ", cpp_fusion);
+                fprintf(output_file, "%.1f  ", cpp_fusion);
 
         printf(format, cpp_fusion_ilu5_red            );
-                fprintf(output_file, "%.1f   ", cpp_fusion_ilu5_red);
+                fprintf(output_file, "%.1f  ", cpp_fusion_ilu5_red);
 
         printf(format, cpp_fusion_ilu5_elu2_red       );
-                fprintf(output_file, "%.1f   ", cpp_fusion_ilu5_elu2_red);
+                fprintf(output_file, "%.1f          ", cpp_fusion_ilu5_elu2_red);
 
 
         printf("   ");
 
         // pipeline
         printf(format, cpp_pipeline_basic                      );
-                fprintf(output_file, "%.1f   ", cpp_pipeline_basic);
+                fprintf(output_file, "%.1f  ", cpp_pipeline_basic);
 
         printf(format, cpp_pipeline_red                        );
-                fprintf(output_file, "%.1f   ", cpp_pipeline_red);
+                fprintf(output_file, "%.1f  ", cpp_pipeline_red);
 
         printf(format, cpp_pipeline_ilu3_red                   );
-                fprintf(output_file, "%.1f   ", cpp_pipeline_ilu3_red);
+                fprintf(output_file, "%.1f  ", cpp_pipeline_ilu3_red);
 
         printf(format, cpp_pipeline_elu2_red                   );
-                fprintf(output_file, "%.1f   ", cpp_pipeline_elu2_red);
+                fprintf(output_file, "%.1f  ", cpp_pipeline_elu2_red);
 
         printf(format, cpp_pipeline_elu2_red_factor            );
-                fprintf(output_file, "%.1f   ", cpp_pipeline_elu2_red_factor);
+                fprintf(output_file, "%.1f  ", cpp_pipeline_elu2_red_factor);
 
         printf(format, cpp_pipeline_ilu3_elu2_red              );
-                fprintf(output_file, "%.1f   ", cpp_pipeline_ilu3_elu2_red);
+                fprintf(output_file, "%.1f  ", cpp_pipeline_ilu3_elu2_red);
 
         printf(format, cpp_pipeline_ilu3_elu2_red_factor       );
                 fprintf(output_file, "%.1f", cpp_pipeline_ilu3_elu2_red_factor);
@@ -2516,11 +2518,11 @@ void bench_swp8_morpho_ouverture(int n0, int n1, int nstep)
     fclose(output_file);
 }
 // ------------------------------ Bench SWP16 ouverture ----------------------------------
-void bench_swp16_morpho_ouverture(int n0, int n1, int nstep)
+void bench_swp16_morpho_ouverture_in(int n0, int n1, int nstep)
 {
     // fichiers textes avec résultats
     char str[1000];
-    const char* filename = "./bench_txt/bench_swp16_OUVERTURE.txt";
+    const char* filename = "./bench_txt/Pack Unpack interne/bench_swp16_OUVERTURE.txt";
     FILE* output_file = fopen(filename, "w+");
     if (!output_file) {
         perror("fopen");
@@ -2623,7 +2625,7 @@ void bench_swp16_morpho_ouverture(int n0, int n1, int nstep)
     puts("== bench_morpho_SWP16_ouverture ==");
 
     //------- Alloc  -------
-    puts("malloc");
+    //puts("malloc");
 
     // X 2r-border
     X      = ui8matrix(0-2*r, h-1+2*r, 0-2*r, w1-1+2*r);
@@ -2830,12 +2832,11 @@ void bench_swp16_morpho_ouverture(int n0, int n1, int nstep)
         printf("i = %4d", n);
         printf("   ");
 
-        fwrite("i = ", 1, strlen("i = "), output_file);
-        fprintf(output_file, "%d    ", n);
+        fprintf(output_file, "%d        ", n);
 
         // basic
         printf(format, cpp_basic                      );
-        fprintf(output_file, "%.1f  ", cpp_basic);
+        fprintf(output_file, "%.1f      ", cpp_basic);
 
         // fusion
         printf(format, cpp_fusion                     );
@@ -2845,7 +2846,7 @@ void bench_swp16_morpho_ouverture(int n0, int n1, int nstep)
                 fprintf(output_file, "%.1f  ", cpp_fusion_ilu5_red);
 
         printf(format, cpp_fusion_ilu5_elu2_red       );
-                fprintf(output_file, "%.1f  ", cpp_fusion_ilu5_elu2_red);
+                fprintf(output_file, "%.1f      ", cpp_fusion_ilu5_elu2_red);
 
 
         printf("   ");
@@ -2879,11 +2880,11 @@ void bench_swp16_morpho_ouverture(int n0, int n1, int nstep)
     fclose(output_file);
 }
 // ------------------------------ Bench SWP32 ouverture ----------------------------------
-void bench_swp32_morpho_ouverture(int n0, int n1, int nstep)
+void bench_swp32_morpho_ouverture_in(int n0, int n1, int nstep)
 {
     // fichiers textes avec résultats
     char str[1000];
-    const char* filename = "./bench_txt/bench_swp32_OUVERTURE.txt";
+    const char* filename = "./bench_txt/Pack Unpack interne/bench_swp32_OUVERTURE.txt";
     FILE* output_file = fopen(filename, "w+");
     if (!output_file) {
         perror("fopen");
@@ -2986,7 +2987,7 @@ void bench_swp32_morpho_ouverture(int n0, int n1, int nstep)
     puts("== bench_morpho_SWP32_ouverture ==");
 
     //------- Alloc  -------
-    puts("malloc");
+    // puts("malloc");
 
     // X 2r-border
     X      = ui8matrix(0-2*r, h-1+2*r, 0-2*r, w1-1+2*r);
@@ -3198,7 +3199,7 @@ void bench_swp32_morpho_ouverture(int n0, int n1, int nstep)
 
         // basic
         printf(format, cpp_basic                      );
-        fprintf(output_file, "%.1f  ", cpp_basic);
+        fprintf(output_file, "%.1f          ", cpp_basic);
 
         // fusion
         printf(format, cpp_fusion                     );
@@ -3246,11 +3247,11 @@ void bench_swp32_morpho_ouverture(int n0, int n1, int nstep)
 
 
 // ------------------------------ Appel test SWP8 MAX ----------------------------------
-void bench_swp8_morpho_max(int n0, int n1, int nstep)
+void bench_swp8_morpho_max_in(int n0, int n1, int nstep)
 {
     // fichiers textes avec résultats
     char str[1000];
-    const char* filename = "./bench_txt/bench_swp8_MAX.txt";
+    const char* filename = "./bench_txt/Pack Unpack interne/bench_swp8_MAX.txt";
     FILE* output_file = fopen(filename, "w+");
     if (!output_file) {
         perror("fopen");
@@ -3297,10 +3298,10 @@ void bench_swp8_morpho_max(int n0, int n1, int nstep)
     format = "%5.0f";
     format = "%6.1f";
 
-    puts("== bench_morpho_SWP8_ouverture ==");
+    puts("== bench_morpho_SWP8_max ==");
 
     //------- Alloc  -------
-    puts("malloc");
+    // puts("malloc");
 
     X      =  ui8matrix(0-2*r, h-1+2*r, 0-2*r, w1-1+2*r);
     Y_basic = ui8matrix(0, h-1, 0, w1-1);
@@ -3357,7 +3358,7 @@ void bench_swp8_morpho_max(int n0, int n1, int nstep)
     zero_ui8matrix(Y_P_elu2rf,      0, h-1, 0, (w1-1)/8);
     zero_ui8matrix(Y_P_ilu3_elu2r,  0, h-1, 0, (w1-1)/8);
     zero_ui8matrix(Y_P_ilu3_elu2rf, 0, h-1, 0, (w1-1)/8);
- 
+
     zero_ui8matrix(Y_bas,         0, h-1, 0, w1-1);
     zero_ui8matrix(Y_rot,         0, h-1, 0, w1-1);
     zero_ui8matrix(Y_red,         0, h-1, 0, w1-1);
@@ -3436,30 +3437,29 @@ void bench_swp8_morpho_max(int n0, int n1, int nstep)
         printf("i = %4d", n);
         printf("   ");
 
-        fwrite("i = ", 1, strlen("i = "), output_file);
-        fprintf(output_file, "%d   ", n);
+        fprintf(output_file, "%d        ", n);
 
         // basic 
         printf(format, cpp_basic                      );
-        fprintf(output_file, "%.1f   ", cpp_basic);
+        fprintf(output_file, "%.1f      ", cpp_basic);
         printf("   ");
 
         printf(format, cpp_bas                     );
-                fprintf(output_file, "%.1f   ", cpp_bas);
+                fprintf(output_file, "%.1f  ", cpp_bas);
         printf(format, cpp_rot            );
-                fprintf(output_file, "%.1f   ", cpp_rot);
+                fprintf(output_file, "%.1f  ", cpp_rot);
         printf(format, cpp_red       );
-                fprintf(output_file, "%.1f   ", cpp_red);
+                fprintf(output_file, "%.1f  ", cpp_red);
         printf(format, cpp_ilu3);
-                fprintf(output_file, "%.1f   ", cpp_ilu3);
+                fprintf(output_file, "%.1f  ", cpp_ilu3);
         printf(format, cpp_ilu3_red           );
-                fprintf(output_file, "%.1f   ", cpp_ilu3_red);
+                fprintf(output_file, "%.1f  ", cpp_ilu3_red);
         printf(format, cpp_elu2_red           );
-                fprintf(output_file, "%.1f   ", cpp_elu2_red);
+                fprintf(output_file, "%.1f  ", cpp_elu2_red);
         printf(format, cpp_elu2_red_factor           );
-                fprintf(output_file, "%.1f   ", cpp_elu2_red_factor);
+                fprintf(output_file, "%.1f  ", cpp_elu2_red_factor);
         printf(format, cpp_ilu3_elu2_red           );
-                fprintf(output_file, "%.1f   ", cpp_ilu3_elu2_red);
+                fprintf(output_file, "%.1f  ", cpp_ilu3_elu2_red);
         printf(format, cpp_ilu3_elu2_red_factor           );
                 fprintf(output_file, "%.1f", cpp_ilu3_elu2_red_factor);
         fprintf(output_file, "\n");
@@ -3470,11 +3470,11 @@ void bench_swp8_morpho_max(int n0, int n1, int nstep)
     fclose(output_file);
 }
 // ------------------------------ Appel test SWP16 MAX ----------------------------------
-void bench_swp16_morpho_max(int n0, int n1, int nstep)
+void bench_swp16_morpho_max_in(int n0, int n1, int nstep)
 {
     // fichiers textes avec résultats
     char str[1000];
-    const char* filename = "./bench_txt/bench_swp16MAX.txt";
+    const char* filename = "./bench_txt/Pack Unpack interne/bench_swp16MAX.txt";
     FILE* output_file = fopen(filename, "w+");
     if (!output_file) {
         perror("fopen");
@@ -3533,10 +3533,10 @@ void bench_swp16_morpho_max(int n0, int n1, int nstep)
     format = "%5.0f";
     format = "%6.1f";
 
-    puts("== bench_morpho_SWP8_ouverture ==");
+    puts("== bench_morpho_SWP16_max ==");
 
     //------- Alloc  -------
-    puts("malloc");
+    // puts("malloc");
 
     X      =  ui8matrix(0-2*r, h-1+2*r, 0-2*r, w1-1+2*r);
     Y_basic = ui8matrix(0, h-1, 0, w1-1);
@@ -3593,7 +3593,7 @@ void bench_swp16_morpho_max(int n0, int n1, int nstep)
     zero_ui16matrix(Y_P_elu2rf,      0, h-1, 0, (w1-1)/16);
     zero_ui16matrix(Y_P_ilu3_elu2r,  0, h-1, 0, (w1-1)/16);
     zero_ui16matrix(Y_P_ilu3_elu2rf, 0, h-1, 0, (w1-1)/16);
- 
+
     zero_ui8matrix(Y_bas,         0, h-1, 0, w1-1);
     zero_ui8matrix(Y_rot,         0, h-1, 0, w1-1);
     zero_ui8matrix(Y_red,         0, h-1, 0, w1-1);
@@ -3671,31 +3671,30 @@ void bench_swp16_morpho_max(int n0, int n1, int nstep)
         printf("i = %4d", n);
         printf("   ");
 
-        fwrite("i = ", 1, strlen("i = "), output_file);
-        fprintf(output_file, "%d   ", n);
+        fprintf(output_file, "%d        ", n);
 
         // basic
         printf(format, cpp_basic                      );
         printf("   ");
-        fprintf(output_file, "%.1f   ", cpp_basic);
+        fprintf(output_file, "%.1f      ", cpp_basic);
 
         // fusion
         printf(format, cpp_bas                     );
-            fprintf(output_file, "%.1f   ", cpp_bas);
+            fprintf(output_file, "%.1f  ", cpp_bas);
         printf(format, cpp_rot            );
-            fprintf(output_file, "%.1f   ", cpp_rot);
+            fprintf(output_file, "%.1f  ", cpp_rot);
         printf(format, cpp_red       );
-            fprintf(output_file, "%.1f   ", cpp_red);
+            fprintf(output_file, "%.1f  ", cpp_red);
         printf(format, cpp_ilu3);
-            fprintf(output_file, "%.1f   ", cpp_ilu3);
+            fprintf(output_file, "%.1f  ", cpp_ilu3);
         printf(format, cpp_ilu3_red           );
-            fprintf(output_file, "%.1f   ", cpp_ilu3_red);
+            fprintf(output_file, "%.1f  ", cpp_ilu3_red);
         printf(format, cpp_elu2_red           );
-            fprintf(output_file, "%.1f   ", cpp_elu2_red);
+            fprintf(output_file, "%.1f  ", cpp_elu2_red);
         printf(format, cpp_elu2_red_factor           );
-            fprintf(output_file, "%.1f   ", cpp_elu2_red_factor);
+            fprintf(output_file, "%.1f  ", cpp_elu2_red_factor);
         printf(format, cpp_ilu3_elu2_red           );
-            fprintf(output_file, "%.1f   ", cpp_ilu3_elu2_red);
+            fprintf(output_file, "%.1f  ", cpp_ilu3_elu2_red);
         printf(format, cpp_ilu3_elu2_red_factor           );
             fprintf(output_file, "%.1f", cpp_ilu3_elu2_red_factor);
 
@@ -3706,11 +3705,11 @@ void bench_swp16_morpho_max(int n0, int n1, int nstep)
     fclose(output_file);
 }
 // ------------------------------ Appel test SWP32 MAX ----------------------------------
-void bench_swp32_morpho_max(int n0, int n1, int nstep)
+void bench_swp32_morpho_max_in(int n0, int n1, int nstep)
 {
     // fichiers textes avec résultats
     char str[1000];
-    const char* filename = "./bench_txt/bench_swp32_MAX.txt";
+    const char* filename = "./bench_txt/Pack Unpack interne/bench_swp32_MAX.txt";
     FILE* output_file = fopen(filename, "w+");
     if (!output_file) {
         perror("fopen");
@@ -3769,10 +3768,10 @@ void bench_swp32_morpho_max(int n0, int n1, int nstep)
     format = "%5.0f";
     format = "%6.1f";
 
-    puts("== bench_morpho_SWP8_ouverture ==");
+    puts("== bench_morpho_SWP32_max ==");
 
     //------- Alloc  -------
-    puts("malloc");
+    // puts("malloc");
 
     X      =  ui8matrix(0-2*r, h-1+2*r, 0-2*r, w1-1+2*r);
     Y_basic = ui8matrix(0, h-1, 0, w1-1);
@@ -3829,7 +3828,7 @@ void bench_swp32_morpho_max(int n0, int n1, int nstep)
     zero_ui32matrix(Y_P_elu2rf,      0, h-1, 0, (w1-1)/32);
     zero_ui32matrix(Y_P_ilu3_elu2r,  0, h-1, 0, (w1-1)/32);
     zero_ui32matrix(Y_P_ilu3_elu2rf, 0, h-1, 0, (w1-1)/32);
- 
+
     zero_ui8matrix(Y_bas,         0, h-1, 0, w1-1);
     zero_ui8matrix(Y_rot,         0, h-1, 0, w1-1);
     zero_ui8matrix(Y_red,         0, h-1, 0, w1-1);
@@ -3891,7 +3890,7 @@ void bench_swp32_morpho_max(int n0, int n1, int nstep)
 
 
         // Bench basic
-        BENCH(max3_ui8matrix_basic                     (X, 0, h-1, 0, h-1,                   Y_basic                     )     , n, cpp_basic                      );
+        BENCH(    max3_ui8matrix_basic                     (X, 0, h-1, 0, h-1,                   Y_basic                     )     , n, cpp_basic                      );
         // Bench SWP32
         BENCH(    max3_swp_ui32matrix_basic                       (X, 0, h-1, 0, h-1, T_bas, Y_P_bas, Y_bas) , n, cpp_bas               );
         BENCH(    max3_swp_ui32matrix_rot                         (X, 0, h-1, 0, h-1, T_rot, Y_P_rot, Y_rot), n, cpp_rot                );
@@ -3908,30 +3907,30 @@ void bench_swp32_morpho_max(int n0, int n1, int nstep)
         printf("   ");
 
 
-        fwrite("i = ", 1, strlen("i = "), output_file);
-        fprintf(output_file, "%d   ", n);
+        fprintf(output_file, "%d        ", n);
 
         // basic
         printf(format, cpp_basic                      );
         printf("   ");
-        fprintf(output_file, "%.1f          ", cpp_basic);
+        fprintf(output_file, "%.1f      ", cpp_basic);
 
+        // max
         printf(format, cpp_bas                     );
-                fprintf(output_file, "%.1f   ", cpp_bas);
+                fprintf(output_file, "%.1f  ", cpp_bas);
         printf(format, cpp_rot            );
-                fprintf(output_file, "%.1f   ", cpp_rot);
+                fprintf(output_file, "%.1f  ", cpp_rot);
         printf(format, cpp_red       );
-                fprintf(output_file, "%.1f   ", cpp_red);
+                fprintf(output_file, "%.1f  ", cpp_red);
         printf(format, cpp_ilu3);
-                fprintf(output_file, "%.1f   ", cpp_ilu3);
+                fprintf(output_file, "%.1f  ", cpp_ilu3);
         printf(format, cpp_ilu3_red           );
-                fprintf(output_file, "%.1f   ", cpp_ilu3_red);
+                fprintf(output_file, "%.1f  ", cpp_ilu3_red);
         printf(format, cpp_elu2_red           );
-                fprintf(output_file, "%.1f   ", cpp_elu2_red);
+                fprintf(output_file, "%.1f  ", cpp_elu2_red);
         printf(format, cpp_elu2_red_factor           );
-                fprintf(output_file, "%.1f   ", cpp_elu2_red_factor);
+                fprintf(output_file, "%.1f  ", cpp_elu2_red_factor);
         printf(format, cpp_ilu3_elu2_red           );
-                fprintf(output_file, "%.1f   ", cpp_ilu3_elu2_red);
+                fprintf(output_file, "%.1f  ", cpp_ilu3_elu2_red);
         printf(format, cpp_ilu3_elu2_red_factor           );
                 fprintf(output_file, "%.1f", cpp_ilu3_elu2_red_factor);
         fprintf(output_file, "\n");
@@ -3955,24 +3954,24 @@ int test_swp(int argc, char* argv[]){
     // test_swp_morpho_ouverture();
 
     // MAX
-        // bench_swp8_morpho_max(128, 512, 8);
-        // bench_swp8_morpho_max(128, 1024, 8);
+        bench_swp8_morpho_max_in(128, 512, 8);
+        // bench_swp8_morpho_max_in(128, 1024, 8);
 
-        // bench_swp16_morpho_max(128, 512, 8);
-        // bench_swp16_morpho_max(128, 1024, 8);
+        bench_swp16_morpho_max_in(128, 512, 8);
+        // bench_swp16_morpho_max_in(128, 1024, 8);
 
-        // bench_swp32_morpho_max(128, 512, 8);
-        // bench_swp32_morpho_max(128, 1024, 8);
+        bench_swp32_morpho_max_in(128, 512, 8);
+        // bench_swp32_morpho_max_in(128, 1024, 8);
 
     // OUVERTURE
-        // bench_swp8_morpho_ouverture(128, 512, 8);
-        // bench_swp8_morpho_ouverture(128, 1024, 8);
+        // bench_swp8_morpho_ouverture_in(128, 512, 8);
+        // bench_swp8_morpho_ouverture_in(128, 1024, 8);
 
-        // bench_swp16_morpho_ouverture(128, 512, 8);
-        // bench_swp16_morpho_ouverture(128, 1024, 8);
+        // bench_swp16_morpho_ouverture_in(128, 512, 8);
+        // bench_swp16_morpho_ouverture_in(128, 1024, 8);
 
-        bench_swp32_morpho_ouverture(128, 512, 8);
-        // bench_swp32_morpho_ouverture(128, 1024, 8);
+        // bench_swp32_morpho_ouverture_in(128, 512, 8);
+        // bench_swp32_morpho_ouverture_in(128, 1024, 8);
 
     return 0;
 }
