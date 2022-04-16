@@ -1503,6 +1503,8 @@ void ouverture3_ui8matrix_fusion_ilu5_elu2_red(uint8 **X, int i0, int i1, int j0
         line_ouverture3_ui8matrix_fusion_ilu5_elu2_red(X, i, j0, j1, Y);
     }
     int r = (i1-i0-1) % 2;
+
+    if( i1-r-1 == i1 - 1 ) r++;
     line_ouverture3_ui8matrix_fusion(X, i1-r-1, j0, j1, Y);
     line_ouverture3_ui8matrix_fusion(X, i1-r, j0, j1, Y);
 }
@@ -1513,6 +1515,8 @@ void ouverture3_ui8matrix_fusion_ilu5_elu2_red_factor(uint8 **X, int i0, int i1,
         line_ouverture3_ui8matrix_fusion_ilu5_elu2_red_factor(X, i, j0, j1, Y);
     }
     int r = (i1-i0-1) % 2;
+
+    if( i1-r-1 == i1 - 1 ) r++;
     line_ouverture3_ui8matrix_fusion(X, i1-r-1, j0, j1, Y);
     line_ouverture3_ui8matrix_fusion(X, i1-r, j0, j1, Y);
 }

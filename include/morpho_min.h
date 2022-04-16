@@ -83,6 +83,7 @@ extern "C" {
     void min3_ui8matrix_ilu3_elu2_red_factor(uint8 **X, int i0, int i1, int j0, int j1, uint8 **Y);
 //
 
+    // INTERNE
 //swp8
     void min3_swp_ui8matrix_basic               (uint8 **X, int i0, int i1, int j0, int j1, uint8 **T, uint8 **Y_P, uint8 **Y_UP);
     void min3_swp_ui8matrix_rot                 (uint8 **X, int i0, int i1, int j0, int j1, uint8 **T, uint8 **Y_P, uint8 **Y_UP);
@@ -119,6 +120,45 @@ extern "C" {
     void min3_swp_ui32matrix_ilu3_elu2_red       (uint8 **X, int i0, int i1, int j0, int j1, uint32 **T32, uint32 **Y_P32, uint8 **Y_UP32);
     void min3_swp_ui32matrix_ilu3_elu2_red_factor(uint8 **X, int i0, int i1, int j0, int j1, uint32 **T32, uint32 **Y_P32, uint8 **Y_UP32);
 //
+
+    // EXTERNE
+//swp8
+    void min3_swp_ui8matrix_basic_bench               (uint8 **X, int i0, int i1, int j0, int j1, uint8 **T, uint8 **Y_P, uint8 **Y_UP);
+    void min3_swp_ui8matrix_rot_bench                 (uint8 **X, int i0, int i1, int j0, int j1, uint8 **T, uint8 **Y_P, uint8 **Y_UP);
+    void min3_swp_ui8matrix_red_bench                 (uint8 **X, int i0, int i1, int j0, int j1, uint8 **T, uint8 **Y_P, uint8 **Y_UP);
+    void min3_swp_ui8matrix_ilu3_bench                (uint8 **X, int i0, int i1, int j0, int j1, uint8 **T, uint8 **Y_P, uint8 **Y_UP);
+    void min3_swp_ui8matrix_ilu3_red_bench            (uint8 **X, int i0, int i1, int j0, int j1, uint8 **T, uint8 **Y_P, uint8 **Y_UP);
+    void min3_swp_ui8matrix_elu2_red_bench            (uint8 **X, int i0, int i1, int j0, int j1, uint8 **T, uint8 **Y_P, uint8 **Y_UP);
+    void min3_swp_ui8matrix_elu2_red_factor_bench     (uint8 **X, int i0, int i1, int j0, int j1, uint8 **T, uint8 **Y_P, uint8 **Y_UP);
+    void min3_swp_ui8matrix_ilu3_elu2_red_bench       (uint8 **X, int i0, int i1, int j0, int j1, uint8 **T, uint8 **Y_P, uint8 **Y_UP);
+    void min3_swp_ui8matrix_ilu3_elu2_red_bench       (uint8 **X, int i0, int i1, int j0, int j1, uint8 **T, uint8 **Y_P, uint8 **Y_UP);
+    void min3_swp_ui8matrix_ilu3_elu2_red_factor_bench(uint8 **X, int i0, int i1, int j0, int j1, uint8 **T, uint8 **Y_P, uint8 **Y_UP);
+//
+
+//swp16
+    void min3_swp_ui16matrix_basic_bench                (uint8 **X, int i0, int i1, int j0, int j1, uint16 **T16, uint16 **Y_P16, uint8 **Y_UP16);
+    void min3_swp_ui16matrix_rot_bench                  (uint8 **X, int i0, int i1, int j0, int j1, uint16 **T16, uint16 **Y_P16, uint8 **Y_UP16);
+    void min3_swp_ui16matrix_red_bench                  (uint8 **X, int i0, int i1, int j0, int j1, uint16 **T16, uint16 **Y_P16, uint8 **Y_UP16);
+    void min3_swp_ui16matrix_ilu3_bench                 (uint8 **X, int i0, int i1, int j0, int j1, uint16 **T16, uint16 **Y_P16, uint8 **Y_UP16);
+    void min3_swp_ui16matrix_ilu3_red_bench             (uint8 **X, int i0, int i1, int j0, int j1, uint16 **T16, uint16 **Y_P16, uint8 **Y_UP16);
+    void min3_swp_ui16matrix_elu2_red_bench             (uint8 **X, int i0, int i1, int j0, int j1, uint16 **T16, uint16 **Y_P16, uint8 **Y_UP16);
+    void min3_swp_ui16matrix_elu2_red_factor_bench      (uint8 **X, int i0, int i1, int j0, int j1, uint16 **T16, uint16 **Y_P16, uint8 **Y_UP16);
+    void min3_swp_ui16matrix_ilu3_elu2_red_bench        (uint8 **X, int i0, int i1, int j0, int j1, uint16 **T16, uint16 **Y_P16, uint8 **Y_UP16);
+    void min3_swp_ui16matrix_ilu3_elu2_red_factor_bench (uint8 **X, int i0, int i1, int j0, int j1, uint16 **T16, uint16 **Y_P16, uint8 **Y_UP16);
+//
+
+//swp32
+    void min3_swp_ui32matrix_basic_bench               (uint8 **X, int i0, int i1, int j0, int j1, uint32 **T32, uint32 **Y_P32, uint8 **Y_UP32);
+    void min3_swp_ui32matrix_rot_bench                 (uint8 **X, int i0, int i1, int j0, int j1, uint32 **T32, uint32 **Y_P32, uint8 **Y_UP32);
+    void min3_swp_ui32matrix_red_bench                 (uint8 **X, int i0, int i1, int j0, int j1, uint32 **T32, uint32 **Y_P32, uint8 **Y_UP32);
+    void min3_swp_ui32matrix_ilu3_bench                (uint8 **X, int i0, int i1, int j0, int j1, uint32 **T32, uint32 **Y_P32, uint8 **Y_UP32);
+    void min3_swp_ui32matrix_ilu3_red_bench            (uint8 **X, int i0, int i1, int j0, int j1, uint32 **T32, uint32 **Y_P32, uint8 **Y_UP32);
+    void min3_swp_ui32matrix_elu2_red_bench            (uint8 **X, int i0, int i1, int j0, int j1, uint32 **T32, uint32 **Y_P32, uint8 **Y_UP32);
+    void min3_swp_ui32matrix_elu2_red_factor_bench     (uint8 **X, int i0, int i1, int j0, int j1, uint32 **T32, uint32 **Y_P32, uint8 **Y_UP32);
+    void min3_swp_ui32matrix_ilu3_elu2_red_bench       (uint8 **X, int i0, int i1, int j0, int j1, uint32 **T32, uint32 **Y_P32, uint8 **Y_UP32);
+    void min3_swp_ui32matrix_ilu3_elu2_red_factor_bench(uint8 **X, int i0, int i1, int j0, int j1, uint32 **T32, uint32 **Y_P32, uint8 **Y_UP32);
+//
+
 #ifdef __cplusplus
 }
 #endif

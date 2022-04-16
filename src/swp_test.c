@@ -2104,7 +2104,7 @@ void test_swp_morpho_max(void)
 
     for(int h = h0; h <= h0+dh; h++) { // pour tester elu2
         for(int w = w0; w <= w0+dw; w++) { // pour tester ilu3
-            // test_swp8_morpho_max_routine(h, w);
+            test_swp8_morpho_max_routine(h, w);
             // test_swp16_morpho_max_routine(h, w);
             // test_swp32_morpho_max_routine(h, w);
         }
@@ -2744,7 +2744,7 @@ void bench_swp16_morpho_ouverture_in(int n0, int n1, int nstep)
 
     puts("temps de calcul en ccp (cycle/point)");
 
-    for(int n = n0; n <= n1; n += nstep) {
+    for(int n = n0; n < n1; n += nstep) {
 
         h = n;
         w8 = n / 16;
@@ -3372,7 +3372,7 @@ void bench_swp8_morpho_max_in(int n0, int n1, int nstep)
 
     puts("temps de calcul en ccp (cycle/point)");
 
-    for(int n = n0; n <= n1; n += nstep) {
+    for(int n = n0; n < n1; n += nstep) {
 
         h = n;
         w8 = n / 8;
@@ -3607,7 +3607,7 @@ void bench_swp16_morpho_max_in(int n0, int n1, int nstep)
 
     puts("temps de calcul en ccp (cycle/point)");
 
-    for(int n = n0; n <= n1; n += nstep) {
+    for(int n = n0; n < n1; n += nstep) {
 
         h = n;
         w8 = n / 16;
@@ -3842,7 +3842,7 @@ void bench_swp32_morpho_max_in(int n0, int n1, int nstep)
 
     puts("temps de calcul en ccp (cycle/point)");
 
-    for(int n = n0; n <= n1; n += nstep) {
+    for(int n = n0; n < n1; n += nstep) {
 
         h = n;
         w8 = n / 32;
@@ -5880,58 +5880,58 @@ void bench_swp32_morpho_max_out(int n0, int n1, int nstep)
 
 
 
-
-
 // ------------------------------ Test SWP --------------------------------------------
 int test_swp(int argc, char* argv[]){
     puts("=== test_swp ===");
-    // test_swp_morpho_max();
+    test_swp_morpho_max();
     // test_swp_morpho_min();
     // test_swp_morpho_ouverture();
 
 
-// BENCH IN
     // MAX
-        bench_swp8_morpho_max_in(128, 512, 8);
-        // bench_swp8_morpho_max_in(128, 1024, 8);
 
-        bench_swp16_morpho_max_in(128, 512, 8);
-        // bench_swp16_morpho_max_in(128, 1024, 8);
+    // BENCH IN
+        // bench_swp8_morpho_max_in(128, 520, 8);
+        // bench_swp8_morpho_max_in(128, 1032, 8);
 
-        bench_swp32_morpho_max_in(128, 512, 8);
-        // bench_swp32_morpho_max_in(128, 1024, 8);
+        // bench_swp16_morpho_max_in(128, 520, 8);
+        // bench_swp16_morpho_max_in(128, 1032, 8);
 
-    // OUVERTURE
-        bench_swp8_morpho_ouverture_in(128, 520, 8);
-        // bench_swp8_morpho_ouverture_in(128, 1024, 8);
+        // bench_swp32_morpho_max_in(128, 520, 8);
+        // bench_swp32_morpho_max_in(128, 1032, 8);
 
-        bench_swp16_morpho_ouverture_in(128, 520, 8);
-        // bench_swp16_morpho_ouverture_in(128, 1024, 8);
-
-        bench_swp32_morpho_ouverture_in(128, 520, 8);
-        // bench_swp32_morpho_ouverture_in(128, 1024, 8);
-
-
-// BENCH OUT
-    // MAX
-        bench_swp8_morpho_max_out(128, 520, 8);
+    // BENCH OUT
+        // bench_swp8_morpho_max_out(128, 520, 8);
         // bench_swp8_morpho_max_out(128, 1032, 8);
 
-        bench_swp16_morpho_max_out(128, 520, 8);
+        // bench_swp16_morpho_max_out(128, 520, 8);
         // bench_swp16_morpho_max_out(128, 1032, 8);
 
-        bench_swp32_morpho_max_out(128, 520, 8);
+        // bench_swp32_morpho_max_out(128, 520, 8);
         // bench_swp32_morpho_max_out(128, 1032, 8);
 
+
     // OUVERTURE
-        bench_swp8_morpho_ouverture_out(128, 520, 8);
-        // bench_swp8_morpho_ouverture_out(128, 1024, 8);
 
-        bench_swp16_morpho_ouverture_out(128, 520, 8);
-        // bench_swp16_morpho_ouverture_out(128, 1024, 8);
+    // BENCH IN
+        // bench_swp8_morpho_ouverture_in(128, 520, 8);
+        // bench_swp8_morpho_ouverture_in(128, 1032, 8);
 
-        bench_swp32_morpho_ouverture_out(128, 520, 8);
-        // bench_swp32_morpho_ouverture_out(128, 1024, 8);
+        // bench_swp16_morpho_ouverture_in(128, 520, 8);
+        // bench_swp16_morpho_ouverture_in(128, 1032, 8);
+
+        // bench_swp32_morpho_ouverture_in(128, 520, 8);
+        // bench_swp32_morpho_ouverture_in(128, 1032, 8);
+
+    // BENCH OUT
+        // bench_swp8_morpho_ouverture_out(128, 520, 8);
+        // bench_swp8_morpho_ouverture_out(128, 1032, 8);
+
+        // bench_swp16_morpho_ouverture_out(128, 520, 8);
+        // bench_swp16_morpho_ouverture_out(128, 1032, 8);
+
+        // bench_swp32_morpho_ouverture_out(128, 520, 8);
+        // bench_swp32_morpho_ouverture_out(128, 1032, 8);
 
     return 0;
 }
