@@ -6437,22 +6437,22 @@ int test_swp(int argc, char* argv[]){
 // MAX
 
     // BENCH IN
-        // bench_swp8_morpho_max_in(128, 520, 8);
-        // bench_swp16_morpho_max_in(128, 520, 8);
-        // bench_swp32_morpho_max_in(128, 520, 8);
+        bench_swp8_morpho_max_in(128, 520, 8);
+        bench_swp16_morpho_max_in(128, 520, 8);
+        bench_swp32_morpho_max_in(128, 520, 8);
 
-        bench_swp8_morpho_max_in(128, 2048, 8);
-        bench_swp16_morpho_max_in(128, 2048, 8);
-        bench_swp32_morpho_max_in(128, 2048, 8);
+        // bench_swp8_morpho_max_in(128, 2048, 8);
+        // bench_swp16_morpho_max_in(128, 2048, 8);
+        // bench_swp32_morpho_max_in(128, 2048, 8);
 
     // BENCH OUT
-        // bench_swp8_morpho_max_out(128, 520, 8);
-        // bench_swp16_morpho_max_out(128, 520, 8);
-        // bench_swp32_morpho_max_out(128, 520, 8);
+        bench_swp8_morpho_max_out(128, 520, 8);
+        bench_swp16_morpho_max_out(128, 520, 8);
+        bench_swp32_morpho_max_out(128, 520, 8);
 
-        bench_swp8_morpho_max_out(128, 2048, 8);
-        bench_swp16_morpho_max_out(128, 2048, 8);
-        bench_swp32_morpho_max_out(128, 2048, 8);
+        // bench_swp8_morpho_max_out(128, 2048, 8);
+        // bench_swp16_morpho_max_out(128, 2048, 8);
+        // bench_swp32_morpho_max_out(128, 2048, 8);
 
 
 // OUVERTURE
@@ -6462,18 +6462,18 @@ int test_swp(int argc, char* argv[]){
         // bench_swp32_morpho_ouverture_in(128, 520, 8);
         // bench_swp16_morpho_ouverture_in(128, 520, 8);
 
-        bench_swp8_morpho_ouverture_in(128, 2048, 8);
-        bench_swp16_morpho_ouverture_in(128, 2048, 8);
-        bench_swp32_morpho_ouverture_in(128, 2048, 8);
+        // bench_swp8_morpho_ouverture_in(128, 2048, 8);
+        // bench_swp16_morpho_ouverture_in(128, 2048, 8);
+        // bench_swp32_morpho_ouverture_in(128, 2048, 8);
 
     // BENCH OUT
-        // bench_swp8_morpho_ouverture_out(128, 520, 8);
-        // bench_swp16_morpho_ouverture_out(128, 520, 8);
-        // bench_swp32_morpho_ouverture_out(128, 520, 8);
+        bench_swp8_morpho_ouverture_out(128, 520, 8);
+        bench_swp16_morpho_ouverture_out(128, 520, 8);
+        bench_swp32_morpho_ouverture_out(128, 520, 8);
 
-        bench_swp8_morpho_ouverture_out(128, 2048, 8);
-        bench_swp16_morpho_ouverture_out(128, 2048, 8);
-        bench_swp32_morpho_ouverture_out(128, 2048, 8);
+        // bench_swp8_morpho_ouverture_out(128, 2048, 8);
+        // bench_swp16_morpho_ouverture_out(128, 2048, 8);
+        // bench_swp32_morpho_ouverture_out(128, 2048, 8);
 
     return 0;
 }

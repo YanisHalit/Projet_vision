@@ -1076,7 +1076,7 @@ int test_morpho(int argc, char* argv[])
     // bench_morpho_max(128, 2048, 8);
 
 // OUVERTURE
-    // bench_morpho_ouverture(128, 512, 8);
+    bench_morpho_ouverture(128, 512, 8);
     // bench_morpho_ouverture(128, 2048, 8);
 
 // AUTRES

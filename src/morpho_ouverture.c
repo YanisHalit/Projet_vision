@@ -1883,7 +1883,6 @@ void line_swp_ouverture3_ui8matrix_fusion_ilu5_red            (uint8 **X, int i,
 // ---------------------------------------------------------------------------------------------
 void line_swp_ouverture3_ui8matrix_fusion_ilu5_elu2_red       (uint8 **X, int i, int j0, int j1, uint8 **Y)
 {
-
     uint8  min0_0, min0_1, min0_2, min0_3, min0_4,
             min1_0, min1_1, min1_2, min1_3, min1_4,
             min2_0, min2_1, min2_2, min2_3, min2_4,
@@ -1950,7 +1949,6 @@ void line_swp_ouverture3_ui8matrix_fusion_ilu5_elu2_red       (uint8 **X, int i,
     min_all3_1 = min3( l , min3_2 , r);
 
     uint8 load_im2_jp2,load_im1_jp2, load_i_jp2, load_ip1_jp2, load_ip2_jp2,load_ip3_jp2;
-
     for(int j = j0; j< j1-5; j+=5){
             // ---------------------------------------------------------------------------------------------
             load_im2_jp2 = load2(X, i-2, j+2);
@@ -4136,7 +4134,6 @@ void ouverture3_swp_ui8matrix_fusion_ilu5_elu2_red_bench        (uint8 **X, int 
     for( int i = i0; i < i1-2; i+=2){
         line_swp_ouverture3_ui8matrix_fusion_ilu5_elu2_red(X_P, i, j0, j1, Y_P);
     }
-
     int r = (i1-i0-1) % 2;
     line_swp_ouverture3_ui8matrix_fusion(X, i1-r-1, j0, j1, Y);
     //line_swp_ouverture3_ui8matrix_fusion(X, i1-r, j0, j1, Y);
