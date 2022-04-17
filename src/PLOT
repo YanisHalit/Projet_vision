@@ -278,3 +278,11 @@ plot "bench_SWP32.txt"  using 1:3 linecolor 3 with lines title "MOTIONSWP32-ROT"
 "bench_SWP32.txt"  using 1:7 linecolor 7 with lines title "MOTIONSWP32-ELU2-RED",
 "bench_SWP32.txt"  using 1:8 linecolor 8 with lines title "MOTIONSWP32-ELU2-RED-FACTOR",
 "bench_SWP32.txt"  using 1:9 linecolor 9 with lines title "MOTIONSWP32-ILU3-ELU2-RED";
+
+
+    // #### MOTION MOTION ####
+set xlabel "n° image traitée"; set ylabel "temps de traitement de l'image (sec)";
+set title "Motion en comparant ouverture puis fermeture à min max max min en SWP";
+plot "bench_debit_SWP8.txt"  using 1:2 linecolor 3 with lines title "MOTIONSWP8-MIN-MAX-MAX-MIN",
+"bench_debit_SWP8.txt"  using 1:3 linecolor 5 with lines title "MOTIONSWP8-FUSION-ILU5-ELU2-RED-OUT",
+"bench_debit_SWP8.txt"  using 1:4 linecolor 10 with lines title "MOTIONSWP8-PIPELINE-ILU3-RED-OUT";

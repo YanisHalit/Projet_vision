@@ -2339,8 +2339,8 @@ void bench_debit_motion_detection_morpho_SWP8(void)
 
         unpack_ui8matrix(Erosion2_ilu3_elu2_red_factor_P, i1, w8, E_ilu3_elu2_red_factor);
 
-        printf("%f        ",            (i1*j1) / debit_classique);
-        fprintf(output_file, "%.f      ", (i1*j1) / debit_classique);
+        printf("%f        ",                debit_classique);
+        fprintf(output_file, "%lf      ",   debit_classique);
         // ------------
 
 
@@ -2350,6 +2350,7 @@ void bench_debit_motion_detection_morpho_SWP8(void)
         pack_ui8matrix(E, i1, j1, E_fusion_ilu5_elu2_red_P);
 
         t1 = clock();
+
         ouverture3_swp_ui8matrix_fusion_ilu5_elu2_red_bench(E, i0, i1, j0, j1, E_fusion_ilu5_elu2_red_P, E_fusion_result_ouverture_ilu5_elu2_red_P, E_fusion_ilu5_elu2_red);
         fermeture3_swp_ui8matrix_fusion_bench(E, i0, i1-1, j0, j1-1, E_fusion_result_ouverture_ilu5_elu2_red_P, E_fusion_result_fermeture_ilu5_elu2_red_P, E_fusion_ilu5_elu2_red);
 
@@ -2360,8 +2361,8 @@ void bench_debit_motion_detection_morpho_SWP8(void)
 
         unpack_ui8matrix(E_fusion_result_fermeture_ilu5_elu2_red_P, i1, w8, E_fusion_ilu5_elu2_red);
 
-        printf("%f  ",            (i1*j1) / debit_fusion);
-        fprintf(output_file, "%.f   ", (i1*j1) / debit_fusion);
+        printf("%f  ",             debit_fusion);
+        fprintf(output_file, "%lf   ",  debit_fusion);
         // // ------------
 
  
@@ -2380,8 +2381,8 @@ void bench_debit_motion_detection_morpho_SWP8(void)
 
         unpack_ui8matrix(E_pipeline_result_fermeture_ilu3_red_out_P, i1, w8, E_pipeline_ilu3_red_out);
 
-        printf("%f  ",            (i1*j1) / debit_fusion);
-        fprintf(output_file, "%.f   ", (i1*j1) / debit_fusion);
+        printf("%f  ",            debit_pipeline);
+        fprintf(output_file, "%lf   ",  debit_pipeline);
         // // ------------
 
 
@@ -2428,12 +2429,12 @@ void motion_detection_morpho(void)
 // ===============================
 {
     // motion_detection_morpho_v1();               // version basique sans optimisation
-    bench_motion_detection_morpho();            // bench version avec optimisation
-    bench_motion_detection_morpho_SWP8();       // bench version avec optimisation SWP 8
-    bench_motion_detection_morpho_SWP16();      // bench version avec optimisation SWP 16
-    bench_motion_detection_morpho_SWP32();      // bench version avec optimisation SWP 32
+    // bench_motion_detection_morpho();            // bench version avec optimisation
+    // bench_motion_detection_morpho_SWP8();       // bench version avec optimisation SWP 8
+    // bench_motion_detection_morpho_SWP16();      // bench version avec optimisation SWP 16
+    // bench_motion_detection_morpho_SWP32();      // bench version avec optimisation SWP 32
 
-    // bench_debit_motion_detection_morpho_SWP8();
+    bench_debit_motion_detection_morpho_SWP8();
 
     // test_PGM();
 }
