@@ -4,7 +4,7 @@
 
 # -- Lile list ----------
 
-FILE_NRC    = nrutil.c 
+FILE_NRC    = nrutil.c
 FILE_MOTION = sigmadelta.c motion.c motion_test.c
 FILE_MORPHO = morpho_max.c morpho_min.c morpho_ouverture.c morpho_test.c
 FILE_MAIN   = main.c

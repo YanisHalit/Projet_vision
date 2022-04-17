@@ -2148,10 +2148,10 @@ void bench_motion_detection_morpho_SWP32(void)
 void motion_detection_morpho(void)
 // ===============================
 {
-    // motion_detection_morpho_v1();           // version basique sans optimisation
-    bench_motion_detection_morpho();        // bench version avec optimisation
-    bench_motion_detection_morpho_SWP8();    // bench version avec optimisation SWP
-    bench_motion_detection_morpho_SWP16();
-    bench_motion_detection_morpho_SWP32();
+    // motion_detection_morpho_v1();               // version basique sans optimisation
+    // bench_motion_detection_morpho();            // bench version avec optimisation
+    bench_motion_detection_morpho_SWP8();       // bench version avec optimisation SWP 8
+    // bench_motion_detection_morpho_SWP16();      // bench version avec optimisation SWP 16
+    // bench_motion_detection_morpho_SWP32();      // bench version avec optimisation SWP 32
     // test_PGM();
 }

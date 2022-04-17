@@ -1021,7 +1021,7 @@ void bench_morpho_max(int n0, int n1, int nstep)
         fprintf(output_file, "%d        ", n);
 
         printf(format, cpp_bas                      );
-                fprintf(output_file, "%.1f      ", cpp_bas);
+                fprintf(output_file, "%.1f  ", cpp_bas);
 
         printf(format, cpp_rot                     );
                 fprintf(output_file, "%.1f  ", cpp_rot);
@@ -1033,7 +1033,7 @@ void bench_morpho_max(int n0, int n1, int nstep)
                 fprintf(output_file, "%.1f  ", cpp_ilu3);
 
         printf(format, cpp_ilu3_red);
-                fprintf(output_file, "%.1f      ", cpp_ilu3_red);
+                fprintf(output_file, "%.1f  ", cpp_ilu3_red);
 
         printf(format, cpp_elu2_red                      );
                         fprintf(output_file, "%.1f  ", cpp_elu2_red);
@@ -1071,12 +1071,15 @@ int test_morpho(int argc, char* argv[])
     // test_morpho_min();
     // test_morpho_ouverture();
 
-    bench_morpho_ouverture(128, 512, 8);
-    bench_morpho_ouverture(128, 1024, 8);
+// MAX
+    // bench_morpho_max(128, 512, 8);
+    // bench_morpho_max(128, 2048, 8);
 
-    bench_morpho_max(128, 512, 8);
-    bench_morpho_max(128, 1024, 8);
+// OUVERTURE
+    // bench_morpho_ouverture(128, 512, 8);
+    // bench_morpho_ouverture(128, 2048, 8);
 
+// AUTRES
     // test_set_str();
     // test_wikipedia();
 

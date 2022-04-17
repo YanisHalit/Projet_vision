@@ -1,0 +1,264 @@
+
+set xlabel "taille matrice",
+set ylabel "cpp (cycles/points)"
+
+// #### MAX ####
+
+    // #### MAX SWP IN ####
+
+// # plot "bench_swp8_MAX_in.txt"  using 1:2 linecolor 1 with lines title "MAX BASIC",
+// # plot "bench_swp16_MAX_in.txt"  using 1:2 linecolor 1 with lines title "MAX BASIC",
+// # plot "bench_swp32_MAX_in.txt"  using 1:2 linecolor 1 with lines title "MAX BASIC",
+
+// --------------------------------
+plot "bench_swp8_MAX_in.txt"  using 1:3 linecolor 2 with lines title "MAX-SWP8-BAS-IN",
+"bench_swp8_MAX_in.txt"  using 1:4 linecolor 3 with lines title "MAX-SWP8-ROT-IN",
+"bench_swp8_MAX_in.txt"  using 1:5 linecolor 4 with lines title "MAX-SWP8-RED-IN",
+"bench_swp8_MAX_in.txt"  using 1:6 linecolor 5 with lines title "MAX-SWP8-ILU3-IN",
+"bench_swp8_MAX_in.txt"  using 1:7 linecolor 6 with lines title "MAX-SWP8-ILU3-RED-IN",
+"bench_swp8_MAX_in.txt"  using 1:8 linecolor 7 with lines title "MAX-SWP8-ELU2-RED-IN",
+"bench_swp8_MAX_in.txt"  using 1:9 linecolor 8 with lines title "MAX-SWP8-ELU2-RED-FACTOR-IN",
+"bench_swp8_MAX_in.txt"  using 1:10 linecolor 9 with lines title "MAX-SWP8-ILU3-ELU2-RED-IN",
+"bench_swp8_MAX_in.txt"  using 1:11 linecolor 10 with lines title "MAX-SWP8-ILU3-ELU2-RED-FACTOR-IN";
+
+// --------------------------------
+plot "bench_swp16_MAX_in.txt"  using 1:3 linecolor 11 with lines title "MAX-SWP16-BAS-IN",
+"bench_swp16_MAX_in.txt"  using 1:4 linecolor 12 with lines title "MAX-SWP16-ROT-IN",
+"bench_swp16_MAX_in.txt"  using 1:5 linecolor 13 with lines title "MAX-SWP16-RED-IN",
+"bench_swp16_MAX_in.txt"  using 1:6 linecolor 14 with lines title "MAX-SWP16-ILU3-IN",
+"bench_swp16_MAX_in.txt"  using 1:7 linecolor 15 with lines title "MAX-SWP16-ILU3-RED-IN",
+"bench_swp16_MAX_in.txt"  using 1:8 linecolor 16 with lines title "MAX-SWP16-ELU2-RED-IN",
+"bench_swp16_MAX_in.txt"  using 1:9 linecolor 17 with lines title "MAX-SWP16-ELU2-RED-FACTOR-IN",
+"bench_swp16_MAX_in.txt"  using 1:10 linecolor 18 with lines title "MAX-SWP16-ILU3-ELU2-RED-IN",
+"bench_swp16_MAX_in.txt"  using 1:11 linecolor 19 with lines title "MAX-SWP16-ILU3-ELU2-RED-FACTOR-IN";
+
+// --------------------------------
+replot "bench_swp32_MAX_in.txt"  using 1:3 linecolor 1 with lines title "MAX-SWP32-BAS-IN",
+"bench_swp32_MAX_in.txt"  using 1:4 linecolor 2 with lines title "MAX-SWP32-ROT-IN",
+"bench_swp32_MAX_in.txt"  using 1:5 linecolor 3 with lines title "MAX-SWP32-RED-IN",
+"bench_swp32_MAX_in.txt"  using 1:6 linecolor 4 with lines title "MAX-SWP32-ILU3-IN",
+"bench_swp32_MAX_in.txt"  using 1:7 linecolor 5 with lines title "MAX-SWP32-ILU3-RED-IN",
+"bench_swp32_MAX_in.txt"  using 1:8 linecolor 6 with lines title "MAX-SWP32-ELU2-RED-IN",
+"bench_swp32_MAX_in.txt"  using 1:9 linecolor 7 with lines title "MAX-SWP32-ELU2-RED-FACTOR-IN",
+"bench_swp32_MAX_in.txt"  using 1:10 linecolor 8 with lines title "MAX-SWP32-ILU3-ELU2-RED-IN",
+"bench_swp32_MAX_in.txt"  using 1:11 linecolor 9 with lines title "MAX-SWP32-ILU3-ELU2-RED-FACTOR-IN";
+
+
+
+    // #### MAX SWP OUT ####
+
+// --------------------------------
+plot "bench_swp8_MAX_ext.txt"  using 1:3 linecolor 2 with lines title "MAX-SWP8-BAS-OUT",
+"bench_swp8_MAX_ext.txt"  using 1:4 linecolor 3 with lines title "MAX-SWP8-ROT-OUT",
+"bench_swp8_MAX_ext.txt"  using 1:5 linecolor 4 with lines title "MAX-SWP8-RED-OUT",
+"bench_swp8_MAX_ext.txt"  using 1:6 linecolor 5 with lines title "MAX-SWP8-ILU3-OUT",
+"bench_swp8_MAX_ext.txt"  using 1:7 linecolor 6 with lines title "MAX-SWP8-ILU3-RED-OUT",
+"bench_swp8_MAX_ext.txt"  using 1:8 linecolor 7 with lines title "MAX-SWP8-ELU2-RED-OUT",
+"bench_swp8_MAX_ext.txt"  using 1:9 linecolor 8 with lines title "MAX-SWP8-ELU2-RED-FACTOR-OUT",
+"bench_swp8_MAX_ext.txt"  using 1:10 linecolor 9 with lines title "MAX-SWP8-ILU3-ELU2-RED-OUT",
+"bench_swp8_MAX_ext.txt"  using 1:11 linecolor 10 with lines title "MAX-SWP8-ILU3-ELU2-RED-FACTOR-OUT";
+
+// --------------------------------
+replot "bench_swp16_MAX_ext.txt"  using 1:3 linecolor 11 with lines title "MAX-SWP16-BAS-OUT",
+"bench_swp16_MAX_ext.txt"  using 1:4 linecolor 12 with lines title "MAX-SWP16-ROT-OUT",
+"bench_swp16_MAX_ext.txt"  using 1:5 linecolor 13 with lines title "MAX-SWP16-RED-OUT",
+"bench_swp16_MAX_ext.txt"  using 1:6 linecolor 14 with lines title "MAX-SWP16-ILU3-OUT",
+"bench_swp16_MAX_ext.txt"  using 1:7 linecolor 15 with lines title "MAX-SWP16-ILU3-RED-OUT",
+"bench_swp16_MAX_ext.txt"  using 1:8 linecolor 16 with lines title "MAX-SWP16-ELU2-RED-OUT",
+"bench_swp16_MAX_ext.txt"  using 1:9 linecolor 17 with lines title "MAX-SWP16-ELU2-RED-FACTOR-OUT",
+"bench_swp16_MAX_ext.txt"  using 1:10 linecolor 18 with lines title "MAX-SWP16-ILU3-ELU2-RED-OUT",
+"bench_swp16_MAX_ext.txt"  using 1:11 linecolor 19 with lines title "MAX-SWP16-ILU3-ELU2-RED-FACTOR-OUT";
+
+// --------------------------------
+replot "bench_swp32_MAX_ext.txt"  using 1:3 linecolor 1 with lines title "MAX-SWP32-BAS-OUT",
+"bench_swp32_MAX_ext.txt"  using 1:4 linecolor 2 with lines title "MAX-SWP32-ROT-OUT",
+"bench_swp32_MAX_ext.txt"  using 1:5 linecolor 3 with lines title "MAX-SWP32-RED-OUT",
+"bench_swp32_MAX_ext.txt"  using 1:6 linecolor 4 with lines title "MAX-SWP32-ILU3-OUT",
+"bench_swp32_MAX_ext.txt"  using 1:7 linecolor 5 with lines title "MAX-SWP32-ILU3-RED-OUT",
+"bench_swp32_MAX_ext.txt"  using 1:8 linecolor 6 with lines title "MAX-SWP32-ELU2-RED-OUT",
+"bench_swp32_MAX_ext.txt"  using 1:9 linecolor 7 with lines title "MAX-SWP32-ELU2-RED-FACTOR-OUT",
+"bench_swp32_MAX_ext.txt"  using 1:10 linecolor 8 with lines title "MAX-SWP32-ILU3-ELU2-RED-OUT",
+"bench_swp32_MAX_ext.txt"  using 1:11 linecolor 9 with lines title "MAX-SWP32-ILU3-ELU2-RED-FACTOR-OUT";
+
+
+    // #### MAX NO SWP ####
+
+// --------------------------------
+plot "bench_MAX.txt"  using 1:2 linecolor 2 with lines title "MAX-BAS",
+"bench_MAX.txt"  using 1:3 linecolor 3 with lines title "MAX-ROT",
+"bench_MAX.txt"  using 1:4 linecolor 4 with lines title "MAX-RED",
+"bench_MAX.txt"  using 1:5 linecolor 5 with lines title "MAX-ILU3",
+"bench_MAX.txt"  using 1:6 linecolor 6 with lines title "MAX-ILU3-RED",
+"bench_MAX.txt"  using 1:7 linecolor 7 with lines title "MAX-ELU2-RED",
+"bench_MAX.txt"  using 1:8 linecolor 8 with lines title "MAX-ELU2-RED-FACTOR",
+"bench_MAX.txt"  using 1:9 linecolor 10 with lines title "MAX-ILU3-ELU2-RED-FACTOR";
+
+
+
+
+
+// #### OUVERTURE ####
+
+
+    // #### OUVERTURE SWP IN ####
+
+// --------------------------------
+plot "bench_swp8_OUVERTURE_in.txt"  using 1:2 linecolor 0 with lines title "OUVERTURE-SWP8-BASIC",
+
+"bench_swp8_OUVERTURE_in.txt"  using 1:3 linecolor 2 with lines title "OUVERTURE-SWP8-FUSION-BASIC-IN",
+
+"bench_swp8_OUVERTURE_in.txt"  using 1:4 linecolor 3 with lines title "OUVERTURE-SWP8-FUSION-ILU5-RED-IN",
+"bench_swp8_OUVERTURE_in.txt"  using 1:5 linecolor 4 with lines title "OUVERTURE-SWP8-FUSION-ILU5-ELU2-RED-IN",
+
+"bench_swp8_OUVERTURE_in.txt"  using 1:6 linecolor 6 with lines title "OUVERTURE-SWP8-PIPELINE-BASIC-IN",
+"bench_swp8_OUVERTURE_in.txt"  using 1:7 linecolor 7 with lines title "OUVERTURE-SWP8-PIPELINE-RED-IN",
+"bench_swp8_OUVERTURE_in.txt"  using 1:8 linecolor 8 with lines title "OUVERTURE-SWP8-PIPELINE-ILU3-RED-IN",
+"bench_swp8_OUVERTURE_in.txt"  using 1:9 linecolor 9 with lines title "OUVERTURE-SWP8-PIPELINE-ELU2-RED-IN",
+"bench_swp8_OUVERTURE_in.txt"  using 1:10 linecolor 10 with lines title "OUVERTURE-SWP8-PIPELINE-ELU2-RED-FACTOR-IN",
+"bench_swp8_OUVERTURE_in.txt"  using 1:11 linecolor 11 with lines title "OUVERTURE-SWP8-PIPELINE-ILU3-ELU2-RED-IN",
+"bench_swp8_OUVERTURE_in.txt"  using 1:12 linecolor 112 with lines title "OUVERTURE-SWP8-PIPELINE-ILU3-ELU2-RED-FACTOR-IN",
+
+// --------------------------------
+plot "bench_swp16_OUVERTURE_in.txt"  using 1:2 linecolor 0 with lines title "OUVERTURE-SWP16-BASIC",
+
+"bench_swp16_OUVERTURE_in.txt"  using 1:3 linecolor 2 with lines title "OUVERTURE-SWP16-FUSION-BASIC-IN",
+
+"bench_swp16_OUVERTURE_in.txt"  using 1:4 linecolor 3 with lines title "OUVERTURE-SWP16-FUSION-ILU5-RED-IN",
+"bench_swp16_OUVERTURE_in.txt"  using 1:5 linecolor 4 with lines title "OUVERTURE-SWP16-FUSION-ILU5-ELU2-RED-IN",
+
+"bench_swp16_OUVERTURE_in.txt"  using 1:6 linecolor 6 with lines title "OUVERTURE-SWP16-PIPELINE-BASIC-IN",
+"bench_swp16_OUVERTURE_in.txt"  using 1:7 linecolor 7 with lines title "OUVERTURE-SWP16-PIPELINE-RED-IN",
+"bench_swp16_OUVERTURE_in.txt"  using 1:8 linecolor 8 with lines title "OUVERTURE-SWP16-PIPELINE-ILU3-RED-IN",
+"bench_swp16_OUVERTURE_in.txt"  using 1:9 linecolor 9 with lines title "OUVERTURE-SWP16-PIPELINE-ELU2-RED-IN",
+"bench_swp16_OUVERTURE_in.txt"  using 1:10 linecolor 10 with lines title "OUVERTURE-SWP16-PIPELINE-ELU2-RED-FACTOR-IN",
+"bench_swp16_OUVERTURE_in.txt"  using 1:11 linecolor 11 with lines title "OUVERTURE-SWP16-PIPELINE-ILU3-ELU2-RED-IN",
+"bench_swp16_OUVERTURE_in.txt"  using 1:12 linecolor 12 with lines title "OUVERTURE-SWP16-PIPELINE-ILU3-ELU2-RED-FACTOR-IN",
+
+// --------------------------------
+plot "bench_swp32_OUVERTURE_in.txt"  using 1:2 linecolor 0 with lines title "OUVERTURE-SWP32-BASIC",
+
+"bench_swp32_OUVERTURE_in.txt"  using 1:3 linecolor 2 with lines title "OUVERTURE-SWP32-FUSION-BASIC-IN",
+
+"bench_swp32_OUVERTURE_in.txt"  using 1:4 linecolor 3 with lines title "OUVERTURE-SWP32-FUSION-ILU5-RED-IN",
+"bench_swp32_OUVERTURE_in.txt"  using 1:5 linecolor 4 with lines title "OUVERTURE-SWP32-FUSION-ILU5-ELU2-RED-IN",
+
+"bench_swp32_OUVERTURE_in.txt"  using 1:6 linecolor 6 with lines title "OUVERTURE-SWP32-PIPELINE-BASIC-IN",
+"bench_swp32_OUVERTURE_in.txt"  using 1:7 linecolor 7 with lines title "OUVERTURE-SWP32-PIPELINE-RED-IN",
+"bench_swp32_OUVERTURE_in.txt"  using 1:8 linecolor 8 with lines title "OUVERTURE-SWP32-PIPELINE-ILU3-RED-IN",
+"bench_swp32_OUVERTURE_in.txt"  using 1:9 linecolor 9 with lines title "OUVERTURE-SWP32-PIPELINE-ELU2-RED-IN",
+"bench_swp32_OUVERTURE_in.txt"  using 1:10 linecolor 10 with lines title "OUVERTURE-SWP32-PIPELINE-ELU2-RED-FACTOR-IN",
+"bench_swp32_OUVERTURE_in.txt"  using 1:11 linecolor 11 with lines title "OUVERTURE-SWP32-PIPELINE-ILU3-ELU2-RED-IN",
+"bench_swp32_OUVERTURE_in.txt"  using 1:12 linecolor 12 with lines title "OUVERTURE-SWP32-PIPELINE-ILU3-ELU2-RED-FACTOR-IN",
+
+    // #### OUVERTURE SWP OUT ####
+// --------------------------------
+plot "bench_swp8_OUVERTURE_ext.txt"  using 1:2 linecolor 0 with lines title "OUVERTURE-SWP8-BASIC",
+"bench_swp8_OUVERTURE_ext.txt"  using 1:3 linecolor 2 with lines title "OUVERTURE-SWP8-FUSION-BASIC-OUT",
+
+"bench_swp8_OUVERTURE_ext.txt"  using 1:4 linecolor 3 with lines title "OUVERTURE-SWP8-FUSION-ILU5-RED-OUT",
+"bench_swp8_OUVERTURE_ext.txt"  using 1:5 linecolor 4 with lines title "OUVERTURE-SWP8-FUSION-ILU5-ELU2-RED-OUT",
+
+"bench_swp8_OUVERTURE_ext.txt"  using 1:6 linecolor 6 with lines title "OUVERTURE-SWP8-PIPELINE-BASIC-OUT",
+"bench_swp8_OUVERTURE_ext.txt"  using 1:7 linecolor 7 with lines title "OUVERTURE-SWP8-PIPELINE-RED-OUT",
+"bench_swp8_OUVERTURE_ext.txt"  using 1:8 linecolor 8 with lines title "OUVERTURE-SWP8-PIPELINE-ILU3-RED-OUT",
+"bench_swp8_OUVERTURE_ext.txt"  using 1:9 linecolor 9 with lines title "OUVERTURE-SWP8-PIPELINE-ELU2-RED-OUT",
+"bench_swp8_OUVERTURE_ext.txt"  using 1:10 linecolor 10 with lines title "OUVERTURE-SWP8-PIPELINE-ELU2-RED-FACTOR-OUT",
+"bench_swp8_OUVERTURE_ext.txt"  using 1:11 linecolor 11 with lines title "OUVERTURE-SWP8-PIPELINE-ILU3-ELU2-RED-OUT",
+"bench_swp8_OUVERTURE_ext.txt"  using 1:12 linecolor 112 with lines title "OUVERTURE-SWP8-PIPELINE-ILU3-ELU2-RED-FACTOR-OUT",
+
+// --------------------------------
+plot "bench_swp16_OUVERTURE_ext.txt"  using 1:2 linecolor 0 with lines title "OUVERTURE-SWP16-BASIC",
+
+"bench_swp16_OUVERTURE_ext.txt"  using 1:3 linecolor 2 with lines title "OUVERTURE-SWP16-FUSION-BASIC-OUT",
+
+"bench_swp16_OUVERTURE_ext.txt"  using 1:4 linecolor 3 with lines title "OUVERTURE-SWP16-FUSION-ILU5-RED-OUT",
+"bench_swp16_OUVERTURE_ext.txt"  using 1:5 linecolor 4 with lines title "OUVERTURE-SWP16-FUSION-ILU5-ELU2-RED-OUT",
+
+"bench_swp16_OUVERTURE_ext.txt"  using 1:6 linecolor 6 with lines title "OUVERTURE-SWP16-PIPELINE-BASIC-OUT",
+"bench_swp16_OUVERTURE_ext.txt"  using 1:7 linecolor 7 with lines title "OUVERTURE-SWP16-PIPELINE-RED-OUT",
+"bench_swp16_OUVERTURE_ext.txt"  using 1:8 linecolor 8 with lines title "OUVERTURE-SWP16-PIPELINE-ILU3-RED-OUT",
+"bench_swp16_OUVERTURE_ext.txt"  using 1:9 linecolor 9 with lines title "OUVERTURE-SWP16-PIPELINE-ELU2-RED-OUT",
+"bench_swp16_OUVERTURE_ext.txt"  using 1:10 linecolor 10 with lines title "OUVERTURE-SWP16-PIPELINE-ELU2-RED-FACTOR-OUT",
+"bench_swp16_OUVERTURE_ext.txt"  using 1:11 linecolor 11 with lines title "OUVERTURE-SWP16-PIPELINE-ILU3-ELU2-RED-OUT",
+"bench_swp16_OUVERTURE_ext.txt"  using 1:12 linecolor 12 with lines title "OUVERTURE-SWP16-PIPELINE-ILU3-ELU2-RED-FACTOR-OUT",
+
+// --------------------------------
+plot "bench_swp32_OUVERTURE_ext.txt"  using 1:2 linecolor 0 with lines title "OUVERTURE-SWP32-BASIC",
+
+"bench_swp32_OUVERTURE_ext.txt"  using 1:3 linecolor 2 with lines title "OUVERTURE-SWP32-FUSION-BASIC-OUT",
+
+"bench_swp32_OUVERTURE_ext.txt"  using 1:4 linecolor 3 with lines title "OUVERTURE-SWP32-FUSION-ILU5-RED-OUT",
+"bench_swp32_OUVERTURE_ext.txt"  using 1:5 linecolor 4 with lines title "OUVERTURE-SWP32-FUSION-ILU5-ELU2-RED-OUT",
+
+"bench_swp32_OUVERTURE_ext.txt"  using 1:6 linecolor 6 with lines title "OUVERTURE-SWP32-PIPELINE-BASIC-OUT",
+"bench_swp32_OUVERTURE_ext.txt"  using 1:7 linecolor 7 with lines title "OUVERTURE-SWP32-PIPELINE-RED-OUT",
+"bench_swp32_OUVERTURE_ext.txt"  using 1:8 linecolor 8 with lines title "OUVERTURE-SWP32-PIPELINE-ILU3-RED-OUT",
+"bench_swp32_OUVERTURE_ext.txt"  using 1:9 linecolor 9 with lines title "OUVERTURE-SWP32-PIPELINE-ELU2-RED-OUT",
+"bench_swp32_OUVERTURE_ext.txt"  using 1:10 linecolor 10 with lines title "OUVERTURE-SWP32-PIPELINE-ELU2-RED-FACTOR-OUT",
+"bench_swp32_OUVERTURE_ext.txt"  using 1:11 linecolor 11 with lines title "OUVERTURE-SWP32-PIPELINE-ILU3-ELU2-RED-OUT",
+"bench_swp32_OUVERTURE_ext.txt"  using 1:12 linecolor 12 with lines title "OUVERTURE-SWP32-PIPELINE-ILU3-ELU2-RED-FACTOR-OUT",
+
+
+    // #### OUVERTURE NO SWP ####
+
+"bench_OUVERTURE.txt"  using 1:3 linecolor 2 with lines title "OUVERTURE-FUSION-BASIC",
+
+plot "bench_OUVERTURE.txt"  using 1:2 linecolor 0 with lines title "OUVERTURE BASIC",
+
+
+"bench_OUVERTURE.txt"  using 1:4 linecolor 3 with lines title "OUVERTURE-FUSION-ILU5-RED",
+"bench_OUVERTURE.txt"  using 1:5 linecolor 4 with lines title "OUVERTURE-FUSION-ILU5-ELU2-RED",
+"bench_OUVERTURE.txt"  using 1:6 linecolor 5 with lines title "OUVERTURE-FUSION-ILU5-ELU2-RED-FACTOR",
+
+"bench_OUVERTURE.txt"  using 1:7 linecolor 6 with lines title "OUVERTURE-PIPELINE-BASIC",
+"bench_OUVERTURE.txt"  using 1:8 linecolor 7 with lines title "OUVERTURE-PIPELINE-RED",
+"bench_OUVERTURE.txt"  using 1:9 linecolor 8 with lines title "OUVERTURE-PIPELINE-ILU3-RED",
+"bench_OUVERTURE.txt"  using 1:10 linecolor 9 with lines title "OUVERTURE-PIPELINE-ELU2-RED",
+"bench_OUVERTURE.txt"  using 1:11 linecolor 10 with lines title "OUVERTURE-PIPELINE-ELU2-RED-FACTOR",
+"bench_OUVERTURE.txt"  using 1:12 linecolor 11 with lines title "OUVERTURE-PIPELINE-ILU3-ELU2-RED",
+"bench_OUVERTURE.txt"  using 1:13 linecolor 12 with lines title "OUVERTURE-PIPELINE-ILU3-ELU2-RED-FACTOR",
+
+
+
+
+    // #### MOTION ####
+
+    // #### MOTION NO SWP ####
+plot "bench.txt"  using 1:2 linecolor 2 with lines title "MOTION-BAS",
+"bench.txt"  using 1:3 linecolor 3 with lines title "MOTION-ROT",
+"bench.txt"  using 1:4 linecolor 4 with lines title "MOTION-RED",
+"bench.txt"  using 1:5 linecolor 5 with lines title "MOTION-ILU3",
+"bench.txt"  using 1:6 linecolor 6 with lines title "MOTION-ILU3-RED",
+"bench.txt"  using 1:7 linecolor 7 with lines title "MOTION-ELU2-RED",
+"bench.txt"  using 1:8 linecolor 8 with lines title "MOTION-ELU2-RED-FACTOR",
+"bench.txt"  using 1:9 linecolor 9 with lines title "MOTION-ILU3-ELU2-RED",
+
+// --------------------------------
+plot "bench_SWP8.txt"  using 1:2 linecolor 2 with lines title "MOTIONSWP8-BAS",
+"bench_SWP8.txt"  using 1:3 linecolor 3 with lines title "MOTIONSWP8-ROT",
+"bench_SWP8.txt"  using 1:4 linecolor 4 with lines title "MOTIONSWP8-RED",
+"bench_SWP8.txt"  using 1:5 linecolor 5 with lines title "MOTIONSWP8-ILU3",
+"bench_SWP8.txt"  using 1:6 linecolor 6 with lines title "MOTIONSWP8-ILU3-RED",
+"bench_SWP8.txt"  using 1:7 linecolor 7 with lines title "MOTIONSWP8-ELU2-RED",
+"bench_SWP8.txt"  using 1:8 linecolor 8 with lines title "MOTIONSWP8-ELU2-RED-FACTOR",
+"bench_SWP8.txt"  using 1:9 linecolor 9 with lines title "MOTIONSWP8-ILU3-ELU2-RED",
+
+// --------------------------------
+plot "bench_SWP16.txt"  using 1:2 linecolor 2 with lines title "MOTIONSWP16-BAS",
+"bench_SWP16.txt"  using 1:3 linecolor 3 with lines title "MOTIONSWP16-ROT",
+"bench_SWP16.txt"  using 1:4 linecolor 4 with lines title "MOTIONSWP16-RED",
+"bench_SWP16.txt"  using 1:5 linecolor 5 with lines title "MOTIONSWP16-ILU3",
+"bench_SWP16.txt"  using 1:6 linecolor 6 with lines title "MOTIONSWP16-ILU3-RED",
+"bench_SWP16.txt"  using 1:7 linecolor 7 with lines title "MOTIONSWP16-ELU2-RED",
+"bench_SWP16.txt"  using 1:8 linecolor 8 with lines title "MOTIONSWP16-ELU2-RED-FACTOR",
+"bench_SWP16.txt"  using 1:9 linecolor 9 with lines title "MOTIONSWP16-ILU3-ELU2-RED",
+
+// --------------------------------
+plot "bench_SWP32.txt"  using 1:2 linecolor 2 with lines title "MOTIONSWP32-BAS",
+"bench_SWP32.txt"  using 1:3 linecolor 3 with lines title "MOTIONSWP32-ROT",
+"bench_SWP32.txt"  using 1:4 linecolor 4 with lines title "MOTIONSWP32-RED",
+"bench_SWP32.txt"  using 1:5 linecolor 5 with lines title "MOTIONSWP32-ILU3",
+"bench_SWP32.txt"  using 1:6 linecolor 6 with lines title "MOTIONSWP32-ILU3-RED",
+"bench_SWP32.txt"  using 1:7 linecolor 7 with lines title "MOTIONSWP32-ELU2-RED",
+"bench_SWP32.txt"  using 1:8 linecolor 8 with lines title "MOTIONSWP32-ELU2-RED-FACTOR",
+"bench_SWP32.txt"  using 1:9 linecolor 9 with lines title "MOTIONSWP32-ILU3-ELU2-RED",

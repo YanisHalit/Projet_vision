@@ -1420,7 +1420,7 @@ void test_swp32_morpho_max_routine(int h, int w0)
     uint8 **X;
     uint8 **Y_bas_originale;
 
-    uint32**T_bas                     ; 
+    uint32**T_bas                     ;
     uint32**T_rot                     ;
     uint32**T_red                     ;
     uint32**T_ilu3                    ;
@@ -1429,7 +1429,7 @@ void test_swp32_morpho_max_routine(int h, int w0)
     uint32**T_elu2rf                  ;
     uint32**T_ilu3_elu2r              ;
     uint32**T_ilu3_elu2rf             ;
-    
+
     uint8 **Y_bas, **Y_rot, **Y_red, **Y_ilu3, **Y_ilu3r, **Y_elu2r, **Y_elu2rf, **Y_ilu3_elu2r, **Y_ilu3_elu2rf;
 
 
@@ -2164,7 +2164,7 @@ void bench_swp8_morpho_ouverture_in(int n0, int n1, int nstep)
 {
     // fichiers textes avec résultats
     char str[1000];
-    const char* filename = "./bench_txt/Pack Unpack interne/bench_swp8_OUVERTURE_in.txt";
+    const char* filename = "./bench_txt/pack_unpack_interne/bench_swp8_OUVERTURE_in.txt";
     FILE* output_file = fopen(filename, "w+");
     if (!output_file) {
         perror("fopen");
@@ -2515,6 +2515,66 @@ void bench_swp8_morpho_ouverture_in(int n0, int n1, int nstep)
         fprintf(output_file, "\n");
         putchar('\n');
     }
+
+
+    //------- init  -------
+    free_ui8matrix(X,                           0-2*r, h-1+2*r, 0-2*r, w1-1+2*r);
+    free_ui8matrix(T_basic,                     0-2*r, h-1+2*r, 0-2*r, w1-1+2*r);
+    free_ui8matrix(Y_basic,                     0, h-1, 0, w1-1);
+
+    // Pipeline init
+    // X packée pipeline
+    free_ui8matrix(X_P_bas,                             0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    free_ui8matrix(X_P_red,                             0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    free_ui8matrix(X_P_ilu3_red,                        0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    free_ui8matrix(X_P_elu2_red,                        0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    free_ui8matrix(X_P_elu2_red_factor,                 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    free_ui8matrix(X_P_ilu3_elu2_red,                   0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    free_ui8matrix(X_P_ilu3_elu2_red_factor,            0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    // T_P premier traitement pipeline
+    free_ui8matrix(T_P_bas                 , 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    free_ui8matrix(T_P_red                 , 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    free_ui8matrix(T_P_ilu3_red            , 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    free_ui8matrix(T_P_elu2_red            , 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    free_ui8matrix(T_P_elu2_red_factor     , 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    free_ui8matrix(T_P_ilu3_elu2_red       , 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    free_ui8matrix(T_P_ilu3_elu2_red_factor, 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    // Y_P deuxieme traitement pipeline
+    free_ui8matrix(Y_P_bas,                          0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    free_ui8matrix(Y_P_red,                          0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    free_ui8matrix(Y_P_ilu3_red,                     0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    free_ui8matrix(Y_P_elu2_red,                     0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    free_ui8matrix(Y_P_elu2_red_factor,              0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    free_ui8matrix(Y_P_ilu3_elu2_red,                0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    free_ui8matrix(Y_P_ilu3_elu2_red_factor,         0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    // Y final pipeline
+    free_ui8matrix(Y_pipeline_bas               , 0, h-1, 0, w1-1);
+    free_ui8matrix(Y_pipeline_red                 , 0, h-1, 0, w1-1);
+    free_ui8matrix(Y_pipeline_ilu3_red            , 0, h-1, 0, w1-1);
+    free_ui8matrix(Y_pipeline_elu2_red            , 0, h-1, 0, w1-1);
+    free_ui8matrix(Y_pipeline_elu2_red_factor     , 0, h-1, 0, w1-1);
+    free_ui8matrix(Y_pipeline_ilu3_elu2_red       , 0, h-1, 0, w1-1);
+    free_ui8matrix(Y_pipeline_ilu3_elu2_red_factor, 0, h-1, 0, w1-1);
+
+    // Fusion
+    // X packé fusion
+    free_ui8matrix(X_P_bas_fusion,                             0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    free_ui8matrix(X_P_ilu5_red_fusion,                             0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    free_ui8matrix(X_P_ilu5_elu2_red_fusion,                   0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    free_ui8matrix(X_P_ilu5_elu2_red_factor_fusion,            0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    // Y final packé fusion
+    free_ui8matrix(Y_P_bas_fusion, 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    free_ui8matrix(Y_P_ilu5_red_fusion, 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    free_ui8matrix(Y_P_ilu5_elu2_red_fusion, 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    free_ui8matrix(Y_P_ilu5_elu2_red_factor_fusion, 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    // Y final fusion
+    free_ui8matrix(Y_fusion_bas ,0, h-1, 0, w1-1);
+    free_ui8matrix(Y_fusion_ilu5_red, 0, h-1, 0, w1-1);
+    free_ui8matrix(Y_fusion_ilu5_elu2_red, 0, h-1, 0, w1-1);
+    free_ui8matrix(Y_fusion_ilu5_elu2_red_factor, 0, h-1, 0, w1-1);
+
+    puts("free done.");
+
     fclose(output_file);
 }
 // ------------------------------ Bench SWP16 ouverture in ----------------------------------
@@ -2522,7 +2582,7 @@ void bench_swp16_morpho_ouverture_in(int n0, int n1, int nstep)
 {
     // fichiers textes avec résultats
     char str[1000];
-    const char* filename = "./bench_txt/Pack Unpack interne/bench_swp16_OUVERTURE_in.txt";
+    const char* filename = "./bench_txt/pack_unpack_interne/bench_swp16_OUVERTURE_in.txt";
     FILE* output_file = fopen(filename, "w+");
     if (!output_file) {
         perror("fopen");
@@ -2749,7 +2809,7 @@ void bench_swp16_morpho_ouverture_in(int n0, int n1, int nstep)
         h = n;
         w8 = n / 16;
         w1 = n / 1;
-        
+
         //printf("i = %3d\n", n);
 
         resize_ui8matrix(X , 0-2*r, h-1+2*r, 0-2*r, w1-1+2*r);
@@ -2877,6 +2937,58 @@ void bench_swp16_morpho_ouverture_in(int n0, int n1, int nstep)
         putchar('\n');
         fprintf(output_file, "\n");
     }
+
+    // X packée pipeline
+    free_ui16matrix(X_P_bas,                             0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    free_ui16matrix(X_P_red,                             0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    free_ui16matrix(X_P_ilu3_red,                        0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    free_ui16matrix(X_P_elu2_red,                        0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    free_ui16matrix(X_P_elu2_red_factor,                 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    free_ui16matrix(X_P_ilu3_elu2_red,                   0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    free_ui16matrix(X_P_ilu3_elu2_red_factor,            0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    // T_P premier traitement pipeline
+    free_ui16matrix(T_P_bas                 , 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    free_ui16matrix(T_P_red                 , 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    free_ui16matrix(T_P_ilu3_red            , 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    free_ui16matrix(T_P_elu2_red            , 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    free_ui16matrix(T_P_elu2_red_factor     , 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    free_ui16matrix(T_P_ilu3_elu2_red       , 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    free_ui16matrix(T_P_ilu3_elu2_red_factor, 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    // Y_P deuxieme traitement pipeline
+    free_ui16matrix(Y_P_bas,                          0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    free_ui16matrix(Y_P_red,                          0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    free_ui16matrix(Y_P_ilu3_red,                     0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    free_ui16matrix(Y_P_elu2_red,                     0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    free_ui16matrix(Y_P_elu2_red_factor,              0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    free_ui16matrix(Y_P_ilu3_elu2_red,                0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    free_ui16matrix(Y_P_ilu3_elu2_red_factor,         0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    // Y final pipeline
+    free_ui8matrix(Y_pipeline_bas               , 0, h-1, 0, w1-1);
+    free_ui8matrix(Y_pipeline_red                 , 0, h-1, 0, w1-1);
+    free_ui8matrix(Y_pipeline_ilu3_red            , 0, h-1, 0, w1-1);
+    free_ui8matrix(Y_pipeline_elu2_red            , 0, h-1, 0, w1-1);
+    free_ui8matrix(Y_pipeline_elu2_red_factor     , 0, h-1, 0, w1-1);
+    free_ui8matrix(Y_pipeline_ilu3_elu2_red       , 0, h-1, 0, w1-1);
+    free_ui8matrix(Y_pipeline_ilu3_elu2_red_factor, 0, h-1, 0, w1-1);
+
+    // Fusion
+    // X packé fusion
+    free_ui16matrix(X_P_bas_fusion,                             0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    free_ui16matrix(X_P_ilu5_red_fusion,                             0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    free_ui16matrix(X_P_ilu5_elu2_red_fusion,                   0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    free_ui16matrix(X_P_ilu5_elu2_red_factor_fusion,            0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    // Y final packé fusion
+    free_ui16matrix(Y_P_bas_fusion, 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    free_ui16matrix(Y_P_ilu5_red_fusion, 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    free_ui16matrix(Y_P_ilu5_elu2_red_fusion, 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    free_ui16matrix(Y_P_ilu5_elu2_red_factor_fusion, 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    // Y final fusion
+    free_ui8matrix(Y_fusion_bas ,0, h-1, 0, w1-1);
+    free_ui8matrix(Y_fusion_ilu5_red, 0, h-1, 0, w1-1);
+    free_ui8matrix(Y_fusion_ilu5_elu2_red, 0, h-1, 0, w1-1);
+    free_ui8matrix(Y_fusion_ilu5_elu2_red_factor, 0, h-1, 0, w1-1);
+
+    puts("free done.");
     fclose(output_file);
 }
 // ------------------------------ Bench SWP32 ouverture in ----------------------------------
@@ -2884,7 +2996,7 @@ void bench_swp32_morpho_ouverture_in(int n0, int n1, int nstep)
 {
     // fichiers textes avec résultats
     char str[1000];
-    const char* filename = "./bench_txt/Pack Unpack interne/bench_swp32_OUVERTURE_in.txt";
+    const char* filename = "./bench_txt/pack_unpack_interne/bench_swp32_OUVERTURE_in.txt";
     FILE* output_file = fopen(filename, "w+");
     if (!output_file) {
         perror("fopen");
@@ -3239,6 +3351,63 @@ void bench_swp32_morpho_ouverture_in(int n0, int n1, int nstep)
         putchar('\n');
         fprintf(output_file, "\n");
     }
+
+    free_ui8matrix(X,                     0-2*r, h-1+2*r, 0-2*r, w1-1+2*r);
+    free_ui8matrix(T_basic,                     0-2*r, h-1+2*r, 0-2*r, w1-1+2*r);
+    free_ui8matrix(Y_basic,                     0, h-1, 0, w1-1);
+
+    // Pipeline init
+    // X packée pipeline
+    free_ui32matrix(X_P_bas,                             0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    free_ui32matrix(X_P_red,                             0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    free_ui32matrix(X_P_ilu3_red,                        0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    free_ui32matrix(X_P_elu2_red,                        0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    free_ui32matrix(X_P_elu2_red_factor,                 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    free_ui32matrix(X_P_ilu3_elu2_red,                   0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    free_ui32matrix(X_P_ilu3_elu2_red_factor,            0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    // T_P premier traitement pipeline
+    free_ui32matrix(T_P_bas                 , 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    free_ui32matrix(T_P_red                 , 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    free_ui32matrix(T_P_ilu3_red            , 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    free_ui32matrix(T_P_elu2_red            , 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    free_ui32matrix(T_P_elu2_red_factor     , 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    free_ui32matrix(T_P_ilu3_elu2_red       , 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    free_ui32matrix(T_P_ilu3_elu2_red_factor, 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    // Y_P deuxieme traitement pipeline
+    free_ui32matrix(Y_P_bas,                          0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    free_ui32matrix(Y_P_red,                          0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    free_ui32matrix(Y_P_ilu3_red,                     0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    free_ui32matrix(Y_P_elu2_red,                     0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    free_ui32matrix(Y_P_elu2_red_factor,              0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    free_ui32matrix(Y_P_ilu3_elu2_red,                0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    free_ui32matrix(Y_P_ilu3_elu2_red_factor,         0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    // Y final pipeline
+    free_ui8matrix(Y_pipeline_bas               , 0, h-1, 0, w1-1);
+    free_ui8matrix(Y_pipeline_red                 , 0, h-1, 0, w1-1);
+    free_ui8matrix(Y_pipeline_ilu3_red            , 0, h-1, 0, w1-1);
+    free_ui8matrix(Y_pipeline_elu2_red            , 0, h-1, 0, w1-1);
+    free_ui8matrix(Y_pipeline_elu2_red_factor     , 0, h-1, 0, w1-1);
+    free_ui8matrix(Y_pipeline_ilu3_elu2_red       , 0, h-1, 0, w1-1);
+    free_ui8matrix(Y_pipeline_ilu3_elu2_red_factor, 0, h-1, 0, w1-1);
+
+    // Fusion
+    // X packé fusion
+    free_ui32matrix(X_P_bas_fusion,                             0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    free_ui32matrix(X_P_ilu5_red_fusion,                             0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    free_ui32matrix(X_P_ilu5_elu2_red_fusion,                   0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    free_ui32matrix(X_P_ilu5_elu2_red_factor_fusion,            0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    // Y final packé fusion
+    free_ui32matrix(Y_P_bas_fusion, 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    free_ui32matrix(Y_P_ilu5_red_fusion, 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    free_ui32matrix(Y_P_ilu5_elu2_red_fusion, 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    free_ui32matrix(Y_P_ilu5_elu2_red_factor_fusion, 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    // Y final fusion
+    free_ui8matrix(Y_fusion_bas ,0, h-1, 0, w1-1);
+    free_ui8matrix(Y_fusion_ilu5_red, 0, h-1, 0, w1-1);
+    free_ui8matrix(Y_fusion_ilu5_elu2_red, 0, h-1, 0, w1-1);
+    free_ui8matrix(Y_fusion_ilu5_elu2_red_factor, 0, h-1, 0, w1-1);
+
+    puts("free done.");
     fclose(output_file);
 }
 // ------------------------------------------------------------------------------------
@@ -3249,7 +3418,7 @@ void bench_swp8_morpho_max_in(int n0, int n1, int nstep)
 {
     // fichiers textes avec résultats
     char str[1000];
-    const char* filename = "./bench_txt/Pack Unpack interne/bench_swp8_MAX_in.txt";
+    const char* filename = "./bench_txt/pack_unpack_interne/bench_swp8_MAX_in.txt";
     FILE* output_file = fopen(filename, "w+");
     if (!output_file) {
         perror("fopen");
@@ -3465,6 +3634,40 @@ void bench_swp8_morpho_max_in(int n0, int n1, int nstep)
         putchar('\n');
 
     }
+
+    free_ui8matrix(X,                     0-2*r, h-1+2*r, 0-2*r, w1-1+2*r);
+    free_ui8matrix(Y_basic,               0, h-1, 0, w1-1);
+
+    free_ui8matrix(T_bas,         0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    free_ui8matrix(T_rot,         0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    free_ui8matrix(T_red,         0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    free_ui8matrix(T_ilu3,        0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    free_ui8matrix(T_ilu3r,       0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    free_ui8matrix(T_elu2r,       0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    free_ui8matrix(T_elu2rf,      0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    free_ui8matrix(T_ilu3_elu2r,      0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    free_ui8matrix(T_ilu3_elu2rf, 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+
+    free_ui8matrix(Y_P_rot,         0, h-1, 0, (w1-1)/8);
+    free_ui8matrix(Y_P_red,         0, h-1, 0, (w1-1)/8);
+    free_ui8matrix(Y_P_ilu3,        0, h-1, 0, (w1-1)/8);
+    free_ui8matrix(Y_P_ilu3r,       0, h-1, 0, (w1-1)/8);
+    free_ui8matrix(Y_P_elu2r,       0, h-1, 0, (w1-1)/8);
+    free_ui8matrix(Y_P_elu2rf,      0, h-1, 0, (w1-1)/8);
+    free_ui8matrix(Y_P_ilu3_elu2r,  0, h-1, 0, (w1-1)/8);
+    free_ui8matrix(Y_P_ilu3_elu2rf, 0, h-1, 0, (w1-1)/8);
+
+    free_ui8matrix(Y_bas,         0, h-1, 0, w1-1);
+    free_ui8matrix(Y_rot,         0, h-1, 0, w1-1);
+    free_ui8matrix(Y_red,         0, h-1, 0, w1-1);
+    free_ui8matrix(Y_ilu3,        0, h-1, 0, w1-1);
+    free_ui8matrix(Y_ilu3r,       0, h-1, 0, w1-1);
+    free_ui8matrix(Y_elu2r,       0, h-1, 0, w1-1);
+    free_ui8matrix(Y_elu2rf,      0, h-1, 0, w1-1);
+    free_ui8matrix(Y_ilu3_elu2r,  0, h-1, 0, w1-1);
+    free_ui8matrix(Y_ilu3_elu2rf, 0, h-1, 0, w1-1);
+
+    puts("free done.");
     fclose(output_file);
 }
 // ------------------------------ Appel test SWP16 MAX in ----------------------------------
@@ -3472,7 +3675,7 @@ void bench_swp16_morpho_max_in(int n0, int n1, int nstep)
 {
     // fichiers textes avec résultats
     char str[1000];
-    const char* filename = "./bench_txt/Pack Unpack interne/bench_swp16MAX_in.txt";
+    const char* filename = "./bench_txt/pack_unpack_interne/bench_swp16MAX_in.txt";
     FILE* output_file = fopen(filename, "w+");
     if (!output_file) {
         perror("fopen");
@@ -3700,6 +3903,40 @@ void bench_swp16_morpho_max_in(int n0, int n1, int nstep)
         putchar('\n');
 
     }
+
+    free_ui8matrix(X,                     0-2*r, h-1+2*r, 0-2*r, w1-1+2*r);
+    free_ui8matrix(Y_basic,               0, h-1, 0, w1-1);
+
+    free_ui16matrix(T_bas,         0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    free_ui16matrix(T_rot,         0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    free_ui16matrix(T_red,         0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    free_ui16matrix(T_ilu3,        0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    free_ui16matrix(T_ilu3r,       0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    free_ui16matrix(T_elu2r,       0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    free_ui16matrix(T_elu2rf,      0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    free_ui16matrix(T_ilu3_elu2r,      0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    free_ui16matrix(T_ilu3_elu2rf, 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+
+    free_ui16matrix(Y_P_rot,         0, h-1, 0, (w1-1)/16);
+    free_ui16matrix(Y_P_red,         0, h-1, 0, (w1-1)/16);
+    free_ui16matrix(Y_P_ilu3,        0, h-1, 0, (w1-1)/16);
+    free_ui16matrix(Y_P_ilu3r,       0, h-1, 0, (w1-1)/16);
+    free_ui16matrix(Y_P_elu2r,       0, h-1, 0, (w1-1)/16);
+    free_ui16matrix(Y_P_elu2rf,      0, h-1, 0, (w1-1)/16);
+    free_ui16matrix(Y_P_ilu3_elu2r,  0, h-1, 0, (w1-1)/16);
+    free_ui16matrix(Y_P_ilu3_elu2rf, 0, h-1, 0, (w1-1)/16);
+
+    free_ui8matrix(Y_bas,         0, h-1, 0, w1-1);
+    free_ui8matrix(Y_rot,         0, h-1, 0, w1-1);
+    free_ui8matrix(Y_red,         0, h-1, 0, w1-1);
+    free_ui8matrix(Y_ilu3,        0, h-1, 0, w1-1);
+    free_ui8matrix(Y_ilu3r,       0, h-1, 0, w1-1);
+    free_ui8matrix(Y_elu2r,       0, h-1, 0, w1-1);
+    free_ui8matrix(Y_elu2rf,      0, h-1, 0, w1-1);
+    free_ui8matrix(Y_ilu3_elu2r,  0, h-1, 0, w1-1);
+    free_ui8matrix(Y_ilu3_elu2rf, 0, h-1, 0, w1-1);
+    
+    puts("free done.");
     fclose(output_file);
 }
 // ------------------------------ Appel test SWP32 MAX in ----------------------------------
@@ -3707,7 +3944,7 @@ void bench_swp32_morpho_max_in(int n0, int n1, int nstep)
 {
     // fichiers textes avec résultats
     char str[1000];
-    const char* filename = "./bench_txt/Pack Unpack interne/bench_swp32_MAX_in.txt";
+    const char* filename = "./bench_txt/pack_unpack_interne/bench_swp32_MAX_in.txt";
     FILE* output_file = fopen(filename, "w+");
     if (!output_file) {
         perror("fopen");
@@ -3937,6 +4174,39 @@ void bench_swp32_morpho_max_in(int n0, int n1, int nstep)
 
     }
 
+    free_ui8matrix(X,                     0-2*r, h-1+2*r, 0-2*r, w1-1+2*r);
+    free_ui8matrix(Y_basic,               0, h-1, 0, w1-1);
+
+    free_ui32matrix(T_bas,         0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    free_ui32matrix(T_rot,         0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    free_ui32matrix(T_red,         0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    free_ui32matrix(T_ilu3,        0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    free_ui32matrix(T_ilu3r,       0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    free_ui32matrix(T_elu2r,       0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    free_ui32matrix(T_elu2rf,      0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    free_ui32matrix(T_ilu3_elu2r,      0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    free_ui32matrix(T_ilu3_elu2rf, 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+
+    free_ui32matrix(Y_P_rot,         0, h-1, 0, (w1-1)/32);
+    free_ui32matrix(Y_P_red,         0, h-1, 0, (w1-1)/32);
+    free_ui32matrix(Y_P_ilu3,        0, h-1, 0, (w1-1)/32);
+    free_ui32matrix(Y_P_ilu3r,       0, h-1, 0, (w1-1)/32);
+    free_ui32matrix(Y_P_elu2r,       0, h-1, 0, (w1-1)/32);
+    free_ui32matrix(Y_P_elu2rf,      0, h-1, 0, (w1-1)/32);
+    free_ui32matrix(Y_P_ilu3_elu2r,  0, h-1, 0, (w1-1)/32);
+    free_ui32matrix(Y_P_ilu3_elu2rf, 0, h-1, 0, (w1-1)/32);
+
+    free_ui8matrix(Y_bas,         0, h-1, 0, w1-1);
+    free_ui8matrix(Y_rot,         0, h-1, 0, w1-1);
+    free_ui8matrix(Y_red,         0, h-1, 0, w1-1);
+    free_ui8matrix(Y_ilu3,        0, h-1, 0, w1-1);
+    free_ui8matrix(Y_ilu3r,       0, h-1, 0, w1-1);
+    free_ui8matrix(Y_elu2r,       0, h-1, 0, w1-1);
+    free_ui8matrix(Y_elu2rf,      0, h-1, 0, w1-1);
+    free_ui8matrix(Y_ilu3_elu2r,  0, h-1, 0, w1-1);
+    free_ui8matrix(Y_ilu3_elu2rf, 0, h-1, 0, w1-1);
+
+    puts("free done.");
     fclose(output_file);
 
 }
@@ -3950,7 +4220,7 @@ void bench_swp8_morpho_ouverture_out(int n0, int n1, int nstep)
 {
     // fichiers textes avec résultats
     char str[1000];
-    const char* filename = "./bench_txt/Pack Unpack externe/bench_swp8_OUVERTURE_ext.txt";
+    const char* filename = "./bench_txt/pack_unpack_externe/bench_swp8_OUVERTURE_ext.txt";
     FILE* output_file = fopen(filename, "w+");
     if (!output_file) {
         perror("fopen");
@@ -4329,6 +4599,63 @@ void bench_swp8_morpho_ouverture_out(int n0, int n1, int nstep)
         fprintf(output_file, "\n");
         putchar('\n');
     }
+
+   free_ui8matrix(X,                           0-2*r, h-1+2*r, 0-2*r, w1-1+2*r);
+    free_ui8matrix(T_basic,                     0-2*r, h-1+2*r, 0-2*r, w1-1+2*r);
+    free_ui8matrix(Y_basic,                     0, h-1, 0, w1-1);
+
+    // Pipeline init
+    // X packée pipeline
+    free_ui8matrix(X_P_bas,                             0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    free_ui8matrix(X_P_red,                             0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    free_ui8matrix(X_P_ilu3_red,                        0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    free_ui8matrix(X_P_elu2_red,                        0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    free_ui8matrix(X_P_elu2_red_factor,                 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    free_ui8matrix(X_P_ilu3_elu2_red,                   0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    free_ui8matrix(X_P_ilu3_elu2_red_factor,            0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    // T_P premier traitement pipeline
+    free_ui8matrix(T_P_bas                 , 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    free_ui8matrix(T_P_red                 , 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    free_ui8matrix(T_P_ilu3_red            , 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    free_ui8matrix(T_P_elu2_red            , 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    free_ui8matrix(T_P_elu2_red_factor     , 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    free_ui8matrix(T_P_ilu3_elu2_red       , 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    free_ui8matrix(T_P_ilu3_elu2_red_factor, 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    // Y_P deuxieme traitement pipeline
+    free_ui8matrix(Y_P_bas,                          0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    free_ui8matrix(Y_P_red,                          0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    free_ui8matrix(Y_P_ilu3_red,                     0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    free_ui8matrix(Y_P_elu2_red,                     0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    free_ui8matrix(Y_P_elu2_red_factor,              0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    free_ui8matrix(Y_P_ilu3_elu2_red,                0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    free_ui8matrix(Y_P_ilu3_elu2_red_factor,         0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    // Y final pipeline
+    free_ui8matrix(Y_pipeline_bas               , 0, h-1, 0, w1-1);
+    free_ui8matrix(Y_pipeline_red                 , 0, h-1, 0, w1-1);
+    free_ui8matrix(Y_pipeline_ilu3_red            , 0, h-1, 0, w1-1);
+    free_ui8matrix(Y_pipeline_elu2_red            , 0, h-1, 0, w1-1);
+    free_ui8matrix(Y_pipeline_elu2_red_factor     , 0, h-1, 0, w1-1);
+    free_ui8matrix(Y_pipeline_ilu3_elu2_red       , 0, h-1, 0, w1-1);
+    free_ui8matrix(Y_pipeline_ilu3_elu2_red_factor, 0, h-1, 0, w1-1);
+
+    // Fusion
+    // X packé fusion
+    free_ui8matrix(X_P_bas_fusion,                             0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    free_ui8matrix(X_P_ilu5_red_fusion,                             0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    free_ui8matrix(X_P_ilu5_elu2_red_fusion,                   0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    free_ui8matrix(X_P_ilu5_elu2_red_factor_fusion,            0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    // Y final packé fusion
+    free_ui8matrix(Y_P_bas_fusion, 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    free_ui8matrix(Y_P_ilu5_red_fusion, 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    free_ui8matrix(Y_P_ilu5_elu2_red_fusion, 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    free_ui8matrix(Y_P_ilu5_elu2_red_factor_fusion, 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    // Y final fusion
+    free_ui8matrix(Y_fusion_bas ,0, h-1, 0, w1-1);
+    free_ui8matrix(Y_fusion_ilu5_red, 0, h-1, 0, w1-1);
+    free_ui8matrix(Y_fusion_ilu5_elu2_red, 0, h-1, 0, w1-1);
+    free_ui8matrix(Y_fusion_ilu5_elu2_red_factor, 0, h-1, 0, w1-1);
+
+    puts("free done.");
     fclose(output_file);
 }
 // ------------------------------ Bench SWP16 ouverture ext ----------------------------------
@@ -4336,7 +4663,7 @@ void bench_swp16_morpho_ouverture_out(int n0, int n1, int nstep)
 {
     // fichiers textes avec résultats
     char str[1000];
-    const char* filename = "./bench_txt/Pack Unpack externe/bench_swp16_OUVERTURE_ext.txt";
+    const char* filename = "./bench_txt/pack_unpack_externe/bench_swp16_OUVERTURE_ext.txt";
     FILE* output_file = fopen(filename, "w+");
     if (!output_file) {
         perror("fopen");
@@ -4720,6 +5047,64 @@ void bench_swp16_morpho_ouverture_out(int n0, int n1, int nstep)
         putchar('\n');
         fprintf(output_file, "\n");
     }
+
+    free_ui8matrix(X,                     0-2*r, h-1+2*r, 0-2*r, w1-1+2*r);
+    free_ui8matrix(T_basic,                     0-2*r, h-1+2*r, 0-2*r, w1-1+2*r);
+    free_ui8matrix(Y_basic,                     0, h-1, 0, w1-1);
+
+    // Pipeline init
+    // X packée pipeline
+    free_ui16matrix(X_P_bas,                             0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    free_ui16matrix(X_P_red,                             0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    free_ui16matrix(X_P_ilu3_red,                        0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    free_ui16matrix(X_P_elu2_red,                        0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    free_ui16matrix(X_P_elu2_red_factor,                 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    free_ui16matrix(X_P_ilu3_elu2_red,                   0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    free_ui16matrix(X_P_ilu3_elu2_red_factor,            0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    // T_P premier traitement pipeline
+    free_ui16matrix(T_P_bas                 , 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    free_ui16matrix(T_P_red                 , 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    free_ui16matrix(T_P_ilu3_red            , 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    free_ui16matrix(T_P_elu2_red            , 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    free_ui16matrix(T_P_elu2_red_factor     , 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    free_ui16matrix(T_P_ilu3_elu2_red       , 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    free_ui16matrix(T_P_ilu3_elu2_red_factor, 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    // Y_P deuxieme traitement pipeline
+    free_ui16matrix(Y_P_bas,                          0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    free_ui16matrix(Y_P_red,                          0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    free_ui16matrix(Y_P_ilu3_red,                     0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    free_ui16matrix(Y_P_elu2_red,                     0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    free_ui16matrix(Y_P_elu2_red_factor,              0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    free_ui16matrix(Y_P_ilu3_elu2_red,                0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    free_ui16matrix(Y_P_ilu3_elu2_red_factor,         0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    // Y final pipeline
+    free_ui8matrix(Y_pipeline_bas               , 0, h-1, 0, w1-1);
+    free_ui8matrix(Y_pipeline_red                 , 0, h-1, 0, w1-1);
+    free_ui8matrix(Y_pipeline_ilu3_red            , 0, h-1, 0, w1-1);
+    free_ui8matrix(Y_pipeline_elu2_red            , 0, h-1, 0, w1-1);
+    free_ui8matrix(Y_pipeline_elu2_red_factor     , 0, h-1, 0, w1-1);
+    free_ui8matrix(Y_pipeline_ilu3_elu2_red       , 0, h-1, 0, w1-1);
+    free_ui8matrix(Y_pipeline_ilu3_elu2_red_factor, 0, h-1, 0, w1-1);
+
+    // Fusion
+    // X packé fusion
+    free_ui16matrix(X_P_bas_fusion,                             0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    free_ui16matrix(X_P_ilu5_red_fusion,                             0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    free_ui16matrix(X_P_ilu5_elu2_red_fusion,                   0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    free_ui16matrix(X_P_ilu5_elu2_red_factor_fusion,            0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    // Y final packé fusion
+    free_ui16matrix(Y_P_bas_fusion, 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    free_ui16matrix(Y_P_ilu5_red_fusion, 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    free_ui16matrix(Y_P_ilu5_elu2_red_fusion, 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    free_ui16matrix(Y_P_ilu5_elu2_red_factor_fusion, 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    // Y final fusion
+    free_ui8matrix(Y_fusion_bas ,0, h-1, 0, w1-1);
+    free_ui8matrix(Y_fusion_ilu5_red, 0, h-1, 0, w1-1);
+    free_ui8matrix(Y_fusion_ilu5_elu2_red, 0, h-1, 0, w1-1);
+    free_ui8matrix(Y_fusion_ilu5_elu2_red_factor, 0, h-1, 0, w1-1);
+
+    puts("free done.");
+
     fclose(output_file);
 }
 // ------------------------------ Bench SWP32 ouverture ext ----------------------------------
@@ -4727,7 +5112,7 @@ void bench_swp32_morpho_ouverture_out(int n0, int n1, int nstep)
 {
     // fichiers textes avec résultats
     char str[1000];
-    const char* filename = "./bench_txt/Pack Unpack externe/bench_swp32_OUVERTURE_ext.txt";
+    const char* filename = "./bench_txt/pack_unpack_externe/bench_swp32_OUVERTURE_ext.txt";
     FILE* output_file = fopen(filename, "w+");
     if (!output_file) {
         perror("fopen");
@@ -5111,6 +5496,64 @@ void bench_swp32_morpho_ouverture_out(int n0, int n1, int nstep)
         putchar('\n');
         fprintf(output_file, "\n");
     }
+
+    free_ui8matrix(X,                     0-2*r, h-1+2*r, 0-2*r, w1-1+2*r);
+    free_ui8matrix(T_basic,                     0-2*r, h-1+2*r, 0-2*r, w1-1+2*r);
+    free_ui8matrix(Y_basic,                     0, h-1, 0, w1-1);
+
+    // Pipeline init
+    // X packée pipeline
+    free_ui32matrix(X_P_bas,                             0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    free_ui32matrix(X_P_red,                             0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    free_ui32matrix(X_P_ilu3_red,                        0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    free_ui32matrix(X_P_elu2_red,                        0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    free_ui32matrix(X_P_elu2_red_factor,                 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    free_ui32matrix(X_P_ilu3_elu2_red,                   0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    free_ui32matrix(X_P_ilu3_elu2_red_factor,            0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    // T_P premier traitement pipeline
+    free_ui32matrix(T_P_bas                 , 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    free_ui32matrix(T_P_red                 , 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    free_ui32matrix(T_P_ilu3_red            , 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    free_ui32matrix(T_P_elu2_red            , 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    free_ui32matrix(T_P_elu2_red_factor     , 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    free_ui32matrix(T_P_ilu3_elu2_red       , 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    free_ui32matrix(T_P_ilu3_elu2_red_factor, 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    // Y_P deuxieme traitement pipeline
+    free_ui32matrix(Y_P_bas,                          0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    free_ui32matrix(Y_P_red,                          0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    free_ui32matrix(Y_P_ilu3_red,                     0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    free_ui32matrix(Y_P_elu2_red,                     0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    free_ui32matrix(Y_P_elu2_red_factor,              0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    free_ui32matrix(Y_P_ilu3_elu2_red,                0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    free_ui32matrix(Y_P_ilu3_elu2_red_factor,         0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    // Y final pipeline
+    free_ui8matrix(Y_pipeline_bas               , 0, h-1, 0, w1-1);
+    free_ui8matrix(Y_pipeline_red                 , 0, h-1, 0, w1-1);
+    free_ui8matrix(Y_pipeline_ilu3_red            , 0, h-1, 0, w1-1);
+    free_ui8matrix(Y_pipeline_elu2_red            , 0, h-1, 0, w1-1);
+    free_ui8matrix(Y_pipeline_elu2_red_factor     , 0, h-1, 0, w1-1);
+    free_ui8matrix(Y_pipeline_ilu3_elu2_red       , 0, h-1, 0, w1-1);
+    free_ui8matrix(Y_pipeline_ilu3_elu2_red_factor, 0, h-1, 0, w1-1);
+
+    // Fusion
+    // X packé fusion
+    free_ui32matrix(X_P_bas_fusion,                             0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    free_ui32matrix(X_P_ilu5_red_fusion,                             0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    free_ui32matrix(X_P_ilu5_elu2_red_fusion,                   0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    free_ui32matrix(X_P_ilu5_elu2_red_factor_fusion,            0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    // Y final packé fusion
+    free_ui32matrix(Y_P_bas_fusion, 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    free_ui32matrix(Y_P_ilu5_red_fusion, 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    free_ui32matrix(Y_P_ilu5_elu2_red_fusion, 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    free_ui32matrix(Y_P_ilu5_elu2_red_factor_fusion, 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    // Y final fusion
+    free_ui8matrix(Y_fusion_bas ,0, h-1, 0, w1-1);
+    free_ui8matrix(Y_fusion_ilu5_red, 0, h-1, 0, w1-1);
+    free_ui8matrix(Y_fusion_ilu5_elu2_red, 0, h-1, 0, w1-1);
+    free_ui8matrix(Y_fusion_ilu5_elu2_red_factor, 0, h-1, 0, w1-1);
+
+    puts("free done.");
+
     fclose(output_file);
 }
 // ------------------------------------------------------------------------------------
@@ -5121,7 +5564,7 @@ void bench_swp8_morpho_max_out(int n0, int n1, int nstep)
 {
     // fichiers textes avec résultats
     char str[1000];
-    const char* filename = "./bench_txt/Pack Unpack externe/bench_swp8_MAX_ext.txt";
+    const char* filename = "./bench_txt/pack_unpack_externe/bench_swp8_MAX_ext.txt";
     FILE* output_file = fopen(filename, "w+");
     if (!output_file) {
         perror("fopen");
@@ -5357,6 +5800,41 @@ void bench_swp8_morpho_max_out(int n0, int n1, int nstep)
         putchar('\n');
 
     }
+
+    free_ui8matrix(X,                     0-2*r, h-1+2*r, 0-2*r, w1-1+2*r);
+    free_ui8matrix(Y_basic,               0, h-1, 0, w1-1);
+
+    free_ui8matrix(T_bas,         0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    free_ui8matrix(T_rot,         0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    free_ui8matrix(T_red,         0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    free_ui8matrix(T_ilu3,        0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    free_ui8matrix(T_ilu3r,       0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    free_ui8matrix(T_elu2r,       0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    free_ui8matrix(T_elu2rf,      0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    free_ui8matrix(T_ilu3_elu2r,      0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+    free_ui8matrix(T_ilu3_elu2rf, 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/8);
+
+    free_ui8matrix(Y_P_rot,         0, h-1, 0, (w1-1)/8);
+    free_ui8matrix(Y_P_red,         0, h-1, 0, (w1-1)/8);
+    free_ui8matrix(Y_P_ilu3,        0, h-1, 0, (w1-1)/8);
+    free_ui8matrix(Y_P_ilu3r,       0, h-1, 0, (w1-1)/8);
+    free_ui8matrix(Y_P_elu2r,       0, h-1, 0, (w1-1)/8);
+    free_ui8matrix(Y_P_elu2rf,      0, h-1, 0, (w1-1)/8);
+    free_ui8matrix(Y_P_ilu3_elu2r,  0, h-1, 0, (w1-1)/8);
+    free_ui8matrix(Y_P_ilu3_elu2rf, 0, h-1, 0, (w1-1)/8);
+
+    free_ui8matrix(Y_bas,         0, h-1, 0, w1-1);
+    free_ui8matrix(Y_rot,         0, h-1, 0, w1-1);
+    free_ui8matrix(Y_red,         0, h-1, 0, w1-1);
+    free_ui8matrix(Y_ilu3,        0, h-1, 0, w1-1);
+    free_ui8matrix(Y_ilu3r,       0, h-1, 0, w1-1);
+    free_ui8matrix(Y_elu2r,       0, h-1, 0, w1-1);
+    free_ui8matrix(Y_elu2rf,      0, h-1, 0, w1-1);
+    free_ui8matrix(Y_ilu3_elu2r,  0, h-1, 0, w1-1);
+    free_ui8matrix(Y_ilu3_elu2rf, 0, h-1, 0, w1-1);
+
+
+    puts("free done.");
     fclose(output_file);
 }
 // ------------------------------ Appel test SWP16 MAX ext ----------------------------------
@@ -5364,7 +5842,7 @@ void bench_swp16_morpho_max_out(int n0, int n1, int nstep)
 {
     // fichiers textes avec résultats
     char str[1000];
-    const char* filename = "./bench_txt/Pack Unpack externe/bench_swp16MAX_ext.txt";
+    const char* filename = "./bench_txt/pack_unpack_externe/bench_swp16_MAX_ext.txt";
     FILE* output_file = fopen(filename, "w+");
     if (!output_file) {
         perror("fopen");
@@ -5613,6 +6091,40 @@ void bench_swp16_morpho_max_out(int n0, int n1, int nstep)
         putchar('\n');
 
     }
+
+    free_ui8matrix(X,                     0-2*r, h-1+2*r, 0-2*r, w1-1+2*r);
+    free_ui8matrix(Y_basic,               0, h-1, 0, w1-1);
+
+    free_ui16matrix(T_bas,         0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    free_ui16matrix(T_rot,         0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    free_ui16matrix(T_red,         0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    free_ui16matrix(T_ilu3,        0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    free_ui16matrix(T_ilu3r,       0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    free_ui16matrix(T_elu2r,       0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    free_ui16matrix(T_elu2rf,      0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    free_ui16matrix(T_ilu3_elu2r,      0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+    free_ui16matrix(T_ilu3_elu2rf, 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/16);
+
+    free_ui16matrix(Y_P_rot,         0, h-1, 0, (w1-1)/16);
+    free_ui16matrix(Y_P_red,         0, h-1, 0, (w1-1)/16);
+    free_ui16matrix(Y_P_ilu3,        0, h-1, 0, (w1-1)/16);
+    free_ui16matrix(Y_P_ilu3r,       0, h-1, 0, (w1-1)/16);
+    free_ui16matrix(Y_P_elu2r,       0, h-1, 0, (w1-1)/16);
+    free_ui16matrix(Y_P_elu2rf,      0, h-1, 0, (w1-1)/16);
+    free_ui16matrix(Y_P_ilu3_elu2r,  0, h-1, 0, (w1-1)/16);
+    free_ui16matrix(Y_P_ilu3_elu2rf, 0, h-1, 0, (w1-1)/16);
+
+    free_ui8matrix(Y_bas,         0, h-1, 0, w1-1);
+    free_ui8matrix(Y_rot,         0, h-1, 0, w1-1);
+    free_ui8matrix(Y_red,         0, h-1, 0, w1-1);
+    free_ui8matrix(Y_ilu3,        0, h-1, 0, w1-1);
+    free_ui8matrix(Y_ilu3r,       0, h-1, 0, w1-1);
+    free_ui8matrix(Y_elu2r,       0, h-1, 0, w1-1);
+    free_ui8matrix(Y_elu2rf,      0, h-1, 0, w1-1);
+    free_ui8matrix(Y_ilu3_elu2r,  0, h-1, 0, w1-1);
+    free_ui8matrix(Y_ilu3_elu2rf, 0, h-1, 0, w1-1);
+
+    puts("free done.");
     fclose(output_file);
 }
 // ------------------------------ Appel test SWP32 MAX ext ----------------------------------
@@ -5620,7 +6132,7 @@ void bench_swp32_morpho_max_out(int n0, int n1, int nstep)
 {
     // fichiers textes avec résultats
     char str[1000];
-    const char* filename = "./bench_txt/Pack Unpack externe/bench_swp32_MAX_ext.txt";
+    const char* filename = "./bench_txt/pack_unpack_externe/bench_swp32_MAX_ext.txt";
     FILE* output_file = fopen(filename, "w+");
     if (!output_file) {
         perror("fopen");
@@ -5873,6 +6385,40 @@ void bench_swp32_morpho_max_out(int n0, int n1, int nstep)
 
     }
 
+    free_ui8matrix(X,                     0-2*r, h-1+2*r, 0-2*r, w1-1+2*r);
+    free_ui8matrix(Y_basic,               0, h-1, 0, w1-1);
+
+    free_ui32matrix(T_bas,         0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    free_ui32matrix(T_rot,         0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    free_ui32matrix(T_red,         0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    free_ui32matrix(T_ilu3,        0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    free_ui32matrix(T_ilu3r,       0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    free_ui32matrix(T_elu2r,       0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    free_ui32matrix(T_elu2rf,      0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    free_ui32matrix(T_ilu3_elu2r,      0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+    free_ui32matrix(T_ilu3_elu2rf, 0-2*r, h-1+2*r, 0-2*r, (w1-1+2*r)/32);
+
+    free_ui32matrix(Y_P_rot,         0, h-1, 0, (w1-1)/32);
+    free_ui32matrix(Y_P_red,         0, h-1, 0, (w1-1)/32);
+    free_ui32matrix(Y_P_ilu3,        0, h-1, 0, (w1-1)/32);
+    free_ui32matrix(Y_P_ilu3r,       0, h-1, 0, (w1-1)/32);
+    free_ui32matrix(Y_P_elu2r,       0, h-1, 0, (w1-1)/32);
+    free_ui32matrix(Y_P_elu2rf,      0, h-1, 0, (w1-1)/32);
+    free_ui32matrix(Y_P_ilu3_elu2r,  0, h-1, 0, (w1-1)/32);
+    free_ui32matrix(Y_P_ilu3_elu2rf, 0, h-1, 0, (w1-1)/32);
+
+    free_ui8matrix(Y_bas,         0, h-1, 0, w1-1);
+    free_ui8matrix(Y_rot,         0, h-1, 0, w1-1);
+    free_ui8matrix(Y_red,         0, h-1, 0, w1-1);
+    free_ui8matrix(Y_ilu3,        0, h-1, 0, w1-1);
+    free_ui8matrix(Y_ilu3r,       0, h-1, 0, w1-1);
+    free_ui8matrix(Y_elu2r,       0, h-1, 0, w1-1);
+    free_ui8matrix(Y_elu2rf,      0, h-1, 0, w1-1);
+    free_ui8matrix(Y_ilu3_elu2r,  0, h-1, 0, w1-1);
+    free_ui8matrix(Y_ilu3_elu2rf, 0, h-1, 0, w1-1);
+
+    puts("free done.");
+
     fclose(output_file);
 
 }
@@ -5883,55 +6429,51 @@ void bench_swp32_morpho_max_out(int n0, int n1, int nstep)
 // ------------------------------ Test SWP --------------------------------------------
 int test_swp(int argc, char* argv[]){
     puts("=== test_swp ===");
-    test_swp_morpho_max();
+    // test_swp_morpho_max();
     // test_swp_morpho_min();
     // test_swp_morpho_ouverture();
 
 
-    // MAX
+// MAX
 
     // BENCH IN
         // bench_swp8_morpho_max_in(128, 520, 8);
-        // bench_swp8_morpho_max_in(128, 1032, 8);
-
         // bench_swp16_morpho_max_in(128, 520, 8);
-        // bench_swp16_morpho_max_in(128, 1032, 8);
-
         // bench_swp32_morpho_max_in(128, 520, 8);
-        // bench_swp32_morpho_max_in(128, 1032, 8);
+
+        bench_swp8_morpho_max_in(128, 2048, 8);
+        bench_swp16_morpho_max_in(128, 2048, 8);
+        bench_swp32_morpho_max_in(128, 2048, 8);
 
     // BENCH OUT
         // bench_swp8_morpho_max_out(128, 520, 8);
-        // bench_swp8_morpho_max_out(128, 1032, 8);
-
         // bench_swp16_morpho_max_out(128, 520, 8);
-        // bench_swp16_morpho_max_out(128, 1032, 8);
-
         // bench_swp32_morpho_max_out(128, 520, 8);
-        // bench_swp32_morpho_max_out(128, 1032, 8);
+
+        bench_swp8_morpho_max_out(128, 2048, 8);
+        bench_swp16_morpho_max_out(128, 2048, 8);
+        bench_swp32_morpho_max_out(128, 2048, 8);
 
 
-    // OUVERTURE
+// OUVERTURE
 
     // BENCH IN
         // bench_swp8_morpho_ouverture_in(128, 520, 8);
-        // bench_swp8_morpho_ouverture_in(128, 1032, 8);
-
-        // bench_swp16_morpho_ouverture_in(128, 520, 8);
-        // bench_swp16_morpho_ouverture_in(128, 1032, 8);
-
         // bench_swp32_morpho_ouverture_in(128, 520, 8);
-        // bench_swp32_morpho_ouverture_in(128, 1032, 8);
+        // bench_swp16_morpho_ouverture_in(128, 520, 8);
+
+        bench_swp8_morpho_ouverture_in(128, 2048, 8);
+        bench_swp16_morpho_ouverture_in(128, 2048, 8);
+        bench_swp32_morpho_ouverture_in(128, 2048, 8);
 
     // BENCH OUT
         // bench_swp8_morpho_ouverture_out(128, 520, 8);
-        // bench_swp8_morpho_ouverture_out(128, 1032, 8);
-
         // bench_swp16_morpho_ouverture_out(128, 520, 8);
-        // bench_swp16_morpho_ouverture_out(128, 1032, 8);
-
         // bench_swp32_morpho_ouverture_out(128, 520, 8);
-        // bench_swp32_morpho_ouverture_out(128, 1032, 8);
+
+        bench_swp8_morpho_ouverture_out(128, 2048, 8);
+        bench_swp16_morpho_ouverture_out(128, 2048, 8);
+        bench_swp32_morpho_ouverture_out(128, 2048, 8);
 
     return 0;
 }
