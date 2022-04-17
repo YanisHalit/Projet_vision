@@ -951,6 +951,9 @@ void bench_motion_detection_morpho_SWP8(void)
     // -- traitement --
     // ----------------
 
+    uint8 **Erosion2_8    = ui8matrix(i0, i1, j0, j1);
+    zero_ui8matrix(Erosion2_8   , i0, i1, j0, j1);
+
     generate_path_filename_k_ndigit_extension(src_path, filename, tstart, ndigit, "pgm", complete_filename_I);
     MLoadPGM_ui8matrix(complete_filename_I, i0, i1, j0, j1, I);
 
@@ -961,6 +964,9 @@ void bench_motion_detection_morpho_SWP8(void)
 
         printf("i = %3d     ", t);
         fprintf(output_file, "%d        ", t);
+
+        generate_path_filename_k_ndigit_extension(src_path, filename, t, ndigit, "pgm", complete_filename_I);
+        MLoadPGM_ui8matrix(complete_filename_I, i0, i1, j0, j1, I);
 
         // N = 3 ecart type autour de la moyenne
         SigmaDelta_1Step(I, M, O, V, E, 3, i0, i1, j0, j1);
@@ -984,11 +990,27 @@ void bench_motion_detection_morpho_SWP8(void)
         BENCH(min3_swp_ui8matrix_basic_bench(E,          i0, i1, j0, j1, Dilatation2_bas_P, Erosion2_bas_P, E_bas), j1, cpp_bas_4);
         unpack_ui8matrix(Erosion2_bas_P, i1, w8, E_bas);
 
+        // traitement pour visualisation
+        threshold_ui8matrix(E_bas,    1, 255, Erosion2_8,    i0, i1, j0, j1);
+        generate_path_filename_k_ndigit_extension(dst_path, "ALL_",        t, ndigit, "pgm", complete_filename_E);
+        
+
         cpp_bas = cpp_bas_1 + cpp_bas_2 + cpp_bas_3 + cpp_bas_4;
         printf("%6.1f", cpp_bas                      );
         fprintf(output_file, "%.1f  ", cpp_bas);
+
+        puts(complete_filename_erosion2);
+
+        SavePGM_ui8matrix(Erosion2_8   , i0, i1, j0, j1, complete_filename_erosion2   );
+
         //
 
+        
+        
+        
+        
+        
+        
         // rot SWP8
         pack_ui8matrix(E, i1, j1, E_rot_P);
         BENCH(min3_swp_ui8matrix_rot_bench(E,          i0, i1, j0, j1, E_rot_P, Erosion1_rot_P, E_rot), j1, cpp_rot_1);
@@ -2312,6 +2334,10 @@ void bench_debit_motion_detection_morpho_SWP8(void)
     // -- boucle --
     for(int t=tstart; t<=tstop; t+=tstep) {
 
+        generate_path_filename_k_ndigit_extension(src_path, filename, t, ndigit, "pgm", complete_filename_I);
+        MLoadPGM_ui8matrix(complete_filename_I, i0, i1, j0, j1, I);
+
+
         printf("i = %3d     ", t);
         fprintf(output_file, "%d        ", t);
 
@@ -2327,10 +2353,10 @@ void bench_debit_motion_detection_morpho_SWP8(void)
  
         t1 = clock();
 
-        min3_swp_ui8matrix_ilu3_elu2_red_factor_bench(E,          i0, i1, j0, w1, E_ilu3_elu2_red_factor_P, Erosion1_ilu3_elu2_red_factor_P, E_ilu3_elu2_red_factor);
-        max3_swp_ui8matrix_ilu3_elu2_red_factor_bench(E,          i0, i1, j0, w1, Erosion1_ilu3_elu2_red_factor_P, Dilatation1_ilu3_elu2_red_factor_P, E_ilu3_elu2_red_factor);
-        max3_swp_ui8matrix_ilu3_elu2_red_factor_bench(E,          i0, i1, j0, w1, Dilatation1_ilu3_elu2_red_factor_P, Dilatation2_ilu3_elu2_red_factor_P, E_ilu3_elu2_red_factor);
-        min3_swp_ui8matrix_ilu3_elu2_red_factor_bench(E,          i0, i1, j0, w1, Dilatation2_ilu3_elu2_red_factor_P, Erosion2_ilu3_elu2_red_factor_P, E_ilu3_elu2_red_factor);
+        min3_swp_ui8matrix_ilu3_elu2_red_factor_bench(E,          i0, i1, j0, j1, E_ilu3_elu2_red_factor_P, Erosion1_ilu3_elu2_red_factor_P, E_ilu3_elu2_red_factor);
+        max3_swp_ui8matrix_ilu3_elu2_red_factor_bench(E,          i0, i1, j0, j1, Erosion1_ilu3_elu2_red_factor_P, Dilatation1_ilu3_elu2_red_factor_P, E_ilu3_elu2_red_factor);
+        max3_swp_ui8matrix_ilu3_elu2_red_factor_bench(E,          i0, i1, j0, j1, Dilatation1_ilu3_elu2_red_factor_P, Dilatation2_ilu3_elu2_red_factor_P, E_ilu3_elu2_red_factor);
+        min3_swp_ui8matrix_ilu3_elu2_red_factor_bench(E,          i0, i1, j0, j1, Dilatation2_ilu3_elu2_red_factor_P, Erosion2_ilu3_elu2_red_factor_P, E_ilu3_elu2_red_factor);
 
         t2 = clock();
         temps = (float)(t2-t1)/CLOCKS_PER_SEC;
@@ -2349,13 +2375,15 @@ void bench_debit_motion_detection_morpho_SWP8(void)
         // fusion_ilu5_elu2_red_out SWP8
         pack_ui8matrix(E, i1, j1, E_fusion_ilu5_elu2_red_P);
 
-        t1 = clock();
+
+        clock_t t3, t4;
+        t3 = clock();
 
         ouverture3_swp_ui8matrix_fusion_ilu5_elu2_red_bench(E, i0, i1, j0, j1, E_fusion_ilu5_elu2_red_P, E_fusion_result_ouverture_ilu5_elu2_red_P, E_fusion_ilu5_elu2_red);
-        fermeture3_swp_ui8matrix_fusion_bench(E, i0, i1-1, j0, j1-1, E_fusion_result_ouverture_ilu5_elu2_red_P, E_fusion_result_fermeture_ilu5_elu2_red_P, E_fusion_ilu5_elu2_red);
+        fermeture3_swp_ui8matrix_fusion_ilu5_elu2_red_bench(E, i0, i1, j0, j1, E_fusion_result_ouverture_ilu5_elu2_red_P, E_fusion_result_fermeture_ilu5_elu2_red_P, E_fusion_ilu5_elu2_red);
 
-        t2 = clock();
-        temps = (float)(t2-t1)/CLOCKS_PER_SEC;
+        t4 = clock();
+        temps = (float)(t4-t3)/CLOCKS_PER_SEC;
 
         double debit_fusion =  temps;
 
@@ -2372,7 +2400,7 @@ void bench_debit_motion_detection_morpho_SWP8(void)
 
         t1 = clock();
         ouverture3_swp_ui8matrix_pipeline_ilu3_red_bench(E, i0, i1, j0, j1, E_pipeline_ilu3_red_out_P, E_T_pipeline_result_ouverture_ilu3_red_out_P, E_pipeline_result_ouverture_ilu3_red_out_P, E_pipeline_ilu3_red_out);
-        fermeture3_swp_ui8matrix_pipeline_ilu3_red_bench(E, i0, i1-1, j0, j1-1, E_pipeline_result_ouverture_ilu3_red_out_P, E_T_pipeline_result_fermeture_ilu3_red_out_P, E_pipeline_result_fermeture_ilu3_red_out_P, E_pipeline_ilu3_red_out);
+        fermeture3_swp_ui8matrix_pipeline_ilu3_red_bench(E, i0, i1, j0, j1, E_pipeline_result_ouverture_ilu3_red_out_P, E_T_pipeline_result_fermeture_ilu3_red_out_P, E_pipeline_result_fermeture_ilu3_red_out_P, E_pipeline_ilu3_red_out);
 
         t2 = clock();
         temps = (float)(t2-t1)/CLOCKS_PER_SEC;
@@ -2428,13 +2456,13 @@ void bench_debit_motion_detection_morpho_SWP8(void)
 void motion_detection_morpho(void)
 // ===============================
 {
-    // motion_detection_morpho_v1();               // version basique sans optimisation
+    motion_detection_morpho_v1();               // version basique sans optimisation
     // bench_motion_detection_morpho();            // bench version avec optimisation
     // bench_motion_detection_morpho_SWP8();       // bench version avec optimisation SWP 8
     // bench_motion_detection_morpho_SWP16();      // bench version avec optimisation SWP 16
     // bench_motion_detection_morpho_SWP32();      // bench version avec optimisation SWP 32
 
-    bench_debit_motion_detection_morpho_SWP8();
+    // bench_debit_motion_detection_morpho_SWP8();
 
     // test_PGM();
 }
