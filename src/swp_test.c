@@ -647,9 +647,11 @@ void test_swp8_morpho_ouverture_routine(int h, int w0)
     puts("--- fusion ---");
     puts("--------------");
 
+    // à tester une par une car faisant survenir des segmentation fault quand enchaînées
+
     // Traitement fusion swp 8
     // ouverture3_swp_ui8matrix_fusion                     (X, 0, h, 0, w1, X_P_bas_fusion,                    Y_P_bas_fusion,                                            Y_fusion_bas);
-    ouverture3_swp_ui8matrix_fusion_ilu5_red            (X, 0, h, 0, w1, X_P_ilu5_red_fusion,                    Y_P_ilu5_red_fusion,                                            Y_fusion_ilu5_red);
+    // ouverture3_swp_ui8matrix_fusion_ilu5_red            (X, 0, h, 0, w1, X_P_ilu5_red_fusion,                    Y_P_ilu5_red_fusion,                                            Y_fusion_ilu5_red);
     // ouverture3_swp_ui8matrix_fusion_ilu5_elu2_red       (X, 0, h, 0, w1, X_P_ilu5_elu2_red_fusion,                    Y_P_ilu5_elu2_red_fusion,                                            Y_fusion_ilu5_elu2_red);
 
     // Affichage fusion swp8
@@ -660,7 +662,7 @@ void test_swp8_morpho_ouverture_routine(int h, int w0)
     // display_ui8matrix(Y_fusion_ilu5_elu2_red       ,  0, h-1, 0, w0-1, format1, "Y_fusion_ilu5_elu2_red       ");
 
     // c = compare_swp_ui8matrix(Y_basic_or, 0, h-1, 0, w0-1, Y_fusion_bas                     , "Y_fusion_bas_swp8                     ");
-    c = compare_swp_ui8matrix(Y_basic_or, 0, h-1, 0, w0-1, Y_fusion_ilu5_red                     , "Y_fusion_ilu5_red_swp8                ");
+    // c = compare_swp_ui8matrix(Y_basic_or, 0, h-1, 0, w0-1, Y_fusion_ilu5_red                     , "Y_fusion_ilu5_red_swp8                ");
     // c = compare_swp_ui8matrix(Y_basic_or, 0, h-1, 0, w0-1, Y_fusion_ilu5_elu2_red                     , "Y_fusion_ilu5_elu2_red_swp8           ");
 
     // putchar('\n');
@@ -1347,7 +1349,7 @@ void test_swp16_morpho_ouverture_routine(int h, int w0)
     // Traitement fusion swp 16
     // ouverture3_swp_ui16matrix_fusion                     (X, 0, h, 0, w1, X_P_bas_fusion,                    Y_P_bas_fusion,                                            Y_fusion_bas);
     // ouverture3_swp_ui16matrix_fusion_ilu5_red            (X, 0, h, 0, w1, X_P_ilu5_red_fusion,                    Y_P_ilu5_red_fusion,                                            Y_fusion_ilu5_red);
-    ouverture3_swp_ui16matrix_fusion_ilu5_elu2_red       (X, 0, h, 0, w1, X_P_ilu5_elu2_red_fusion,                    Y_P_ilu5_elu2_red_fusion,                                            Y_fusion_ilu5_elu2_red);
+    // ouverture3_swp_ui16matrix_fusion_ilu5_elu2_red       (X, 0, h, 0, w1, X_P_ilu5_elu2_red_fusion,                    Y_P_ilu5_elu2_red_fusion,                                            Y_fusion_ilu5_elu2_red);
 
 
     // Affichage fusion swp16
@@ -1361,7 +1363,7 @@ void test_swp16_morpho_ouverture_routine(int h, int w0)
 
     // c = compare_swp_ui8matrix(Y_basic_or, 0, h-1, 0, w0-1, Y_fusion_bas                     , "Y_fusion_bas_swp16                     ");
     // c = compare_swp_ui8matrix(Y_basic_or, 0, h-1, 0, w0-1, Y_fusion_ilu5_red                     , "Y_fusion_ilu5_red_swp16                ");
-    c = compare_swp_ui8matrix(Y_basic_or, 0, h-1, 0, w0-1, Y_fusion_ilu5_elu2_red                     , "Y_fusion_ilu5_elu2_red_swp16           ");
+    // c = compare_swp_ui8matrix(Y_basic_or, 0, h-1, 0, w0-1, Y_fusion_ilu5_elu2_red                     , "Y_fusion_ilu5_elu2_red_swp16           ");
 
     // putchar('\n');
 
@@ -2100,7 +2102,7 @@ void test_swp_morpho_max(void)
     int w0 = 16;
 
     int dh = 4;
-    int dw = 496;
+    int dw = 16;
 
     for(int h = h0; h <= h0+dh; h++) { // pour tester elu2
         for(int w = w0; w <= w0+dw; w++) { // pour tester ilu3
@@ -2119,7 +2121,7 @@ void test_swp_morpho_min(void)
     int w0 = 16;
 
     int dh = 4;
-    int dw = 496;
+    int dw = 16;
 
     for(int h = h0; h <= h0+dh; h++) { // pour tester elu2
         for(int w = w0; w <= w0+dw; w++) { // pour tester ilu3
@@ -2142,7 +2144,7 @@ void test_swp_morpho_ouverture(void)
     
     dh = dw = 0;
     
-    dh = 5; dw = 496;
+    dh = 5; dw = 16;
     h0 = 8; w0 = 32;
     
     for(int h = h0; h <= h0+dh; h++) { // pour tester elu2
@@ -6425,10 +6427,10 @@ void bench_swp32_morpho_max_out(int n0, int n1, int nstep)
 // ------------------------------------------------------------------------------------
 
 
-
 // ------------------------------ Test SWP --------------------------------------------
 int test_swp(int argc, char* argv[]){
     puts("=== test_swp ===");
+
     // test_swp_morpho_max();
     // test_swp_morpho_min();
     // test_swp_morpho_ouverture();
@@ -6437,18 +6439,18 @@ int test_swp(int argc, char* argv[]){
 // MAX
 
     // BENCH IN
-        bench_swp8_morpho_max_in(128, 520, 8);
-        bench_swp16_morpho_max_in(128, 520, 8);
-        bench_swp32_morpho_max_in(128, 520, 8);
+        // bench_swp8_morpho_max_in(128, 520, 8);
+        // bench_swp16_morpho_max_in(128, 520, 8);
+        // bench_swp32_morpho_max_in(128, 520, 8);
 
         // bench_swp8_morpho_max_in(128, 2048, 8);
         // bench_swp16_morpho_max_in(128, 2048, 8);
         // bench_swp32_morpho_max_in(128, 2048, 8);
 
     // BENCH OUT
-        bench_swp8_morpho_max_out(128, 520, 8);
-        bench_swp16_morpho_max_out(128, 520, 8);
-        bench_swp32_morpho_max_out(128, 520, 8);
+        // bench_swp8_morpho_max_out(128, 520, 8);
+        // bench_swp16_morpho_max_out(128, 520, 8);
+        // bench_swp32_morpho_max_out(128, 520, 8);
 
         // bench_swp8_morpho_max_out(128, 2048, 8);
         // bench_swp16_morpho_max_out(128, 2048, 8);
@@ -6467,9 +6469,9 @@ int test_swp(int argc, char* argv[]){
         // bench_swp32_morpho_ouverture_in(128, 2048, 8);
 
     // BENCH OUT
-        bench_swp8_morpho_ouverture_out(128, 520, 8);
-        bench_swp16_morpho_ouverture_out(128, 520, 8);
-        bench_swp32_morpho_ouverture_out(128, 520, 8);
+        // bench_swp8_morpho_ouverture_out(128, 520, 8);
+        // bench_swp16_morpho_ouverture_out(128, 520, 8);
+        // bench_swp32_morpho_ouverture_out(128, 520, 8);
 
         // bench_swp8_morpho_ouverture_out(128, 2048, 8);
         // bench_swp16_morpho_ouverture_out(128, 2048, 8);

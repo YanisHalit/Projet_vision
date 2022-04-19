@@ -990,27 +990,11 @@ void bench_motion_detection_morpho_SWP8(void)
         BENCH(min3_swp_ui8matrix_basic_bench(E,          i0, i1, j0, j1, Dilatation2_bas_P, Erosion2_bas_P, E_bas), j1, cpp_bas_4);
         unpack_ui8matrix(Erosion2_bas_P, i1, w8, E_bas);
 
-        // traitement pour visualisation
-        threshold_ui8matrix(E_bas,    1, 255, Erosion2_8,    i0, i1, j0, j1);
-        generate_path_filename_k_ndigit_extension(dst_path, "ALL_",        t, ndigit, "pgm", complete_filename_E);
-        
-
         cpp_bas = cpp_bas_1 + cpp_bas_2 + cpp_bas_3 + cpp_bas_4;
         printf("%6.1f", cpp_bas                      );
         fprintf(output_file, "%.1f  ", cpp_bas);
-
-        puts(complete_filename_erosion2);
-
-        SavePGM_ui8matrix(Erosion2_8   , i0, i1, j0, j1, complete_filename_erosion2   );
-
         //
 
-        
-        
-        
-        
-        
-        
         // rot SWP8
         pack_ui8matrix(E, i1, j1, E_rot_P);
         BENCH(min3_swp_ui8matrix_rot_bench(E,          i0, i1, j0, j1, E_rot_P, Erosion1_rot_P, E_rot), j1, cpp_rot_1);
@@ -1473,6 +1457,9 @@ void bench_motion_detection_morpho_SWP16(void)
 
         printf("i = %3d     ", t);
         fprintf(output_file, "%d        ", t);
+
+        generate_path_filename_k_ndigit_extension(src_path, filename, t, ndigit, "pgm", complete_filename_I);
+        MLoadPGM_ui8matrix(complete_filename_I, i0, i1, j0, j1, I);
 
         // N = 3 ecart type autour de la moyenne
         SigmaDelta_1Step(I, M, O, V, E, 3, i0, i1, j0, j1);
@@ -1963,7 +1950,10 @@ void bench_motion_detection_morpho_SWP32(void)
         printf("i = %3d     ", t);
         fprintf(output_file, "%d        ", t);
 
-        // N = 3 ecart type autour de la moyenne
+        // N = 3 ecart type autour de la moyenne 
+        generate_path_filename_k_ndigit_extension(src_path, filename, t, ndigit, "pgm", complete_filename_I);
+        MLoadPGM_ui8matrix(complete_filename_I, i0, i1, j0, j1, I);
+
         SigmaDelta_1Step(I, M, O, V, E, 3, i0, i1, j0, j1);
 
         // Basic
@@ -2337,7 +2327,6 @@ void bench_debit_motion_detection_morpho_SWP8(void)
         generate_path_filename_k_ndigit_extension(src_path, filename, t, ndigit, "pgm", complete_filename_I);
         MLoadPGM_ui8matrix(complete_filename_I, i0, i1, j0, j1, I);
 
-
         printf("i = %3d     ", t);
         fprintf(output_file, "%d        ", t);
 
@@ -2350,7 +2339,7 @@ void bench_debit_motion_detection_morpho_SWP8(void)
 
         float temps;
         clock_t t1, t2;
- 
+
         t1 = clock();
 
         min3_swp_ui8matrix_ilu3_elu2_red_factor_bench(E,          i0, i1, j0, j1, E_ilu3_elu2_red_factor_P, Erosion1_ilu3_elu2_red_factor_P, E_ilu3_elu2_red_factor);
@@ -2366,10 +2355,8 @@ void bench_debit_motion_detection_morpho_SWP8(void)
         unpack_ui8matrix(Erosion2_ilu3_elu2_red_factor_P, i1, w8, E_ilu3_elu2_red_factor);
 
         printf("%f        ",                debit_classique);
-        fprintf(output_file, "%lf      ",   debit_classique);
+        fprintf(output_file, "%lf      ",   (i1*j1) / debit_classique);
         // ------------
-
-
 
         // ------------
         // fusion_ilu5_elu2_red_out SWP8
@@ -2390,10 +2377,9 @@ void bench_debit_motion_detection_morpho_SWP8(void)
         unpack_ui8matrix(E_fusion_result_fermeture_ilu5_elu2_red_P, i1, w8, E_fusion_ilu5_elu2_red);
 
         printf("%f  ",             debit_fusion);
-        fprintf(output_file, "%lf   ",  debit_fusion);
+        fprintf(output_file, "%lf   ", (i1*j1) / debit_fusion);
         // // ------------
 
- 
         // ------------
         // pipeline_ilu3_red_out SWP8
         pack_ui8matrix(E, i1, j1, E_pipeline_ilu3_red_out_P);
@@ -2410,7 +2396,7 @@ void bench_debit_motion_detection_morpho_SWP8(void)
         unpack_ui8matrix(E_pipeline_result_fermeture_ilu3_red_out_P, i1, w8, E_pipeline_ilu3_red_out);
 
         printf("%f  ",            debit_pipeline);
-        fprintf(output_file, "%lf   ",  debit_pipeline);
+        fprintf(output_file, "%lf   ", (i1*j1) / debit_pipeline);
         // // ------------
 
 
@@ -2453,16 +2439,518 @@ void bench_debit_motion_detection_morpho_SWP8(void)
 }
 // ===============================
 
+
+// =============================== test de dernière minute très brouillant, néaumois très utile
+void bench_motion_detection_ouverture_fermeture_SWP8(void)
+// ===============================
+{
+    puts("=== Bench Motion SWP 8 ===");
+
+    // fichiers textes avec résultats
+    char str[1000];
+    const char* fname = "./bench_txt/Motion/bench_SWP8_ouverture_fermeture.txt";
+    FILE* output_file = fopen(fname, "w+");
+    if (!output_file) {
+        perror("fopen");
+        exit(EXIT_FAILURE);
+    }
+    //
+
+    // sequence
+    char *src_path;
+    char *dst_path;
+    char *filename;
+    int ndigit;
+    int tstart, tstop, tstep;
+
+    // image
+    int h, w, b; // height, width, border
+    int i0, i1, j0, j1;
+    long li0, li1, lj0, lj1;
+
+    // sigma-delta
+    uint8 **I, **M, **O, **V, **E, **E_8;
+
+    // cpp
+    double cpp_basic, cpp_basic1, cpp_basic2, cpp_basic3, cpp_basic4;
+    double cpp_bas, cpp_bas_1, cpp_bas_2, cpp_bas_3, cpp_bas_4;
+    double cpp_rot, cpp_rot_1, cpp_rot_2, cpp_rot_3, cpp_rot_4;
+    double cpp_red, cpp_red_1, cpp_red_2, cpp_red_3, cpp_red_4;
+    double cpp_ilu3, cpp_ilu3_1, cpp_ilu3_2, cpp_ilu3_3, cpp_ilu3_4;
+    double cpp_ilu3_red, cpp_ilu3_red_1, cpp_ilu3_red_2, cpp_ilu3_red_3, cpp_ilu3_red_4;
+    double cpp_elu2_red, cpp_elu2_red_1, cpp_elu2_red_2, cpp_elu2_red_3, cpp_elu2_red_4;
+    double cpp_elu2_red_factor, cpp_elu2_red_factor_1, cpp_elu2_red_factor_2, cpp_elu2_red_factor_3, cpp_elu2_red_factor_4;
+    double cpp_ilu3_elu2_red, cpp_ilu3_elu2_red_1, cpp_ilu3_elu2_red_2, cpp_ilu3_elu2_red_3, cpp_ilu3_elu2_red_4;
+    double cpp_ilu3_elu2_red_factor, cpp_ilu3_elu2_red_factor_1, cpp_ilu3_elu2_red_factor_2, cpp_ilu3_elu2_red_factor_3, cpp_ilu3_elu2_red_factor_4;
+
+
+
+    // basic sans swp
+    uint8 **Erosion1_basic, **Dilatation1_basic, **Dilatation2_basic, **Erosion2_basic;
+    // swp E packé , ero1, dil1, dil2, ero2, E depacké
+    uint8 **E_bas_P, **Erosion1_bas_P, **Dilatation1_bas_P, **Dilatation2_bas_P, **Erosion2_bas_P, **E_bas;
+    uint8 **E_rot_P, **Erosion1_rot_P, **Dilatation1_rot_P, **Dilatation2_rot_P, **Erosion2_rot_P, **E_rot;
+    uint8 **E_red_P, **Erosion1_red_P, **Dilatation1_red_P, **Dilatation2_red_P, **Erosion2_red_P, **E_red;
+    uint8 **E_ilu3_P, **Erosion1_ilu3_P, **Dilatation1_ilu3_P, **Dilatation2_ilu3_P, **Erosion2_ilu3_P, **E_ilu3;
+    uint8 **E_ilu3_red_P, **Erosion1_ilu3_red_P, **Dilatation1_ilu3_red_P, **Dilatation2_ilu3_red_P, **Erosion2_ilu3_red_P, **E_ilu3_red;
+    uint8 **E_elu2_red_P, **Erosion1_elu2_red_P, **Dilatation1_elu2_red_P, **Dilatation2_elu2_red_P, **Erosion2_elu2_red_P, **E_elu2_red;
+    uint8 **E_elu2_red_factor_P, **Erosion1_elu2_red_factor_P, **Dilatation1_elu2_red_factor_P, **Dilatation2_elu2_red_factor_P, **Erosion2_elu2_red_factor_P, **E_elu2_red_factor;
+    uint8 **E_ilu3_elu2_red_P, **Erosion1_ilu3_elu2_red_P, **Dilatation1_ilu3_elu2_red_P, **Dilatation2_ilu3_elu2_red_P, **Erosion2_ilu3_elu2_red_P, **E_ilu3_elu2_red;
+    uint8 **E_ilu3_elu2_red_factor_P, **Erosion1_ilu3_elu2_red_factor_P, **Dilatation1_ilu3_elu2_red_factor_P, **Dilatation2_ilu3_elu2_red_factor_P, **Erosion2_ilu3_elu2_red_factor_P, **E_ilu3_elu2_red_factor;
+
+
+    // filename for saving data
+
+    char complete_filename_I[1024];
+    char complete_filename_M[1024];
+    char complete_filename_O[1024];
+    char complete_filename_V[1024];
+    char complete_filename_E[1024];
+    
+    char complete_filename_erosion1[1024];
+    char complete_filename_erosion2[1024];
+    char complete_filename_dilatation1[1024];
+    char complete_filename_dilatation2[1024];
+
+    src_path = SEQUENCE_SRC_PATH;
+    filename = SEQUENCE_FILENAME;
+    ndigit   = SEQUENCE_NDIGIT;
+
+    tstart = SEQUENCE_TSTART;
+    tstop  = SEQUENCE_TSTOP;
+    tstep  = SEQUENCE_TSTEP;
+
+    h = SEQUENCE_HEIGHT;
+    w = SEQUENCE_WIDTH;
+    b = 2;
+    dst_path = SEQUENCE_DST_PATH;
+
+    i0 = 0; i1 = h-1; j0 = 0; j1 = w-1;
+
+    int w0 = w;
+    int w8 = w0 / 8; if(w0 % 8) w8 = w8+1;
+    int w1 = 8 * w8; // w1 >= w
+
+    // ----------------
+    // -- allocation --
+    // ----------------
+
+    I   = ui8matrix(i0,   i1,   j0,   j1);
+    M   = ui8matrix(i0,   i1,   j0,   j1);
+    O   = ui8matrix(i0,   i1,   j0,   j1);
+    V   = ui8matrix(i0,   i1,   j0,   j1);
+    E   = ui8matrix(i0-b, i1+b, j0-b, j1+b); // image 1 bit en binaire {0,1}
+    E_8 = ui8matrix(i0,   i1,   j0,   j1); // image 8 bits en, niveau de gris {0,255}
+
+    // version basic sans swp
+    Erosion1_basic    = ui8matrix(i0-b, i1+b, j0-b, j1+b);
+    Erosion2_basic    = ui8matrix(i0-b, i1+b, j0-b, j1+b);
+    Dilatation1_basic = ui8matrix(i0-b, i1+b, j0-b, j1+b);
+    Dilatation2_basic = ui8matrix(i0-b, i1+b, j0-b, j1+b);
+
+    // version swp
+    E_bas             = ui8matrix(i0-b, i1+b, j0-b, j1+b);
+    E_bas_P           = ui8matrix(i0-b, i1+b, j0-b, w8+b);
+    Erosion1_bas_P    = ui8matrix(i0-b, i1+b, j0-b, w8+b);
+    Erosion2_bas_P    = ui8matrix(i0-b, i1+b, j0-b, w8+b);
+    Dilatation1_bas_P = ui8matrix(i0-b, i1+b, j0-b, w8+b);
+    Dilatation2_bas_P = ui8matrix(i0-b, i1+b, j0-b, w8+b);
+
+    E_rot             = ui8matrix(i0-b, i1+b, j0-b, j1+b);
+    E_rot_P           = ui8matrix(i0-b, i1+b, j0-b, w8+b);
+    Erosion1_rot_P    = ui8matrix(i0-b, i1+b, j0-b, w8+b);
+    Erosion2_rot_P    = ui8matrix(i0-b, i1+b, j0-b, w8+b);
+    Dilatation1_rot_P = ui8matrix(i0-b, i1+b, j0-b, w8+b);
+    Dilatation2_rot_P = ui8matrix(i0-b, i1+b, j0-b, w8+b);
+
+    E_red             = ui8matrix(i0-b, i1+b, j0-b, j1+b);
+    E_red_P           = ui8matrix(i0-b, i1+b, j0-b, w8+b);
+    Erosion1_red_P    = ui8matrix(i0-b, i1+b, j0-b, w8+b);
+    Erosion2_red_P    = ui8matrix(i0-b, i1+b, j0-b, w8+b);
+    Dilatation1_red_P = ui8matrix(i0-b, i1+b, j0-b, w8+b);
+    Dilatation2_red_P = ui8matrix(i0-b, i1+b, j0-b, w8+b);
+
+    E_ilu3             = ui8matrix(i0-b, i1+b, j0-b, j1+b);
+    E_ilu3_P           = ui8matrix(i0-b, i1+b, j0-b, w8+b);
+    Erosion1_ilu3_P    = ui8matrix(i0-b, i1+b, j0-b, w8+b);
+    Erosion2_ilu3_P    = ui8matrix(i0-b, i1+b, j0-b, w8+b);
+    Dilatation1_ilu3_P = ui8matrix(i0-b, i1+b, j0-b, w8+b);
+    Dilatation2_ilu3_P = ui8matrix(i0-b, i1+b, j0-b, w8+b);
+
+    E_ilu3_red             = ui8matrix(i0-b, i1+b, j0-b, j1+b);
+    E_ilu3_red_P           = ui8matrix(i0-b, i1+b, j0-b, w8+b);
+    Erosion1_ilu3_red_P    = ui8matrix(i0-b, i1+b, j0-b, w8+b);
+    Erosion2_ilu3_red_P    = ui8matrix(i0-b, i1+b, j0-b, w8+b);
+    Dilatation1_ilu3_red_P = ui8matrix(i0-b, i1+b, j0-b, w8+b);
+    Dilatation2_ilu3_red_P = ui8matrix(i0-b, i1+b, j0-b, w8+b);
+
+    E_elu2_red             = ui8matrix(i0-b, i1+b, j0-b, j1+b);
+    E_elu2_red_P           = ui8matrix(i0-b, i1+b, j0-b, w8+b);
+    Erosion1_elu2_red_P    = ui8matrix(i0-b, i1+b, j0-b, w8+b);
+    Erosion2_elu2_red_P    = ui8matrix(i0-b, i1+b, j0-b, w8+b);
+    Dilatation1_elu2_red_P = ui8matrix(i0-b, i1+b, j0-b, w8+b);
+    Dilatation2_elu2_red_P = ui8matrix(i0-b, i1+b, j0-b, w8+b);
+
+    E_elu2_red_factor             = ui8matrix(i0-b, i1+b, j0-b, j1+b);
+    E_elu2_red_factor_P           = ui8matrix(i0-b, i1+b, j0-b, w8+b);
+    Erosion1_elu2_red_factor_P    = ui8matrix(i0-b, i1+b, j0-b, w8+b);
+    Erosion2_elu2_red_factor_P    = ui8matrix(i0-b, i1+b, j0-b, w8+b);
+    Dilatation1_elu2_red_factor_P = ui8matrix(i0-b, i1+b, j0-b, w8+b);
+    Dilatation2_elu2_red_factor_P = ui8matrix(i0-b, i1+b, j0-b, w8+b);
+
+    E_ilu3_elu2_red             = ui8matrix(i0-b, i1+b, j0-b, j1+b);
+    E_ilu3_elu2_red_P           = ui8matrix(i0-b, i1+b, j0-b, w8+b);
+    Erosion1_ilu3_elu2_red_P    = ui8matrix(i0-b, i1+b, j0-b, w8+b);
+    Erosion2_ilu3_elu2_red_P    = ui8matrix(i0-b, i1+b, j0-b, w8+b);
+    Dilatation1_ilu3_elu2_red_P = ui8matrix(i0-b, i1+b, j0-b, w8+b);
+    Dilatation2_ilu3_elu2_red_P = ui8matrix(i0-b, i1+b, j0-b, w8+b);
+
+    E_ilu3_elu2_red_factor             = ui8matrix(i0-b, i1+b, j0-b, j1+b);
+    E_ilu3_elu2_red_factor_P           = ui8matrix(i0-b, i1+b, j0-b, w8+b);
+    Erosion1_ilu3_elu2_red_factor_P    = ui8matrix(i0-b, i1+b, j0-b, w8+b);
+    Erosion2_ilu3_elu2_red_factor_P    = ui8matrix(i0-b, i1+b, j0-b, w8+b);
+    Dilatation1_ilu3_elu2_red_factor_P = ui8matrix(i0-b, i1+b, j0-b, w8+b);
+    Dilatation2_ilu3_elu2_red_factor_P = ui8matrix(i0-b, i1+b, j0-b, w8+b);
+
+    // --------------------
+    // -- initialisation --
+    // --------------------
+
+    // bords exterieurs a zero
+
+    zero_ui8matrix(I  , i0,   i1,   j0,   j1);
+    zero_ui8matrix(M  , i0,   i1,   j0,   j1);
+    zero_ui8matrix(O  , i0,   i1,   j0,   j1);
+    zero_ui8matrix(V  , i0,   i1,   j0,   j1);
+    zero_ui8matrix(E  , i0-b, i1+b, j0-b, j1+b); // image 1 bit en binaire {0,1}
+    zero_ui8matrix(E_8, i0,   i1,   j0,   j1); // image 8 bits en, niveau de gris {0,255}
+
+    // version basic
+    zero_ui8matrix(Erosion1_basic   , i0-b, i1+b, j0-b, j1+b);
+    zero_ui8matrix(Erosion2_basic   , i0-b, i1+b, j0-b, j1+b);
+    zero_ui8matrix(Dilatation1_basic, i0-b, i1+b, j0-b, j1+b);
+    zero_ui8matrix(Dilatation2_basic, i0-b, i1+b, j0-b, j1+b);
+
+    // version swp
+    zero_ui8matrix(E_bas, i0-b, i1+b, j0-b, j1+b);
+    zero_ui8matrix(E_bas_P   , i0-b, i1+b, j0-b, w8+b);
+    zero_ui8matrix(Erosion1_bas_P   , i0-b, i1+b, j0-b, w8+b);
+    zero_ui8matrix(Erosion2_bas_P, i0-b, i1+b, j0-b, w8+b);
+    zero_ui8matrix(Dilatation1_bas_P, i0-b, i1+b, j0-b, w8+b);
+    zero_ui8matrix(Dilatation2_bas_P, i0-b, i1+b, j0-b, w8+b);
+
+    zero_ui8matrix(E_rot, i0-b, i1+b, j0-b, j1+b);
+    zero_ui8matrix(E_rot_P   , i0-b, i1+b, j0-b, w8+b);
+    zero_ui8matrix(Erosion1_rot_P   , i0-b, i1+b, j0-b, w8+b);
+    zero_ui8matrix(Erosion2_rot_P, i0-b, i1+b, j0-b, w8+b);
+    zero_ui8matrix(Dilatation1_rot_P, i0-b, i1+b, j0-b, w8+b);
+    zero_ui8matrix(Dilatation2_rot_P, i0-b, i1+b, j0-b, w8+b);
+
+    zero_ui8matrix(E_red, i0-b, i1+b, j0-b, j1+b);
+    zero_ui8matrix(E_red_P   , i0-b, i1+b, j0-b, w8+b);
+    zero_ui8matrix(Erosion1_red_P   , i0-b, i1+b, j0-b, w8+b);
+    zero_ui8matrix(Erosion2_red_P, i0-b, i1+b, j0-b, w8+b);
+    zero_ui8matrix(Dilatation1_red_P, i0-b, i1+b, j0-b, w8+b);
+    zero_ui8matrix(Dilatation2_red_P, i0-b, i1+b, j0-b, w8+b);
+
+    zero_ui8matrix(E_ilu3, i0-b, i1+b, j0-b, j1+b);
+    zero_ui8matrix(E_ilu3_P   , i0-b, i1+b, j0-b, w8+b);
+    zero_ui8matrix(Erosion1_ilu3_P   , i0-b, i1+b, j0-b, w8+b);
+    zero_ui8matrix(Erosion2_ilu3_P, i0-b, i1+b, j0-b, w8+b);
+    zero_ui8matrix(Dilatation1_ilu3_P, i0-b, i1+b, j0-b, w8+b);
+    zero_ui8matrix(Dilatation2_ilu3_P, i0-b, i1+b, j0-b, w8+b);
+
+    zero_ui8matrix(E_ilu3_red, i0-b, i1+b, j0-b, j1+b);
+    zero_ui8matrix(E_ilu3_red_P   , i0-b, i1+b, j0-b, w8+b);
+    zero_ui8matrix(Erosion1_ilu3_red_P   , i0-b, i1+b, j0-b, w8+b);
+    zero_ui8matrix(Erosion2_ilu3_red_P, i0-b, i1+b, j0-b, w8+b);
+    zero_ui8matrix(Dilatation1_ilu3_red_P, i0-b, i1+b, j0-b, w8+b);
+    zero_ui8matrix(Dilatation2_ilu3_red_P, i0-b, i1+b, j0-b, w8+b);
+
+    zero_ui8matrix(E_elu2_red, i0-b, i1+b, j0-b, j1+b);
+    zero_ui8matrix(E_elu2_red_P   , i0-b, i1+b, j0-b, w8+b);
+    zero_ui8matrix(Erosion1_elu2_red_P   , i0-b, i1+b, j0-b, w8+b);
+    zero_ui8matrix(Erosion2_elu2_red_P, i0-b, i1+b, j0-b, w8+b);
+    zero_ui8matrix(Dilatation1_elu2_red_P, i0-b, i1+b, j0-b, w8+b);
+    zero_ui8matrix(Dilatation2_elu2_red_P, i0-b, i1+b, j0-b, w8+b);
+
+    zero_ui8matrix(E_elu2_red_factor, i0-b, i1+b, j0-b, j1+b);
+    zero_ui8matrix(E_elu2_red_factor_P   , i0-b, i1+b, j0-b, w8+b);
+    zero_ui8matrix(Erosion1_elu2_red_factor_P   , i0-b, i1+b, j0-b, w8+b);
+    zero_ui8matrix(Erosion2_elu2_red_factor_P, i0-b, i1+b, j0-b, w8+b);
+    zero_ui8matrix(Dilatation1_elu2_red_factor_P, i0-b, i1+b, j0-b, w8+b);
+    zero_ui8matrix(Dilatation2_elu2_red_factor_P, i0-b, i1+b, j0-b, w8+b);
+
+    zero_ui8matrix(E_ilu3_elu2_red, i0-b, i1+b, j0-b, j1+b);
+    zero_ui8matrix(E_ilu3_elu2_red_P   , i0-b, i1+b, j0-b, w8+b);
+    zero_ui8matrix(Erosion1_ilu3_elu2_red_P   , i0-b, i1+b, j0-b, w8+b);
+    zero_ui8matrix(Erosion2_ilu3_elu2_red_P, i0-b, i1+b, j0-b, w8+b);
+    zero_ui8matrix(Dilatation1_ilu3_elu2_red_P, i0-b, i1+b, j0-b, w8+b);
+    zero_ui8matrix(Dilatation2_ilu3_elu2_red_P, i0-b, i1+b, j0-b, w8+b);
+
+
+    zero_ui8matrix(E_ilu3_elu2_red_factor, i0-b, i1+b, j0-b, j1+b);
+    zero_ui8matrix(E_ilu3_elu2_red_factor_P   , i0-b, i1+b, j0-b, w8+b);
+    zero_ui8matrix(Erosion1_ilu3_elu2_red_factor_P   , i0-b, i1+b, j0-b, w8+b);
+    zero_ui8matrix(Erosion2_ilu3_elu2_red_factor_P, i0-b, i1+b, j0-b, w8+b);
+    zero_ui8matrix(Dilatation1_ilu3_elu2_red_factor_P, i0-b, i1+b, j0-b, w8+b);
+    zero_ui8matrix(Dilatation2_ilu3_elu2_red_factor_P, i0-b, i1+b, j0-b, w8+b);
+
+    // ----------------
+    // -- traitement --
+    // ----------------
+
+    uint8 **Erosion2_8    = ui8matrix(i0, i1, j0, j1);
+    zero_ui8matrix(Erosion2_8   , i0, i1, j0, j1);
+
+    generate_path_filename_k_ndigit_extension(src_path, filename, tstart, ndigit, "pgm", complete_filename_I);
+    MLoadPGM_ui8matrix(complete_filename_I, i0, i1, j0, j1, I);
+
+    SigmaDelta_Step0(I, M, O, V, E, i0, i1, j0, j1);
+
+    // -- boucle --
+    for(int t=tstart; t<=tstop; t+=tstep) {
+
+        printf("i = %3d     ", t);
+        fprintf(output_file, "%d        ", t);
+
+        generate_path_filename_k_ndigit_extension(src_path, filename, t, ndigit, "pgm", complete_filename_I);
+        MLoadPGM_ui8matrix(complete_filename_I, i0, i1, j0, j1, I);
+
+        // N = 3 ecart type autour de la moyenne
+        SigmaDelta_1Step(I, M, O, V, E, 3, i0, i1, j0, j1);
+
+        // // Basic
+        // BENCH(min3_ui8matrix_basic(E,           i0, i1, j0, j1, Erosion1_basic), j1, cpp_basic1);
+        // BENCH(max3_ui8matrix_basic(Erosion1_basic,    i0, i1, j0, j1, Dilatation1_basic), j1, cpp_basic2);
+        // BENCH(max3_ui8matrix_basic(Dilatation1_basic, i0, i1, j0, j1, Dilatation2_basic), j1, cpp_basic3);
+        // BENCH(min3_ui8matrix_basic(Dilatation2_basic, i0, i1, j0, j1, Erosion2_basic), j1, cpp_basic4);
+
+        // cpp_basic = cpp_basic1 + cpp_basic2 + cpp_basic3 + cpp_basic4;
+        // printf("%6.1f", cpp_basic                      );
+        // fprintf(output_file, "%.1f  ", cpp_basic);
+        // //
+
+        // fusion SWP8
+        pack_ui8matrix(E, i1, j1, E_bas_P);
+
+        BENCH(ouverture3_swp_ui8matrix_fusion_bench(E,          i0, i1, j0, j1, E_bas_P, Erosion1_bas_P, E_bas), j1, cpp_bas_1);
+        BENCH(fermeture3_swp_ui8matrix_fusion_bench(E,          i0, i1, j0, j1, Erosion1_bas_P, Dilatation1_bas_P, E_bas), j1, cpp_bas_2);
+
+        unpack_ui8matrix(Dilatation1_bas_P, i1, w8, E_rot);
+
+        cpp_bas = cpp_bas_1 + cpp_bas_2;
+        printf("%6.1f", cpp_bas                      );
+        fprintf(output_file, "%.1f  ", cpp_bas);
+        //
+
+        // fusion ilu5 red SWP8
+        pack_ui8matrix(E, i1, j1, E_rot_P);
+
+        BENCH(ouverture3_swp_ui8matrix_fusion_ilu5_red_bench(E,          i0, i1, j0, j1, E_rot_P, Erosion1_rot_P, E_rot), j1, cpp_rot_1);
+        BENCH(fermeture3_swp_ui8matrix_fusion_ilu5_red_bench(E,          i0, i1, j0, j1, Erosion1_rot_P, Dilatation1_rot_P, E_rot), j1, cpp_rot_2);
+
+        unpack_ui8matrix(Dilatation1_rot_P, i1, w8, E_rot);
+
+        cpp_rot = cpp_rot_1 + cpp_rot_2;
+        printf("%6.1f", cpp_rot                      );
+        fprintf(output_file, "%.1f  ", cpp_rot);
+        //
+
+        // fusion ilu5 elu2 red SWP8
+        pack_ui8matrix(E, i1, j1, E_red_P);
+
+        BENCH(fermeture3_swp_ui8matrix_fusion_ilu5_elu2_red_bench(E,          i0, i1, j0, j1, E_red_P, Erosion1_red_P, E_red), j1, cpp_red_1);
+        BENCH(fermeture3_swp_ui8matrix_fusion_ilu5_elu2_red_bench(E,          i0, i1, j0, j1, Erosion1_red_P, Dilatation1_red_P, E_red), j1, cpp_red_2);
+
+        unpack_ui8matrix(Dilatation1_red_P, i1, w8, E_red);
+
+        cpp_red = cpp_red_1 + cpp_red_2;
+        printf("%6.1f", cpp_red                      );
+        fprintf(output_file, "%.1f  ", cpp_red);
+        //
+
+        // ilu3 SWP8
+        // pack_ui8matrix(E, i1, j1, E_ilu3_P);
+        // BENCH(min3_swp_ui8matrix_ilu3_bench(E,          i0, i1, j0, j1, E_ilu3_P, Erosion1_ilu3_P, E_ilu3), j1, cpp_ilu3_1);
+        // BENCH(max3_swp_ui8matrix_ilu3_bench(E,          i0, i1, j0, j1, Erosion1_ilu3_P, Dilatation1_ilu3_P, E_ilu3), j1, cpp_ilu3_2);
+        // BENCH(max3_swp_ui8matrix_ilu3_bench(E, i0, i1, j0, j1, Dilatation1_ilu3_P, Dilatation2_ilu3_P, E_ilu3), j1, cpp_ilu3_3);
+        // BENCH(min3_swp_ui8matrix_ilu3_bench(E, i0, i1, j0, j1, Dilatation2_ilu3_P, Erosion2_ilu3_P, E_ilu3), j1, cpp_ilu3_4);
+        // unpack_ui8matrix(Erosion2_ilu3_P, i1, w8, E_ilu3);
+
+        // cpp_ilu3 = cpp_ilu3_1 + cpp_ilu3_2 + cpp_ilu3_3 + cpp_ilu3_4;
+        // printf("%6.1f", cpp_ilu3                      );
+        // fprintf(output_file, "%.1f  ", cpp_ilu3);
+        //
+
+        // ilu3_red SWP8
+        // pack_ui8matrix(E, i1, j1, E_ilu3_red_P);
+        // BENCH(min3_swp_ui8matrix_ilu3_red_bench(E,          i0, i1, j0, j1, E_ilu3_red_P, Erosion1_ilu3_red_P, E_ilu3_red), j1, cpp_ilu3_red_1);
+        // BENCH(max3_swp_ui8matrix_ilu3_red_bench(E,          i0, i1, j0, j1, Erosion1_ilu3_red_P, Dilatation1_ilu3_red_P, E_ilu3_red), j1, cpp_ilu3_red_2);
+        // BENCH(max3_swp_ui8matrix_ilu3_red_bench(E, i0, i1, j0, j1, Dilatation1_ilu3_red_P, Dilatation2_ilu3_red_P, E_ilu3_red), j1, cpp_ilu3_red_3);
+        // BENCH(min3_swp_ui8matrix_ilu3_red_bench(E, i0, i1, j0, j1, Dilatation2_ilu3_red_P, Erosion2_ilu3_red_P, E_ilu3_red), j1, cpp_ilu3_red_4);
+        // unpack_ui8matrix(Erosion2_ilu3_red_P, i1, w8, E_ilu3_red);
+
+        // cpp_ilu3_red = cpp_ilu3_red_1 + cpp_ilu3_red_2 + cpp_ilu3_red_3 + cpp_ilu3_red_4;
+        // printf("%6.1f", cpp_ilu3_red                      );
+        // fprintf(output_file, "%.1f  ", cpp_ilu3_red);
+        //
+
+        // elu2_red SWP8
+        // pack_ui8matrix(E, i1, j1, E_elu2_red_P);
+        // BENCH(min3_swp_ui8matrix_elu2_red_bench(E,          i0, i1, j0, j1, E_elu2_red_P, Erosion1_elu2_red_P, E_elu2_red), j1, cpp_elu2_red_1);
+        // BENCH(max3_swp_ui8matrix_elu2_red_bench(E,          i0, i1, j0, j1, Erosion1_elu2_red_P, Dilatation1_elu2_red_P, E_elu2_red), j1, cpp_elu2_red_2);
+        // BENCH(max3_swp_ui8matrix_elu2_red_bench(E, i0, i1, j0, j1, Dilatation1_elu2_red_P, Dilatation2_elu2_red_P, E_elu2_red), j1, cpp_elu2_red_3);
+        // BENCH(min3_swp_ui8matrix_elu2_red_bench(E, i0, i1, j0, j1, Dilatation2_elu2_red_P, Erosion2_elu2_red_P, E_elu2_red), j1, cpp_elu2_red_4);
+        // unpack_ui8matrix(Erosion2_elu2_red_P, i1, w8, E_elu2_red);
+
+        // cpp_elu2_red = cpp_elu2_red_1 + cpp_elu2_red_2 + cpp_elu2_red_3 + cpp_elu2_red_4;
+        // printf("%6.1f", cpp_elu2_red                      );
+        // fprintf(output_file, "%.1f  ", cpp_elu2_red);
+        //
+
+        // elu2_red_factor SWP8
+        // pack_ui8matrix(E, i1, j1, E_elu2_red_factor_P);
+        // BENCH(min3_swp_ui8matrix_elu2_red_factor_bench(E,          i0, i1, j0, j1, E_elu2_red_factor_P, Erosion1_elu2_red_factor_P, E_elu2_red_factor), j1, cpp_elu2_red_factor_1);
+        // BENCH(max3_swp_ui8matrix_elu2_red_factor_bench(E,          i0, i1, j0, j1, Erosion1_elu2_red_factor_P, Dilatation1_elu2_red_factor_P, E_elu2_red_factor), j1, cpp_elu2_red_factor_2);
+        // BENCH(max3_swp_ui8matrix_elu2_red_factor_bench(E,          i0, i1, j0, j1, Dilatation1_elu2_red_factor_P, Dilatation2_elu2_red_factor_P, E_elu2_red_factor), j1, cpp_elu2_red_factor_3);
+        // BENCH(min3_swp_ui8matrix_elu2_red_factor_bench(E,          i0, i1, j0, j1, Dilatation2_elu2_red_factor_P, Erosion2_elu2_red_factor_P, E_elu2_red_factor), j1, cpp_elu2_red_factor_4);
+        // unpack_ui8matrix(Erosion2_elu2_red_factor_P, i1, w8, E_elu2_red_factor);
+
+        // cpp_elu2_red_factor = cpp_elu2_red_factor_1 + cpp_elu2_red_factor_2 + cpp_elu2_red_factor_3 + cpp_elu2_red_factor_4;
+        // printf("%6.1f", cpp_elu2_red_factor                      );
+        // fprintf(output_file, "%.1f  ", cpp_elu2_red_factor);
+        //
+
+        // ilu3_elu2_red SWP8
+        // pack_ui8matrix(E, i1, j1, E_ilu3_elu2_red_P);
+        // BENCH(min3_swp_ui8matrix_ilu3_elu2_red_bench(E,          i0, i1, j0, j1, E_ilu3_elu2_red_P, Erosion1_ilu3_elu2_red_P, E_ilu3_elu2_red), j1, cpp_ilu3_elu2_red_1);
+        // BENCH(max3_swp_ui8matrix_ilu3_elu2_red_bench(E,          i0, i1, j0, j1, Erosion1_ilu3_elu2_red_P, Dilatation1_ilu3_elu2_red_P, E_ilu3_elu2_red), j1, cpp_ilu3_elu2_red_2);
+        // BENCH(max3_swp_ui8matrix_ilu3_elu2_red_bench(E,          i0, i1, j0, j1, Dilatation1_ilu3_elu2_red_P, Dilatation2_ilu3_elu2_red_P, E_ilu3_elu2_red), j1, cpp_ilu3_elu2_red_3);
+        // BENCH(min3_swp_ui8matrix_ilu3_elu2_red_bench(E,          i0, i1, j0, j1, Dilatation2_ilu3_elu2_red_P, Erosion2_ilu3_elu2_red_P, E_ilu3_elu2_red), j1, cpp_ilu3_elu2_red_4);
+        // unpack_ui8matrix(Erosion2_ilu3_elu2_red_P, i1, w8, E_ilu3_elu2_red);
+
+        // cpp_ilu3_elu2_red = cpp_ilu3_elu2_red_1 + cpp_ilu3_elu2_red_2 + cpp_ilu3_elu2_red_3 + cpp_ilu3_elu2_red_4;
+        // printf("%6.1f", cpp_ilu3_elu2_red                      );
+        // fprintf(output_file, "%.1f  ", cpp_ilu3_elu2_red);
+        //
+
+        // ilu3_elu2_red_factor SWP8
+        // pack_ui8matrix(E, i1, j1, E_ilu3_elu2_red_factor_P);
+        // BENCH(min3_swp_ui8matrix_ilu3_elu2_red_factor_bench(E,          i0, i1, j0, j1, E_ilu3_elu2_red_factor_P, Erosion1_ilu3_elu2_red_factor_P, E_ilu3_elu2_red_factor), j1, cpp_ilu3_elu2_red_factor_1);
+        // BENCH(max3_swp_ui8matrix_ilu3_elu2_red_factor_bench(E,          i0, i1, j0, j1, Erosion1_ilu3_elu2_red_factor_P, Dilatation1_ilu3_elu2_red_factor_P, E_ilu3_elu2_red_factor), j1, cpp_ilu3_elu2_red_factor_2);
+        // BENCH(max3_swp_ui8matrix_ilu3_elu2_red_factor_bench(E,          i0, i1, j0, j1, Dilatation1_ilu3_elu2_red_factor_P, Dilatation2_ilu3_elu2_red_factor_P, E_ilu3_elu2_red_factor), j1, cpp_ilu3_elu2_red_factor_3);
+        // BENCH(min3_swp_ui8matrix_ilu3_elu2_red_factor_bench(E,          i0, i1, j0, j1, Dilatation2_ilu3_elu2_red_factor_P, Erosion2_ilu3_elu2_red_factor_P, E_ilu3_elu2_red_factor), j1, cpp_ilu3_elu2_red_factor_4);
+        // unpack_ui8matrix(Erosion2_ilu3_elu2_red_factor_P, i1, w8, E_ilu3_elu2_red_factor);
+
+        // cpp_ilu3_elu2_red_factor = cpp_ilu3_elu2_red_factor_1 + cpp_ilu3_elu2_red_factor_2 + cpp_ilu3_elu2_red_factor_3 + cpp_ilu3_elu2_red_factor_4;
+        // printf("%6.1f", cpp_ilu3_elu2_red_factor                      );
+        // fprintf(output_file, "%.1f  ", cpp_ilu3_elu2_red_factor);
+        //
+
+        putchar('\n');
+        fprintf(output_file, "\n");
+    }
+
+    // ----------
+    // -- free --
+    // ----------
+
+    free_ui8matrix(I  , i0,   i1,   j0,   j1);
+    free_ui8matrix(M  , i0,   i1,   j0,   j1);
+    free_ui8matrix(O  , i0,   i1,   j0,   j1);
+    free_ui8matrix(V  , i0,   i1,   j0,   j1);
+    free_ui8matrix(E  , i0-1, i1+1, j0-1, j1+1);
+    free_ui8matrix(E_8, i0,   i1,   j0,   j1);
+
+    free_ui8matrix(Erosion1_basic   , i0-b, i1+b, j0-b, j1+b);
+    free_ui8matrix(Erosion2_basic   , i0-b, i1+b, j0-b, j1+b);
+    free_ui8matrix(Dilatation1_basic, i0-b, i1+b, j0-b, j1+b);
+    free_ui8matrix(Dilatation2_basic, i0-b, i1+b, j0-b, j1+b);
+
+    free_ui8matrix(E_bas, i0-b, i1+b, j0-b, j1+b);
+    free_ui8matrix(E_bas_P   , i0-b, i1+b, j0-b, w8+b);
+    free_ui8matrix(Erosion1_bas_P   , i0-b, i1+b, j0-b, w8+b);
+    free_ui8matrix(Erosion2_bas_P, i0-b, i1+b, j0-b, w8+b);
+    free_ui8matrix(Dilatation1_bas_P, i0-b, i1+b, j0-b, w8+b);
+    free_ui8matrix(Dilatation2_bas_P, i0-b, i1+b, j0-b, w8+b);
+
+    free_ui8matrix(E_rot, i0-b, i1+b, j0-b, j1+b);
+    free_ui8matrix(E_rot_P   , i0-b, i1+b, j0-b, w8+b);
+    free_ui8matrix(Erosion1_rot_P   , i0-b, i1+b, j0-b, w8+b);
+    free_ui8matrix(Erosion2_rot_P, i0-b, i1+b, j0-b, w8+b);
+    free_ui8matrix(Dilatation1_rot_P, i0-b, i1+b, j0-b, w8+b);
+    free_ui8matrix(Dilatation2_rot_P, i0-b, i1+b, j0-b, w8+b);
+
+    free_ui8matrix(E_red, i0-b, i1+b, j0-b, j1+b);
+    free_ui8matrix(E_red_P   , i0-b, i1+b, j0-b, w8+b);
+    free_ui8matrix(Erosion1_red_P   , i0-b, i1+b, j0-b, w8+b);
+    free_ui8matrix(Erosion2_red_P, i0-b, i1+b, j0-b, w8+b);
+    free_ui8matrix(Dilatation1_red_P, i0-b, i1+b, j0-b, w8+b);
+    free_ui8matrix(Dilatation2_red_P, i0-b, i1+b, j0-b, w8+b);
+
+    free_ui8matrix(E_ilu3, i0-b, i1+b, j0-b, j1+b);
+    free_ui8matrix(E_ilu3_P   , i0-b, i1+b, j0-b, w8+b);
+    free_ui8matrix(Erosion1_ilu3_P   , i0-b, i1+b, j0-b, w8+b);
+    free_ui8matrix(Erosion2_ilu3_P, i0-b, i1+b, j0-b, w8+b);
+    free_ui8matrix(Dilatation1_ilu3_P, i0-b, i1+b, j0-b, w8+b);
+    free_ui8matrix(Dilatation2_ilu3_P, i0-b, i1+b, j0-b, w8+b);
+
+    free_ui8matrix(E_ilu3_red, i0-b, i1+b, j0-b, j1+b);
+    free_ui8matrix(E_ilu3_red_P   , i0-b, i1+b, j0-b, w8+b);
+    free_ui8matrix(Erosion1_ilu3_red_P   , i0-b, i1+b, j0-b, w8+b);
+    free_ui8matrix(Erosion2_ilu3_red_P, i0-b, i1+b, j0-b, w8+b);
+    free_ui8matrix(Dilatation1_ilu3_red_P, i0-b, i1+b, j0-b, w8+b);
+    free_ui8matrix(Dilatation2_ilu3_red_P, i0-b, i1+b, j0-b, w8+b);
+
+    free_ui8matrix(E_elu2_red, i0-b, i1+b, j0-b, j1+b);
+    free_ui8matrix(E_elu2_red_P   , i0-b, i1+b, j0-b, w8+b);
+    free_ui8matrix(Erosion1_elu2_red_P   , i0-b, i1+b, j0-b, w8+b);
+    free_ui8matrix(Erosion2_elu2_red_P, i0-b, i1+b, j0-b, w8+b);
+    free_ui8matrix(Dilatation1_elu2_red_P, i0-b, i1+b, j0-b, w8+b);
+    free_ui8matrix(Dilatation2_elu2_red_P, i0-b, i1+b, j0-b, w8+b);
+
+    free_ui8matrix(E_elu2_red_factor, i0-b, i1+b, j0-b, j1+b);
+    free_ui8matrix(E_elu2_red_factor_P   , i0-b, i1+b, j0-b, w8+b);
+    free_ui8matrix(Erosion1_elu2_red_factor_P   , i0-b, i1+b, j0-b, w8+b);
+    free_ui8matrix(Erosion2_elu2_red_factor_P, i0-b, i1+b, j0-b, w8+b);
+    free_ui8matrix(Dilatation1_elu2_red_factor_P, i0-b, i1+b, j0-b, w8+b);
+    free_ui8matrix(Dilatation2_elu2_red_factor_P, i0-b, i1+b, j0-b, w8+b);
+
+    free_ui8matrix(E_ilu3_elu2_red, i0-b, i1+b, j0-b, j1+b);
+    free_ui8matrix(E_ilu3_elu2_red_P   , i0-b, i1+b, j0-b, w8+b);
+    free_ui8matrix(Erosion1_ilu3_elu2_red_P   , i0-b, i1+b, j0-b, w8+b);
+    free_ui8matrix(Erosion2_ilu3_elu2_red_P, i0-b, i1+b, j0-b, w8+b);
+    free_ui8matrix(Dilatation1_ilu3_elu2_red_P, i0-b, i1+b, j0-b, w8+b);
+    free_ui8matrix(Dilatation2_ilu3_elu2_red_P, i0-b, i1+b, j0-b, w8+b);
+
+
+    free_ui8matrix(E_ilu3_elu2_red_factor, i0-b, i1+b, j0-b, j1+b);
+    free_ui8matrix(E_ilu3_elu2_red_factor_P   , i0-b, i1+b, j0-b, w8+b);
+    free_ui8matrix(Erosion1_ilu3_elu2_red_factor_P   , i0-b, i1+b, j0-b, w8+b);
+    free_ui8matrix(Erosion2_ilu3_elu2_red_factor_P, i0-b, i1+b, j0-b, w8+b);
+    free_ui8matrix(Dilatation1_ilu3_elu2_red_factor_P, i0-b, i1+b, j0-b, w8+b);
+    free_ui8matrix(Dilatation2_ilu3_elu2_red_factor_P, i0-b, i1+b, j0-b, w8+b);
+
+    fclose(output_file);
+}
+// ===============================
+
+
+
+
 void motion_detection_morpho(void)
 // ===============================
 {
-    motion_detection_morpho_v1();               // version basique sans optimisation
+    // motion_detection_morpho_v1();               // version basique sans optimisation
     // bench_motion_detection_morpho();            // bench version avec optimisation
     // bench_motion_detection_morpho_SWP8();       // bench version avec optimisation SWP 8
     // bench_motion_detection_morpho_SWP16();      // bench version avec optimisation SWP 16
     // bench_motion_detection_morpho_SWP32();      // bench version avec optimisation SWP 32
 
     // bench_debit_motion_detection_morpho_SWP8();
+
+    bench_motion_detection_ouverture_fermeture_SWP8();
 
     // test_PGM();
 }
