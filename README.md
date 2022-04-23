@@ -1,8 +1,5 @@
 # Projet_vision
 
-Rayan Boucherrab 28610497
-Yanis Halit      28600464
-
 
 -Le choix des tests/bench à effectuer peuvent être décidés à partir du fichier "./src/main.c" en decommentant.
 
@@ -16,7 +13,7 @@ Yanis Halit      28600464
     "Motion" ou l'on trouve l'ensemble des résultats de tests réalisés sur la séquence "car3"
 
 
--Le programme s'execute avec un simple "$ make && ./exe/motion_acc.exe"
+-Le programme s'execute avec un simple "make && ./exe/motion_acc.exe"
 
 
 -Vous pourrez trouver dans le fichier PLOT l'ensemble des commandes à entrer dans gnuplot pour afficher les graphiques de performances à partir des fichiers récuperés il est cependant nécéssaire de se trouver dans le bon répértoire ou d'y entrer le bon chemin d'accès.
